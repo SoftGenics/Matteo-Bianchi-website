@@ -1,0 +1,705 @@
+/* General Styles */
+.home-bg-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    width: 98%;
+}
+
+.home-main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.your-perfect-pair {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* top card */
+.card-container-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 97%;
+    height: 165px;
+    /* border: 1px solid red; */
+    background-color: rgb(255, 255, 255);
+}
+
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.card {
+    width: 240px;
+    height: 160px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    transition: height 0.3s ease, box-shadow 0.3s ease;
+    /* background-color: #fff; */
+    cursor: pointer;
+    background-color: rgba(247, 245, 245, 0.876);
+}
+
+.card:hover {
+    height: auto;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-image {
+    width: 100%;
+    height: 130px;
+    /* object-fit: cover; */
+    padding: 10px;
+}
+
+.card-title {
+    font-size: 18px;
+    color: rgb(138, 136, 136);
+    font-family: var(--font-default-medium);
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+.card-content p {
+    margin: 10px 0;
+    color: #666;
+    font-size: 12px;
+    padding: 5px;
+    /* z-index: 1005; */
+}
+
+
+.card-content p:hover {
+    background-color: #CECEDF;
+}
+
+.card-content {
+    border-top: .3px solid rgb(138, 136, 136);
+    ;
+    padding: 10px;
+    display: none;
+    /* Initially hidden */
+}
+
+.card:hover .card-content {
+    display: block;
+    /* Show on hover */
+}
+
+/* end card top */
+
+.yourPerfectPairBanner-container {
+    width: 75%;
+}
+
+@media (max-width: 768px) {
+    .yourPerfectPairBanner-container {
+        width: 99%;
+        /* height: 300px; */
+    }
+}
+
+.yourPerfectPairBanner {
+    width: 100%;
+    height: 600px;
+}
+
+.crystalClearVisionBanner-container {
+    width: 25%;
+}
+
+@media (max-width: 768px) {
+    .crystalClearVisionBanner-container {
+        width: 100%;
+        box-shadow: 0px 4px 6px rgba(43, 41, 41, 0.1);
+    }
+}
+
+.crystalClearVisionBanner {
+    width: 100%;
+    height: 600px;
+}
+
+/* Glasses Category Section */
+.glasses-category-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 30px;
+    width: 96%;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .glasses-category-container {
+        width: 105%;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 30px;
+        padding: 0;
+        flex-wrap: nowrap;
+    }
+}
+
+.category-banner {
+    width: 96%;
+    max-width: 350px;
+    margin-bottom: 20px;
+    /* margin-left: 10px; */
+}
+
+@media (max-width: 768px) {
+    .category-banner {
+        width: 100%;
+    }
+}
+
+.text-banner {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .text-banner {
+        width: 100% !important;
+    }
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    width: 70%;
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 285px;
+    height: 200px;
+}
+
+.category-icon {
+    width: 80px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.category-item p {
+    font-size: 16px;
+    color: #333;
+}
+
+.helius-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+}
+
+.Helius-Eyewear {
+    padding: 10px;
+    color: #000;
+    background-color: #fff;
+    position: relative;
+    top: 42px;
+}
+
+.Lykos-Eyewear {
+    padding: 5px;
+    color: #000;
+    background-color: #fff;
+    position: relative;
+    top: 57px;
+}
+
+.hr-line {
+    width: 88%;
+    /* Adjust to fit within the container */
+    height: 2px;
+    border: none;
+    background-color: #f1f1f1;
+    margin: 20px auto;
+    /* Center the line horizontally inside the container */
+}
+
+.single-banner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Center content horizontally */
+    justify-content: center;
+    /* border: 1px solid red; */
+    width: 96%;
+    box-sizing: border-box;
+    /* Ensure padding and borders are included in width/height */
+    padding: 20px;
+    /* Optional: Add padding to prevent content from touching the borders */
+}
+
+.helius-glasses-image {
+    width: 100%;
+}
+
+/* Media Queries */
+
+/* For tablets and smaller devices (768px and below) */
+@media (max-width: 768px) {
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .category-item {
+        max-width: 200px;
+        height: 140px;
+    }
+
+    .yourPerfectPairBanner,
+    .crystalClearVisionBanner {
+        width: 100%;
+    }
+}
+
+/* For mobile devices (480px and below) */
+@media (max-width: 480px) {
+    .categories-grid {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 15px;
+    }
+
+    .category-item {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .text-banner,
+    .helius-glasses-image {
+        width: 100%;
+    }
+
+    .your-perfect-pair {
+        flex-direction: column;
+    }
+
+    .yourPerfectPairBanner {
+        width: 100%;
+    }
+
+    .crystalClearVisionBanner {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+
+.Eyeglasses-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.Eyeglasses-container-main {
+    width: 70%;
+}
+
+.Eyeglasses-home {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Eyeglasses-text {
+    font-size: 24px;
+    text-transform: uppercase;
+    font-weight: 400;
+    padding-bottom: 10px;
+    /* border-bottom: 1px solid silver; */
+}
+
+.Eyeglasses-home {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.pawerGlass-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .pawerGlass-container {
+        flex-direction: column;
+    }
+}
+
+.pawerglass-text-container {
+    margin-left: 14px;
+}
+
+.pawerGlass {
+    width: 150px;
+    border-radius: 20px;
+}
+
+.Power-Glasses-text {
+    border-radius: 50px;
+    padding: 4px 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 12px;
+    margin: 10px 0px;
+    display: inline-block;
+    text-transform: uppercase;
+    color: #fff;
+    background-color: #00b5ec;
+}
+
+.Rim-Rectangle-text {
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 16px;
+    color: #000;
+}
+
+.More-Details-text {
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 12px;
+    color: #000;
+}
+
+.eyeglasses-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    background-color: #fff;
+}
+
+.eyeglasses-title {
+    font-size: 20px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    top: 60px;
+    width: 430px;
+    text-align: center;
+    background-color: #fff;
+    /* padding: 20px; */
+}
+
+.eyeglasses-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* Four equal columns */
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .eyeglasses-grid {
+        grid-template-columns: repeat(1, 1fr);
+        /* One column */
+        gap: 20px;
+        /* Further reduce gap */
+    }
+}
+
+.eyeglasses-grid1 {
+    grid-template-columns: repeat(3, 1fr);
+    /* Four equal columns */
+}
+
+@media (max-width: 768px) {
+    .eyeglasses-grid1 {
+        grid-template-columns: repeat(1, 1fr);
+        /* One column */
+        gap: 20px;
+        /* Further reduce gap */
+    }
+}
+
+.eyeglasses-card {
+    position: relative;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    background-size: cover;
+    background-position: center;
+    width: 250px;
+    height: 350px;
+    /* Set a fixed height for the card */
+    color: white;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+@media (max-width: 768px) {
+    .eyeglasses-card {
+        width: 250px;
+        height: 350px;
+    }
+}
+
+.eyeglasses-card1 {
+    width: 350px;
+}
+
+.eyeglasses-card:hover {
+    transform: translateY(-10px);
+}
+
+.eyeglasses-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 15px;
+    width: 70%;
+    text-align: left;
+    /* height: 50px !important; */
+}
+
+.eyeglasses-card-title {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.eyeglasses-card-description {
+    font-size: 0.95rem;
+    color: #ddd;
+}
+
+.eyeglasses-arrow {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+}
+
+.eyeglasses-arrow:hover {
+    color: #007bff;
+}
+
+/* slider-main-container  */
+.slider-main-container {
+    width: 96%;
+    margin: auto;
+    padding: 20px 0;
+    position: relative;
+}
+
+.slider-navigation {
+    position: absolute;
+    top: 50%;
+    left: 7%;
+    right: 0;
+    padding: 0 4%;
+    display: flex;
+    justify-content: space-between;
+    z-index: 10;
+    transform: translateY(-50%);
+    width: 86%;
+}
+
+.prev-slider-btn,
+.next-slider-btn {
+    width: 55px;
+    height: 55px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 35px;
+    transition: all 0.3s ease;
+    user-select: none;
+    padding-bottom: 7px;
+    font-weight: 200;
+}
+
+.prev-slider-btn:hover,
+.next-slider-btn:hover {
+    background-color: #00c2cb;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* sunglasses */
+.sunglasses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    padding: 40px 20px;
+    width: 99%;
+}
+
+.sunglasses-card {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.sunglasses-img {
+    width: 100%;
+    height: 400px;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.sunglasses-card:hover .sunglasses-img {
+    transform: scale(1.05);
+}
+
+.sunglasses-overlay {
+    position: absolute;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+}
+
+.sunglasses-title {
+    color: white;
+    font-weight: 500;
+    font-size: 1.1rem;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 5px 10px;
+    border: 1px solid white;
+    display: inline-block;
+    border-radius: 4px;
+}
+
+/* glasses swiper */
+.glasses-swiper-container {
+    padding: 20px;
+    background-image: linear-gradient(180deg, #00c2cb 0%, #c1cdce 100%);
+    border-radius: 12px;
+    width: 98%;
+}
+
+.swiper-heading {
+    font-size: 24px;
+    font-weight: 700;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    color: #185a9d;
+}
+
+.glasses-slide {
+    display: flex;
+    justify-content: center;
+}
+
+.glass-name {
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.glass-card {
+    position: relative;
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    /* background-image: linear-gradient(180deg, #00c2cb 0%, #c1cdce 100%); */
+    text-align: left;
+    height: 350px;
+    /* border: 2px solid #48b0b6; */
+
+    /* background-image: linear-gradient(180deg, #43cea2 0%, #185a9d 100%);
+    border: 2px solid #43cea2; */
+
+    /* background-image: linear-gradient(180deg, #232526 0%, #414345 100%);
+    border: 2px solid #232526; */
+}
+
+.glass-icons {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.heart-icon,
+.zoom-icon {
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.glass-img {
+    width: 100%;
+    height: auto;
+    margin: 0 auto 12px;
+    display: block;
+    padding-bottom: 30px;
+}
+
+.glass-brand {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: .146484375vw;
+    color: #272932;
+    display: block;
+}
+
+.glass-name {
+    font-size: 14px;
+    color: #7a7a9d;
+    margin-bottom: 8px;
+
+    color: #8b8fa9;
+    font-size: 12px;
+    display: block;
+    text-transform: capitalize;
+    word-break: break-word;
+}
+
+.glass-price {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.glass-tax {
+    font-size: 13px;
+    color: #a0a0b2;
+}

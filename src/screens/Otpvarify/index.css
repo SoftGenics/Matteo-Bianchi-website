@@ -1,0 +1,145 @@
+.login-main-home-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    width: 100%;
+    height: 100vh;
+}
+
+.bg-login{
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    height: 60vh;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.login-image{
+    width: 500px;
+    padding-top: 20px;
+}
+
+.login-home-left-cont{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    color: #fff;
+}
+
+.edit{
+    color: blue;
+}
+
+.varify-description{
+    color: #000;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.varify-description-num{
+    color: #000;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    align-self: self-start;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.otp-input{
+    width: 90%;
+    height: 55px;
+    border-radius: 10px;
+    padding-left: 20px;
+    font-size: 18px;
+    margin-bottom: 20px;
+    border:none;
+    background-color: #f7f7f7;
+    border-bottom: dashed;
+    border-color: #d7c6c6;
+    cursor: pointer;
+}
+
+.continue-btn{
+    width: 94%;
+    height: 55px;
+    border-radius: 10px;
+    font-size: 18px;
+    border:none;
+}
+
+.login-desc{
+    width: 84%;
+    color: #000;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.bg-login-rigth-cont{
+    display: flex;
+    justify-content: flex-start;
+    align-items: first baseline;
+    height: 55vh;
+
+}
+
+/* // otp popup */
+
+.display-otp {
+    position: fixed;
+    top: 6%;
+    left: 90%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(88, 75, 75, 0.2);
+    animation: slide-in 0.5s ease-out, pulse 1.5s infinite ease-in-out;
+    z-index: 1000;
+}
+
+.display-otp-text {
+    font-size: 2rem;
+    font-weight: bold;
+    color: rgb(24, 147, 24);
+    text-align: center;
+    margin: 0;
+}
+
+/* Slide-in animation for smooth entry */
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Pulse animation to grab attention */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+}
