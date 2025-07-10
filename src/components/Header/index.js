@@ -318,10 +318,10 @@ const Header = () => {
           {/* Logo & Contact */}
           <Link to="/" style={{ textDecoration: "none" }}>
             <div className="logo-container">
-              <img src={dceyewrLogo} alt="Lenskart" className="logo" />
+              {/* <img src={dceyewrLogo} alt="Lenskart" className="logo" /> */}
               <div className="contact">
                 {/* <span className='eyezone-text'>Eyezones</span> */}
-                <button className="btn-tryon" style={{ padding: "5px 8px", border: "none", borderRadius: "2px", fontWeight: "900" }}>EYE ZONES</button>
+                <button className="btn-tryon" style={{ padding: "5px 8px", border: "none", borderRadius: "2px", fontWeight: "900" }}>Matteo Bianchi</button>
                 {/* <FaPhone className="icon" size={20} /> */}
                 {/* <span>99998 99998</span> */}
               </div>
