@@ -3,8 +3,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import { SERVER_API_URL } from '../../server/server';
 import { GlobleInfo } from '../../App';
 import axios from "axios";
-import { BsBagHeart, BsBagHeartFill } from "react-icons/bs";
+// import { BsBagHeart, BsBagHeartFill } from "react-icons/bs";
 // import { CiHeart } from "react-icons/ci";
+import { IoReorderThreeOutline } from "react-icons/io5";
+import { CgProfile } from "react-icons/cg";
+
 import { FaHeart, FaShoppingCart, FaPhone } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 // import { IoBagOutline } from "react-icons/io5";
@@ -244,7 +247,7 @@ const Header = () => {
   const [cartListItems, setCartlistItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [categoriesData, setCategoriesData] = useState([]);
-  
+
   // Load wishlist items from localStorage when the popup opens
   useEffect(() => {
     const storedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
@@ -261,7 +264,7 @@ const Header = () => {
     try {
       const response = await axios.get(`${SERVER_API_URL}/api/categories/all`);
       setCategoriesData(response.data);
-  
+
     } catch (err) {
       console.log(err.message);
     }
@@ -312,36 +315,148 @@ const Header = () => {
   // }, [query, navigate]);
 
   return (
-    <div className='header-bg-container'>
-      <nav className="navbar">
-        <div className="navbar-top">
-          {/* Logo & Contact */}
-          <Link to="/" style={{ textDecoration: "none" }}>
-            <div className="logo-container">
-              {/* <img src={dceyewrLogo} alt="Lenskart" className="logo" /> */}
-              <div className="contact">
-                {/* <span className='eyezone-text'>Eyezones</span> */}
-                <button className="btn-tryon" style={{ padding: "5px 8px", border: "none", borderRadius: "2px", fontWeight: "900" }}>Matteo Bianchi</button>
-                {/* <FaPhone className="icon" size={20} /> */}
-                {/* <span>99998 99998</span> */}
+    <>
+      <div className='header-bg-container'>
+        <nav className="navbar">
+          <div className="navbar-top">
+            {/* Logo & Contact */}
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <div className="logo-container">
+                {/* <img src={dceyewrLogo} alt="Lenskart" className="logo" /> */}
+                <div className="contact">
+                  {/* <span className='eyezone-text'>Eyezones</span> */}
+                  <button className="btn-tryon" style={{ padding: "5px 8px", border: "none", borderRadius: "2px", fontWeight: "900" }}>Matteo Bianchi</button>
+                  {/* <FaPhone className="icon" size={20} /> */}
+                  {/* <span>99998 99998</span> */}
+                </div>
               </div>
+            </Link>
+
+            {/* Search Bar */}
+            <div className="search-container">
+              <div className='search-home-main'>
+                <input
+                  type="search"
+                  placeholder="What are you looking for?"
+                  className="search-input"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  onFocus={() => setShowDropdown(true)}
+                  onBlur={() => setTimeout(() => setShowDropdown(false), 2000)}
+                />
+                <FaSearch className="search-icon" onClick={() => onHandleSearch()} size={28} />
+              </div>
+
+              {showDropdown && (
+                <div className="search-dropdown">
+                  <div className="search-dropdown-header">Trending Search</div>
+                  <ul>
+                    {trendingSearches.map((item, index) => (
+                      <li key={index} onMouseDown={() => setQuery(item)}>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            {/* Right Icons */}
+            <div className="user-actions">
+              <Link className='login-sinup' to="/track-order">Track Order</Link>
+              <Link className='login-sinup' to="/login">Sign In & Sign Up</Link>
+              {/* <img src={wishlist} alt="wishlist" className='wishlist-image' /> */}
+              {/* <BsBagHeart className="icon" size={20} style={{color:"#97bce3"}} onClick={() => setIsWishlistOpen(true)} /> */}
+              <div className='wishlist-container'>
+                {wishlistItems.length > 0 ? (
+                  <img src={wishlist} alt="wishlist" className='wishlist-image' style={{ width: "25px" }} />
+                ) : (
+                  <FaRegHeart className="icon" size={20} style={{ color: "#97bce3" }} onClick={() => setIsWishlistOpen(true)} />
+                )}
+
+                {wishlistItems.length > 0 ? (
+                  <div className="wishlist-badge">
+                    {wishlistCount}</div>
+                ) : (null)}
+              </div>
+              <span onClick={() => setIsWishlistOpen(true)}>Wishlist</span>
+
+              <div className="cart-container">
+                <FaShoppingCart className="icon" size={20} />
+                <div className="cart-badge">{productCount}</div>
+              </div>
+              <span onClick={() => setIsCartOpen(true)}>Cart</span>
+            </div>
+          </div>
+
+          {/* Navigation Links */}
+          <div className='navbar-main-bottom'>
+            <div className="navbar-bottom">
+              {categoriesData.length > 0 &&
+                categoriesData.map((category, index) => (
+                  <span
+                    key={index}
+                    className={`nav-link`}
+                    onClick={() => togglePopup(category.categories_name)}
+                  >
+                    {category.categories_name}
+                  </span>
+                ))}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="navbar-buttons">
+              <button className="btn-tryon1"> 3D TRY ON</button>
+              <button className="btn-blu">BLU</button>
+              <button className="btn-gold" onClick={() => openFaq()}>GOLD MAX</button>
+            </div>
+          </div>
+        </nav>
+
+        <header className="header-main-container" style={{ display: "none" }}>
+          {/* Left - Menu Icon */}
+          <div className="left-section">
+            {/* <FaBars className="menu-icon" /> */}
+            <span className="nav-link" onClick={() => togglePopup('Power Glasses')}>
+              Power Glasses
+            </span>
+            <span className="nav-link" onClick={() => togglePopup('Sunglasses')}>
+              Sunglasses
+            </span>
+            <span className="nav-link" onClick={() => togglePopup('Screen Saver')}>
+              Screen Saver
+            </span>
+            <span className="nav-link" onClick={() => togglePopup('Contact Lenses')}>
+              Contact Lenses
+            </span>
+
+            <span className="nav-link nav-link-modifiy" onClick={() => togglePopup('Kids Glasses')}>
+              Kids Glasses
+            </span>
+          </div>
+
+          {/* Center - Logo */}
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <div className="logo-section">
+              <img src={dceyewrLogo} className="logo-icon" alt="Logo" />
+              <span
+                style={{ paddingBottom: "8px" }}>Eye zones</span>
             </div>
           </Link>
 
-          {/* Search Bar */}
           <div className="search-container">
-            <div className='search-home-main'>
-              <input
-                type="search"
-                placeholder="What are you looking for?"
-                className="search-input"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onFocus={() => setShowDropdown(true)}
-                onBlur={() => setTimeout(() => setShowDropdown(false), 2000)}
-              />
-              <FaSearch className="search-icon" onClick={() => onHandleSearch()} size={28} />
-            </div>
+            {/* <div className='search-home-main'> */}
+            <input
+              type="text"
+              placeholder="What are you looking for?"
+              className="search-input"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => setShowDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 2000)}
+            />
+            {/* <FaSearch className="icon" onClick={handleSearch} />
+          </div> */}
 
             {showDropdown && (
               <div className="search-dropdown">
@@ -357,102 +472,501 @@ const Header = () => {
             )}
           </div>
 
-          {/* Right Icons */}
-          <div className="user-actions">
-            <Link className='login-sinup' to="/track-order">Track Order</Link>
-            <Link className='login-sinup' to="/login">Sign In & Sign Up</Link>
-            {/* <img src={wishlist} alt="wishlist" className='wishlist-image' /> */}
-            {/* <BsBagHeart className="icon" size={20} style={{color:"#97bce3"}} onClick={() => setIsWishlistOpen(true)} /> */}
-            <div className='wishlist-container'>
-              {wishlistItems.length > 0 ? (
-                <img src={wishlist} alt="wishlist" className='wishlist-image' style={{ width: "25px" }} />
-              ) : (
-                <FaRegHeart className="icon" size={20} style={{ color: "#97bce3" }} onClick={() => setIsWishlistOpen(true)} />
-              )}
-
-              {wishlistItems.length > 0 ? (
-                <div className="wishlist-badge">
-                  {wishlistCount}</div>
-              ) : (null)}
-            </div>
-            <span onClick={() => setIsWishlistOpen(true)}>Wishlist</span>
+          {/* Right - Search and Cart */}
+          <div className="right-section">
+            {/* <FaSearch className="icon" onClick={toggleSearchPopup} /> Clickable search icon */}
+            <span className="nav-link">Track Order</span>
+            <span style={{ paddingTop: "0px" }} onClick={() => setIsWishlistOpen(true)}><ImFire color='#1930dc' size={23} /></span>
+            <span className="nav-link" onClick={() => setIsWishlistOpen(true)}>
+              Wishlist
+            </span>
 
             <div className="cart-container">
-              <FaShoppingCart className="icon" size={20} />
+              <FaShoppingCart className="icon" />
               <div className="cart-badge">{productCount}</div>
             </div>
-            <span onClick={() => setIsCartOpen(true)}>Cart</span>
+          </div>
+        </header>
+
+        {/* Wishlist Popup */}
+        {isWishlistOpen && (
+          <div className="wishlist-popup">
+            <div className="wishlist-header">
+              <h3>My Wishlist</h3>
+              <button className="close-btn" onClick={() => setIsWishlistOpen(false)}>X</button>
+            </div>
+            <div className="wishlist-content">
+              {wishlistItems.length > 0 ? (
+                wishlistItems.map((item) => (
+                  <div key={item.product_id} className="wishlist-item">
+                    <img src={`${SERVER_API_URL}/${item?.product_thumnail_img}`} alt={item.product_title} />
+                    <div className="wishlist-info">
+                      <p className="wishlist-product-title">{item.product_title}</p>
+                      <p className="wishlist-product-price">
+                        ₹{(item.product_price - (item.product_price * item.discount / 100)).toFixed(0)}/-
+                      </p>
+                    </div>
+                    <button className="delete-btn" onClick={() => removeFromWishlist(item.product_id)}>🗑</button>
+                  </div>
+                ))
+              ) : (
+                <p className="empty-message">No items in wishlist</p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* cart popup */}
+        <div className={`cart-popup ${isCartOpen ? "open" : ""}`}>
+          <div className="cart-popup-content">
+            <button className="close-btn" onClick={() => setIsCartOpen(false)}>×</button>
+            <h2>Shopping Cart</h2>
+
+            {cartListItems.length > 0 ? (
+              <div className="cart-items">
+                {cartListItems.map((item, index) => (
+                  <div key={index} className="cart-item-card">
+                    <img className="cart-item-image" src={`${SERVER_API_URL}/${item?.product_thumnail_img}`} alt={item.product_title} />
+                    <div className="cart-item-details">
+                      <h4>{item.name}</h4>
+                      <p>{item.product_title}</p>
+                      <p> ₹{(item.product_price - (item.product_price * item.discount / 100)).toFixed(0)}/-</p>
+                      <p>Quantity: {item.quantity}</p>
+                    </div>
+                    <button className="remove-btn" onClick={() => removeFromCart(item.product_id)}>🗑</button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="empty-cart">Your cart is empty.</p>
+            )}
           </div>
         </div>
 
-        {/* Navigation Links */}
-        <div className='navbar-main-bottom'>
-          <div className="navbar-bottom">
-            {categoriesData.length > 0 &&
-              categoriesData.map((category, index) => (
-                <span
-                  key={index}
-                  className={`nav-link`}
-                  onClick={() => togglePopup(category.categories_name)}
-                >
-                  {category.categories_name}
-                </span>
-              ))}
+        {/* Popup */}
+        {isPopupOpen && (
+          <div className="item-popup">
+            <button className="close-button" onClick={() => setIsPopupOpen(false)}>
+              Close
+            </button>
+
+            <div className="popup-content">
+              <h2 className='popup-containt-heading'>{popupContent}</h2>
+              <ul>
+                {popupContent === 'Power Glasses' && (
+                  <div className="power-glasses-container">
+                    {/* Select Category Section */}
+                    <div className="category-column">
+                      <h3>Category</h3>
+                      {Object.entries(categories.PowerGlasses.category).map(([heading, items], index) => (
+                        <div key={index} className="category-group">
+                          <img
+                            src={
+                              heading === 'Men'
+                                ? men_pic
+                                : heading === 'Women'
+                                  ? women_pic
+                                  : heading === 'Kids'
+                                    ? kid_pic
+                                    : dceyewrLogo
+                            }
+                            alt={`${heading}`}
+                            className="category-image"
+                          />
+                          <h4 className="category-heading">{heading}</h4>
+                          <div className='cetogory-group-item'>
+                            {items.map((item, idx) => (
+                              <div className="category-item1" key={idx}>
+                                <span>{item}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Brands Section */}
+                    <div className="brands-column">
+                      <h3>Brands</h3>
+                      {categories.PowerGlasses.brands.map((brand, index) => (
+                        <div className="brand-item" key={index}>
+                          {brand}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Our Top Picks Section */}
+                    <div className="top-picks-column">
+                      <h3>Our Top Picks</h3>
+                      {categories.PowerGlasses.picks.map((pick, index) => (
+                        <div className="pick-item" key={index}>
+                          {pick}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Frame Shapes Section */}
+                    <div className="frame-shapes-column">
+                      <h3>Frame Shape</h3>
+                      {categories.PowerGlasses.frameShapes.map((shape, index) => (
+                        <div className="frame-shape-item" key={index}>
+                          {shape}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Collection Section */}
+                    <div className="collection-column">
+                      <h3>Collection</h3>
+                      {categories.PowerGlasses.collections.map((collection, index) => (
+                        <div className="collection-item" key={index}>
+                          {collection}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {popupContent === 'Screen Saver' && (
+                  <div className="power-glasses-container">
+                    {/* Select Category Section */}
+                    <div className="category-column">
+                      <h3>Category</h3>
+                      {Object.entries(screenSaver.PowerGlasses.category).map(([heading, items], index) => (
+                        <div key={index} className="category-group">
+                          <img
+                            src={
+                              heading === 'Men'
+                                ? men_pic
+                                : heading === 'Women'
+                                  ? women_pic
+                                  : heading === 'Kids'
+                                    ? kid_pic
+                                    : dceyewrLogo
+                            }
+                            alt={`${heading}`}
+                            className="category-image"
+                          />
+                          <h4 className="category-heading">{heading}</h4>
+                          <div className='cetogory-group-item'>
+                            {items.map((item, idx) => (
+                              <div className="category-item1" key={idx}>
+                                <span>{item}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Brands Section */}
+                    <div className="brands-column">
+                      <h3>Brands</h3>
+                      {screenSaver.PowerGlasses.brands.map((brand, index) => (
+                        <div className="brand-item" key={index}>
+                          {brand}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Our Top Picks Section */}
+                    <div className="top-picks-column">
+                      <h3>Our Top Picks</h3>
+                      {screenSaver.PowerGlasses.picks.map((pick, index) => (
+                        <div className="pick-item" key={index}>
+                          {pick}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Frame Shapes Section */}
+                    <div className="frame-shapes-column">
+                      <h3>Frame Shape</h3>
+                      {screenSaver.PowerGlasses.frameShapes.map((shape, index) => (
+                        <div className="frame-shape-item" key={index}>
+                          {shape}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Collection Section */}
+                    <div className="collection-column">
+                      <h3>Collection</h3>
+                      {screenSaver.PowerGlasses.collections.map((collection, index) => (
+                        <div className="collection-item" key={index}>
+                          {collection}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {popupContent === 'Kids Glasses' && (
+                  <div className="power-glasses-container">
+                    {/* Select Category Section */}
+                    <div className="category-column">
+                      <h3> Category</h3>
+                      {Object.entries(kidsGlasses.PowerGlasses.category).map(([heading, items], index) => (
+                        <div key={index} className="category-group">
+                          <img
+                            src={
+                              heading === 'Men'
+                                ? men_pic
+                                : heading === 'Women'
+                                  ? women_pic
+                                  : heading === 'Kids'
+                                    ? kid_pic
+                                    : dceyewrLogo
+                            }
+                            alt={`${heading}`}
+                            className="category-image"
+                          />
+                          <h4 className="category-heading">{heading}</h4>
+                          <div className='cetogory-group-item'>
+                            {items.map((item, idx) => (
+                              <div className="category-item1" key={idx}>
+                                <span>{item}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Brands Section */}
+                    <div className="brands-column">
+                      <h3>Brands</h3>
+                      {kidsGlasses.PowerGlasses.brands.map((brand, index) => (
+                        <div className="brand-item" key={index}>
+                          {brand}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Our Top Picks Section */}
+                    <div className="top-picks-column">
+                      <h3>Our Top Picks</h3>
+                      {categories.PowerGlasses.picks.map((pick, index) => (
+                        <div className="pick-item" key={index}>
+                          {pick}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Frame Shapes Section */}
+                    <div className="frame-shapes-column">
+                      <h3>Frame Shape</h3>
+                      {kidsGlasses.PowerGlasses.frameShapes.map((shape, index) => (
+                        <div className="frame-shape-item" key={index}>
+                          {shape}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Collection Section */}
+                    <div className="collection-column">
+                      <h3>Collection</h3>
+                      {kidsGlasses.PowerGlasses.collections.map((collection, index) => (
+                        <div className="collection-item" key={index}>
+                          {collection}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {popupContent === 'Contact Lenses' && (
+                  <div className="power-glasses-container">
+                    {/* Select Category Section */}
+                    <div className="category-column">
+                      <h3>Category</h3>
+                      {Object.entries(contactLenses.PowerGlasses.category).map(([heading, items], index) => (
+                        <div key={index} className="category-group">
+                          <img
+                            src={
+                              heading === 'Men'
+                                ? men_pic
+                                : heading === 'Women'
+                                  ? women_pic
+                                  : heading === 'Kids'
+                                    ? kid_pic
+                                    : dceyewrLogo
+                            }
+                            alt={`${heading}`}
+                            className="category-image"
+                          />
+                          <h4 className="category-heading">{heading}</h4>
+                          <div className='cetogory-group-item'>
+                            {items.map((item, idx) => (
+                              <div className="category-item1" key={idx}>
+                                <span>{item}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Brands Section */}
+                    <div className="brands-column">
+                      <h3>Brands</h3>
+                      {contactLenses.PowerGlasses.brands.map((brand, index) => (
+                        <div className="brand-item" key={index}>
+                          {brand}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Our Top Picks Section */}
+                    <div className="top-picks-column">
+                      <h3>Our Top Picks</h3>
+                      {contactLenses.PowerGlasses.picks.map((pick, index) => (
+                        <div className="pick-item" key={index}>
+                          {pick}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Frame Shapes Section */}
+                    <div className="frame-shapes-column">
+                      <h3>Frame Shape</h3>
+                      {contactLenses.PowerGlasses.frameShapes.map((shape, index) => (
+                        <div className="frame-shape-item" key={index}>
+                          {shape}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Collection Section */}
+                    <div className="collection-column">
+                      <h3>Collection</h3>
+                      {contactLenses.PowerGlasses.collections.map((collection, index) => (
+                        <div className="collection-item" key={index}>
+                          {collection}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {popupContent === 'Sunglasses' && (
+                  <div className="power-glasses-container">
+                    {/* Select Category Section */}
+                    <div className="category-column">
+                      <h3>Category</h3>
+                      {Object.entries(Sunglasses.PowerGlasses.category).map(([heading, items], index) => (
+                        <div key={index} className="category-group">
+                          <img
+                            src={
+                              heading === 'Men'
+                                ? men_pic
+                                : heading === 'Women'
+                                  ? women_pic
+                                  : heading === 'Kids'
+                                    ? kid_pic
+                                    : dceyewrLogo
+                            }
+                            alt={`${heading}`}
+                            className="category-image"
+                          />
+                          <h4 className="category-heading">{heading}</h4>
+                          <div className='cetogory-group-item'>
+                            {items.map((item, idx) => (
+                              <div className="category-item1" key={idx}>
+                                <span>{item}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Brands Section */}
+                    <div className="brands-column">
+                      <h3>Brands</h3>
+                      {Sunglasses.PowerGlasses.brands.map((brand, index) => (
+                        <div className="brand-item" key={index}>
+                          {brand}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Our Top Picks Section */}
+                    <div className="top-picks-column">
+                      <h3>Our Top Picks</h3>
+                      {Sunglasses.PowerGlasses.picks.map((pick, index) => (
+                        <div className="pick-item" key={index}>
+                          {pick}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Frame Shapes Section */}
+                    <div className="frame-shapes-column">
+                      <h3>Frame Shape</h3>
+                      {Sunglasses.PowerGlasses.frameShapes.map((shape, index) => (
+                        <div className="frame-shape-item" key={index}>
+                          {shape}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Collection Section */}
+                    <div className="collection-column">
+                      <h3>Collection</h3>
+                      {Sunglasses.PowerGlasses.collections.map((collection, index) => (
+                        <div className="collection-item" key={index}>
+                          {collection}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </ul>
+
+            </div>
+          </div>
+        )}
+
+      </div>
+
+      {/* mobile view */}
+      <div className='header-bg-mobile'>
+        <div className='mobile-view-home'>
+          <div className='logo-and-three-line'>
+            <IoReorderThreeOutline size={35} />
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <div className="logo-container">
+                <div className="contact">
+                  <button className=""
+                    style={{ width: "auto", height: "30px", fontSize: "15px", padding: "5px 8px", border: "none", borderRadius: "2px", fontWeight: "800", background: "#00c2cb", color: "#fff" }}>
+                    Matteo Bianchi
+                  </button>
+                </div>
+              </div>
+            </Link>
           </div>
 
-          {/* Action Buttons */}
-          <div className="navbar-buttons">
-            <button className="btn-tryon1"> 3D TRY ON</button>
-            <button className="btn-blu">BLU</button>
-            <button className="btn-gold" onClick={() => openFaq()}>GOLD MAX</button>
+          <div className="user-actions">
+            <Link className='login-sinup' to="/login"><CgProfile size={25} /></Link>
+            <div className="cart-container">
+              <FaShoppingCart className="icon" size={20} />
+              <div className="cart-badge" onClick={() => setIsCartOpen(true)}>{productCount}</div>
+            </div>
           </div>
         </div>
-      </nav>
 
-      <header className="header-main-container" style={{ display: "none" }}>
-        {/* Left - Menu Icon */}
-        <div className="left-section">
-          {/* <FaBars className="menu-icon" /> */}
-          <span className="nav-link" onClick={() => togglePopup('Power Glasses')}>
-            Power Glasses
-          </span>
-          <span className="nav-link" onClick={() => togglePopup('Sunglasses')}>
-            Sunglasses
-          </span>
-          <span className="nav-link" onClick={() => togglePopup('Screen Saver')}>
-            Screen Saver
-          </span>
-          <span className="nav-link" onClick={() => togglePopup('Contact Lenses')}>
-            Contact Lenses
-          </span>
-
-          <span className="nav-link nav-link-modifiy" onClick={() => togglePopup('Kids Glasses')}>
-            Kids Glasses
-          </span>
-        </div>
-
-        {/* Center - Logo */}
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <div className="logo-section">
-            <img src={dceyewrLogo} className="logo-icon" alt="Logo" />
-            <span
-              style={{ paddingBottom: "8px" }}>Eye zones</span>
-          </div>
-        </Link>
-
+        {/* Search Bar */}
         <div className="search-container">
-          {/* <div className='search-home-main'> */}
-          <input
-            type="text"
-            placeholder="What are you looking for?"
-            className="search-input"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onFocus={() => setShowDropdown(true)}
-            onBlur={() => setTimeout(() => setShowDropdown(false), 2000)}
-          />
-          {/* <FaSearch className="icon" onClick={handleSearch} />
-          </div> */}
+          <div className='search-home-main'>
+            <input
+              type="search"
+              placeholder="What are you looking for?"
+              className="search-input"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => setShowDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 2000)}
+            />
+            <FaSearch className="search-icon" onClick={() => onHandleSearch()} size={28} />
+          </div>
 
           {showDropdown && (
             <div className="search-dropdown">
@@ -467,461 +981,8 @@ const Header = () => {
             </div>
           )}
         </div>
-
-        {/* Right - Search and Cart */}
-        <div className="right-section">
-          {/* <FaSearch className="icon" onClick={toggleSearchPopup} /> Clickable search icon */}
-          <span className="nav-link">Track Order</span>
-          <span style={{ paddingTop: "0px" }} onClick={() => setIsWishlistOpen(true)}><ImFire color='#1930dc' size={23} /></span>
-          <span className="nav-link" onClick={() => setIsWishlistOpen(true)}>
-            Wishlist
-          </span>
-
-          <div className="cart-container">
-            <FaShoppingCart className="icon" />
-            <div className="cart-badge">{productCount}</div>
-          </div>
-        </div>
-      </header>
-
-      {/* Wishlist Popup */}
-      {isWishlistOpen && (
-        <div className="wishlist-popup">
-          <div className="wishlist-header">
-            <h3>My Wishlist</h3>
-            <button className="close-btn" onClick={() => setIsWishlistOpen(false)}>X</button>
-          </div>
-          <div className="wishlist-content">
-            {wishlistItems.length > 0 ? (
-              wishlistItems.map((item) => (
-                <div key={item.product_id} className="wishlist-item">
-                  <img src={`${SERVER_API_URL}/${item?.product_thumnail_img}`} alt={item.product_title} />
-                  <div className="wishlist-info">
-                    <p className="wishlist-product-title">{item.product_title}</p>
-                    <p className="wishlist-product-price">
-                      ₹{(item.product_price - (item.product_price * item.discount / 100)).toFixed(0)}/-
-                    </p>
-                  </div>
-                  <button className="delete-btn" onClick={() => removeFromWishlist(item.product_id)}>🗑</button>
-                </div>
-              ))
-            ) : (
-              <p className="empty-message">No items in wishlist</p>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* cart popup */}
-      <div className={`cart-popup ${isCartOpen ? "open" : ""}`}>
-        <div className="cart-popup-content">
-          <button className="close-btn" onClick={() => setIsCartOpen(false)}>×</button>
-          <h2>Shopping Cart</h2>
-
-          {cartListItems.length > 0 ? (
-            <div className="cart-items">
-              {cartListItems.map((item, index) => (
-                <div key={index} className="cart-item-card">
-                  <img className="cart-item-image" src={`${SERVER_API_URL}/${item?.product_thumnail_img}`} alt={item.product_title} />
-                  <div className="cart-item-details">
-                    <h4>{item.name}</h4>
-                    <p>{item.product_title}</p>
-                    <p> ₹{(item.product_price - (item.product_price * item.discount / 100)).toFixed(0)}/-</p>
-                    <p>Quantity: {item.quantity}</p>
-                  </div>
-                  <button className="remove-btn" onClick={() => removeFromCart(item.product_id)}>🗑</button>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="empty-cart">Your cart is empty.</p>
-          )}
-        </div>
       </div>
-
-      {/* Popup */}
-      {isPopupOpen && (
-        <div className="item-popup">
-          <button className="close-button" onClick={() => setIsPopupOpen(false)}>
-            Close
-          </button>
-
-          <div className="popup-content">
-            <h2 className='popup-containt-heading'>{popupContent}</h2>
-            <ul>
-              {popupContent === 'Power Glasses' && (
-                <div className="power-glasses-container">
-                  {/* Select Category Section */}
-                  <div className="category-column">
-                    <h3>Category</h3>
-                    {Object.entries(categories.PowerGlasses.category).map(([heading, items], index) => (
-                      <div key={index} className="category-group">
-                        <img
-                          src={
-                            heading === 'Men'
-                              ? men_pic
-                              : heading === 'Women'
-                                ? women_pic
-                                : heading === 'Kids'
-                                  ? kid_pic
-                                  : dceyewrLogo
-                          }
-                          alt={`${heading}`}
-                          className="category-image"
-                        />
-                        <h4 className="category-heading">{heading}</h4>
-                        <div className='cetogory-group-item'>
-                          {items.map((item, idx) => (
-                            <div className="category-item1" key={idx}>
-                              <span>{item}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Brands Section */}
-                  <div className="brands-column">
-                    <h3>Brands</h3>
-                    {categories.PowerGlasses.brands.map((brand, index) => (
-                      <div className="brand-item" key={index}>
-                        {brand}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Our Top Picks Section */}
-                  <div className="top-picks-column">
-                    <h3>Our Top Picks</h3>
-                    {categories.PowerGlasses.picks.map((pick, index) => (
-                      <div className="pick-item" key={index}>
-                        {pick}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Frame Shapes Section */}
-                  <div className="frame-shapes-column">
-                    <h3>Frame Shape</h3>
-                    {categories.PowerGlasses.frameShapes.map((shape, index) => (
-                      <div className="frame-shape-item" key={index}>
-                        {shape}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Collection Section */}
-                  <div className="collection-column">
-                    <h3>Collection</h3>
-                    {categories.PowerGlasses.collections.map((collection, index) => (
-                      <div className="collection-item" key={index}>
-                        {collection}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {popupContent === 'Screen Saver' && (
-                <div className="power-glasses-container">
-                  {/* Select Category Section */}
-                  <div className="category-column">
-                    <h3>Category</h3>
-                    {Object.entries(screenSaver.PowerGlasses.category).map(([heading, items], index) => (
-                      <div key={index} className="category-group">
-                        <img
-                          src={
-                            heading === 'Men'
-                              ? men_pic
-                              : heading === 'Women'
-                                ? women_pic
-                                : heading === 'Kids'
-                                  ? kid_pic
-                                  : dceyewrLogo
-                          }
-                          alt={`${heading}`}
-                          className="category-image"
-                        />
-                        <h4 className="category-heading">{heading}</h4>
-                        <div className='cetogory-group-item'>
-                          {items.map((item, idx) => (
-                            <div className="category-item1" key={idx}>
-                              <span>{item}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Brands Section */}
-                  <div className="brands-column">
-                    <h3>Brands</h3>
-                    {screenSaver.PowerGlasses.brands.map((brand, index) => (
-                      <div className="brand-item" key={index}>
-                        {brand}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Our Top Picks Section */}
-                  <div className="top-picks-column">
-                    <h3>Our Top Picks</h3>
-                    {screenSaver.PowerGlasses.picks.map((pick, index) => (
-                      <div className="pick-item" key={index}>
-                        {pick}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Frame Shapes Section */}
-                  <div className="frame-shapes-column">
-                    <h3>Frame Shape</h3>
-                    {screenSaver.PowerGlasses.frameShapes.map((shape, index) => (
-                      <div className="frame-shape-item" key={index}>
-                        {shape}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Collection Section */}
-                  <div className="collection-column">
-                    <h3>Collection</h3>
-                    {screenSaver.PowerGlasses.collections.map((collection, index) => (
-                      <div className="collection-item" key={index}>
-                        {collection}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {popupContent === 'Kids Glasses' && (
-                <div className="power-glasses-container">
-                  {/* Select Category Section */}
-                  <div className="category-column">
-                    <h3> Category</h3>
-                    {Object.entries(kidsGlasses.PowerGlasses.category).map(([heading, items], index) => (
-                      <div key={index} className="category-group">
-                        <img
-                          src={
-                            heading === 'Men'
-                              ? men_pic
-                              : heading === 'Women'
-                                ? women_pic
-                                : heading === 'Kids'
-                                  ? kid_pic
-                                  : dceyewrLogo
-                          }
-                          alt={`${heading}`}
-                          className="category-image"
-                        />
-                        <h4 className="category-heading">{heading}</h4>
-                        <div className='cetogory-group-item'>
-                          {items.map((item, idx) => (
-                            <div className="category-item1" key={idx}>
-                              <span>{item}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Brands Section */}
-                  <div className="brands-column">
-                    <h3>Brands</h3>
-                    {kidsGlasses.PowerGlasses.brands.map((brand, index) => (
-                      <div className="brand-item" key={index}>
-                        {brand}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Our Top Picks Section */}
-                  <div className="top-picks-column">
-                    <h3>Our Top Picks</h3>
-                    {categories.PowerGlasses.picks.map((pick, index) => (
-                      <div className="pick-item" key={index}>
-                        {pick}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Frame Shapes Section */}
-                  <div className="frame-shapes-column">
-                    <h3>Frame Shape</h3>
-                    {kidsGlasses.PowerGlasses.frameShapes.map((shape, index) => (
-                      <div className="frame-shape-item" key={index}>
-                        {shape}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Collection Section */}
-                  <div className="collection-column">
-                    <h3>Collection</h3>
-                    {kidsGlasses.PowerGlasses.collections.map((collection, index) => (
-                      <div className="collection-item" key={index}>
-                        {collection}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {popupContent === 'Contact Lenses' && (
-                <div className="power-glasses-container">
-                  {/* Select Category Section */}
-                  <div className="category-column">
-                    <h3>Category</h3>
-                    {Object.entries(contactLenses.PowerGlasses.category).map(([heading, items], index) => (
-                      <div key={index} className="category-group">
-                        <img
-                          src={
-                            heading === 'Men'
-                              ? men_pic
-                              : heading === 'Women'
-                                ? women_pic
-                                : heading === 'Kids'
-                                  ? kid_pic
-                                  : dceyewrLogo
-                          }
-                          alt={`${heading}`}
-                          className="category-image"
-                        />
-                        <h4 className="category-heading">{heading}</h4>
-                        <div className='cetogory-group-item'>
-                          {items.map((item, idx) => (
-                            <div className="category-item1" key={idx}>
-                              <span>{item}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Brands Section */}
-                  <div className="brands-column">
-                    <h3>Brands</h3>
-                    {contactLenses.PowerGlasses.brands.map((brand, index) => (
-                      <div className="brand-item" key={index}>
-                        {brand}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Our Top Picks Section */}
-                  <div className="top-picks-column">
-                    <h3>Our Top Picks</h3>
-                    {contactLenses.PowerGlasses.picks.map((pick, index) => (
-                      <div className="pick-item" key={index}>
-                        {pick}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Frame Shapes Section */}
-                  <div className="frame-shapes-column">
-                    <h3>Frame Shape</h3>
-                    {contactLenses.PowerGlasses.frameShapes.map((shape, index) => (
-                      <div className="frame-shape-item" key={index}>
-                        {shape}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Collection Section */}
-                  <div className="collection-column">
-                    <h3>Collection</h3>
-                    {contactLenses.PowerGlasses.collections.map((collection, index) => (
-                      <div className="collection-item" key={index}>
-                        {collection}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {popupContent === 'Sunglasses' && (
-                <div className="power-glasses-container">
-                  {/* Select Category Section */}
-                  <div className="category-column">
-                    <h3>Category</h3>
-                    {Object.entries(Sunglasses.PowerGlasses.category).map(([heading, items], index) => (
-                      <div key={index} className="category-group">
-                        <img
-                          src={
-                            heading === 'Men'
-                              ? men_pic
-                              : heading === 'Women'
-                                ? women_pic
-                                : heading === 'Kids'
-                                  ? kid_pic
-                                  : dceyewrLogo
-                          }
-                          alt={`${heading}`}
-                          className="category-image"
-                        />
-                        <h4 className="category-heading">{heading}</h4>
-                        <div className='cetogory-group-item'>
-                          {items.map((item, idx) => (
-                            <div className="category-item1" key={idx}>
-                              <span>{item}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Brands Section */}
-                  <div className="brands-column">
-                    <h3>Brands</h3>
-                    {Sunglasses.PowerGlasses.brands.map((brand, index) => (
-                      <div className="brand-item" key={index}>
-                        {brand}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Our Top Picks Section */}
-                  <div className="top-picks-column">
-                    <h3>Our Top Picks</h3>
-                    {Sunglasses.PowerGlasses.picks.map((pick, index) => (
-                      <div className="pick-item" key={index}>
-                        {pick}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Frame Shapes Section */}
-                  <div className="frame-shapes-column">
-                    <h3>Frame Shape</h3>
-                    {Sunglasses.PowerGlasses.frameShapes.map((shape, index) => (
-                      <div className="frame-shape-item" key={index}>
-                        {shape}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Collection Section */}
-                  <div className="collection-column">
-                    <h3>Collection</h3>
-                    {Sunglasses.PowerGlasses.collections.map((collection, index) => (
-                      <div className="collection-item" key={index}>
-                        {collection}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </ul>
-
-          </div>
-        </div>
-      )}
-
-    </div>
+    </>
   );
 };
 

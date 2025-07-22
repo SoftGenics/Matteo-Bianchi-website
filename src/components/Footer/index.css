@@ -210,3 +210,110 @@
     text-decoration: none;
     color: white;
 }
+
+/* Tablet View */
+@media (max-width: 768px) {
+    .subscribe-section {
+        flex-direction: column;
+        padding: 20px 10px;
+        text-align: center;
+    }
+
+    .subscribe-box {
+        flex-direction: column;
+        width: 100%;
+        max-width: 500px;
+        margin-top: 10px;
+        padding: 10px;
+    }
+
+    .subscribe-box input {
+        width: 100%;
+        border-radius: 30px;
+        margin-bottom: 10px;
+        padding: 12px;
+    }
+
+    .subscribe-box button {
+        width: 100%;
+        border-radius: 30px;
+        padding: 12px;
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 0 10px;
+        gap: 30px 15px;
+        text-align: center;
+    }
+
+    .footer-column h3 {
+        font-size: 15px;
+    }
+
+    .footer-column ul li {
+        font-size: 13px;
+    }
+
+    .contact-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .social-media a {
+        font-size: 22px;
+        margin: 0 6px;
+    }
+}
+
+/* Mobile View */
+@media (max-width: 480px) {
+    .subscribe-section {
+        padding: 15px 8px;
+    }
+
+    .subscribe-box {
+        width: 100%;
+        padding: 10px 8px;
+    }
+
+    .subscribe-box input {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .subscribe-box button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        padding: 0 10px;
+        text-align: center;
+    }
+
+    .footer-column {
+        margin-bottom: 20px;
+    }
+
+    .footer-bottom,
+    .footer-bottom-down {
+        flex-direction: column;
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    .policy-links {
+        margin-top: 10px;
+    }
+
+    .payment-methods {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .payment-methods img {
+        height: 20px;
+    }
+}

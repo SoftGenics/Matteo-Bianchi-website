@@ -32,6 +32,7 @@
   .header-bg-container {
     width: 100%;
     padding: 10px;
+    display: none;
   }
 }
 
@@ -794,4 +795,40 @@ h3 {
 .remove-btn{
  margin-left: auto;
   border: none;
+}
+
+/* mobole responsive */
+
+.header-bg-mobile{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  width: 100%;
+  /* position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1005; */
+}
+
+.mobile-view-home{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
+  height: 70px;
+}
+
+.logo-and-three-line{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 45%;
+}
+
+@media (min-width: 767px) {
+  .header-bg-mobile{
+    display: none;
+  }
 }

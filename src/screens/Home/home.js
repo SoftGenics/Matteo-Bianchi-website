@@ -179,6 +179,7 @@ const Home = () => {
       <Header />
       <div className='home-bg-container'>
         <div className='home-main-container'>
+
           {/* top card */}
           <div className='card-container-main'>
             {!isLoading && slidersData.length > 0 ? (
@@ -289,7 +290,7 @@ const Home = () => {
           </div>
 
           {/* New Arrivel */}
-          <div className="glasses-swiper-container" style={{ backgroundImage: 'linear-gradient(180deg, #43cea2 0%, #185a9d 100%)' }}>
+          <div className="glasses-swiper-container destop-view" style={{ backgroundImage: 'linear-gradient(180deg, #43cea2 0%, #185a9d 100%)' }}>
             <h2 className="swiper-heading">New Arrivel</h2>
 
             {isLoading ? (
@@ -297,6 +298,64 @@ const Home = () => {
             ) : newArrivel?.length > 0 ? (
               <Swiper
                 slidesPerView={5}
+                spaceBetween={30}
+                navigation
+                pagination={{ clickable: true }}
+                autoplay={{ delay: 2000, disableOnInteraction: false }}
+                loop={true}
+                modules={[Navigation, Pagination, Autoplay]}
+                className="glasses-swiper"
+              >
+                {newArrivel
+                  .slice(0, 6) // 👈 limit to only 6 items
+                  .map((frame) => (
+                    <SwiperSlide key={frame.product_id} className="glasses-slide">
+                      <Link
+                        to={`/product-item/${frame.product_id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="glass-card"
+                      >
+                        <div className="glass-icons">
+                          {/* <span className="heart-icon">❤️</span> */}
+                        </div>
+                        <img
+                          src={`${SERVER_API_URL}/${frame.product_thumnail_img}`}
+                          alt={frame.product_title}
+                          className="glass-img"
+                        />
+                        <h3 className="glass-brand">{frame.product_title}</h3>
+                        <p className="glass-name">{frame.highlights}</p>
+                        <div className="product-discount-info">
+                          <p className="original-price" style={{ color: "#272932", fontSize: "11px", fontWeight: "700" }}>₹{frame.product_price}</p>
+                          <span className="discount-percentage" style={{ color: "#272932", fontSize: "12px", fontWeight: "700" }}>
+                            ({frame.discount}% OFF)
+                            <span className="stock-warning" style={{ color: "#00c2cb" }}>
+                              For {frame.gender}
+                            </span>
+                          </span>
+                        </div>
+                        <p className="final-price" style={{ color: "#272932", fontSize: "12px", fontWeight: "700" }}>
+                          ₹{(frame.product_price - (frame.product_price * frame.discount / 100)).toFixed(0)}/-
+                        </p>
+                        <p className="glass-tax">Inclusive of all taxes</p>
+                      </Link>
+                    </SwiperSlide>
+                  ))}
+              </Swiper>
+            ) : (
+              <p>No products found</p>
+            )}
+          </div>
+
+          <div className="glasses-swiper-container mobile-view" style={{ backgroundImage: 'linear-gradient(180deg, #43cea2 0%, #185a9d 100%)' }}>
+            <h2 className="swiper-heading">New Arrivel</h2>
+
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : newArrivel?.length > 0 ? (
+              <Swiper
+                slidesPerView={1}
                 spaceBetween={30}
                 navigation
                 pagination={{ clickable: true }}
@@ -384,7 +443,7 @@ const Home = () => {
 
 
           {/* glasses-swiper-container */}
-          <div className="glasses-swiper-container">
+          <div className="glasses-swiper-container destop-view">
             <h2 className="swiper-heading">Frequently Bought</h2>
 
             {isLoading ? (
