@@ -670,7 +670,7 @@ const ProductDetails = () => {
                                             onClick={() => scroll('right')}
                                             className="scroll-btn-main-image next-btn-thumb"
                                         >
-                                            <MdKeyboardArrowRight size={25}/>
+                                            <MdKeyboardArrowRight size={25} />
                                         </button>
 
                                     </div>
@@ -792,12 +792,55 @@ const ProductDetails = () => {
                                             onClick={() => scroll('right')}
                                             className="scroll-btn-thumb next-btn-thumb"
                                         >
-                                            <MdKeyboardArrowRight size={25}/>
+                                            <MdKeyboardArrowRight size={25} />
                                         </button>
                                     </div>
-
                                 </div>
 
+                                {/* price container */}
+                                <div className="price-product-card mobile-view">
+                                    <h1 className="price">₹{product_price.toFixed(0)}/-</h1>
+                                    <p className="shipping-info">
+                                        Get <strong>Fast, Free Shipping</strong> with
+                                    </p>
+                                    {mapDisplayAddress && (
+                                        <>
+                                            <p className="location" onClick={handleOpenGoogleMap}><IoMdLocate size={22} style={{ paddingTop: "10px" }} /> Delivering to {mapDisplayAddress}</p>
+                                            <a onClick={handleOpenGoogleMap} className="update-location">- location</a>
+                                        </>
+                                    )}
+
+                                    <p className="stock">In Stock</p>
+                                    <div className='quntity-container'>
+                                        <label className="quantity-label">Quantity:</label>
+                                        {/* <button className='add-power-cart' onClick={handlePowerClick}
+                                        disabled={!selectedColor} // Disable if selectedColor is null
+                                        style={{ opacity: !selectedColor ? 0.7 : 1, cursor: !selectedColor ? "not-allowed" : "pointer" }}>Add power</button> */}
+                                    </div>
+
+                                    <select
+                                        className="quantity-dropdown"
+                                        value={productQuntity}
+                                        onChange={(e) => setProductQuntity(Number(e.target.value))}
+                                    >
+                                        {[...Array(6)].map((_, index) => (
+                                            <option key={index + 1} value={index + 1}>
+                                                {index + 1}
+                                            </option>
+                                        ))}
+                                    </select>
+
+                                    <button className="add-to-cart" onClick={() => addToCart(item)}>Add to Cart</button>
+                                    <button className="buy-now" onClick={handleDirectPayment}
+                                        disabled={!selectedColor} // Disable if selectedColor is null
+                                        style={{ opacity: !selectedColor ? 0.5 : 1, cursor: !selectedColor ? "not-allowed" : "pointer" }}>Buy Now</button>
+
+                                    <p className="seller-info">Ships from <strong>Softgenics Ind. Pvt. Ltd.</strong></p>
+                                    <p className="sold-by">Sold by <a href="#">SOJOS Vision</a></p>
+                                    <p className="returns">Returns <a href="#">30-day refund / replacement</a></p>
+                                    <p className="payment">Payment <a href="#">Secure transaction</a></p>
+                                </div>
+                                {/* end price container */}
 
                                 {/* Product Info Section */}
                                 <div className="product-info-section">
@@ -815,6 +858,8 @@ const ProductDetails = () => {
                                         <span className="dropdown-icon">▼</span>
                                         <a href="#" className="ratings-link">45 ratings</a>
                                     </div>
+
+
 
                                     {/* card info */}
                                     <div className=''>
@@ -1203,7 +1248,7 @@ const ProductDetails = () => {
                         </div>
 
                         <div className='product-details-child-rigth'>
-                            <div className="price-product-card">
+                            <div className="price-product-card destop-view">
                                 <h1 className="price">₹{product_price.toFixed(0)}/-</h1>
                                 <p className="shipping-info">
                                     Get <strong>Fast, Free Shipping</strong> with
@@ -1275,7 +1320,7 @@ const ProductDetails = () => {
                     </div>
 
                     {/* customer-reviews */}
-                    <div className="customer-reviews" ref={rattingAndReview}>
+                    <div className="customer-reviews destop-view" ref={rattingAndReview}>
                         <h2>Customer Reviews & Ratings</h2>
                         <p>
                             4.0 <span style={{ color: "#FCBF02" }}>★★★★</span> 45 reviews
@@ -1314,7 +1359,7 @@ const ProductDetails = () => {
                     <FaqPage />
 
                     {/* stock display < 5 */}
-                    <div className="low-stock-container">
+                    <div className="low-stock-container destop-view">
                         <Swiper
                             spaceBetween={10}
                             slidesPerView={3} // Show 3 items at a time
