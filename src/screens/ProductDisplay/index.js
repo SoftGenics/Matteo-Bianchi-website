@@ -75,6 +75,7 @@ const ProductDisplay = () => {
   const { getProductCount, updateCounts } = useContext(GlobleInfo);
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+
   // State to track hovered images
   const [hoveredImages, setHoveredImages] = useState({});
 
@@ -86,6 +87,7 @@ const ProductDisplay = () => {
   const [selectedFrameColor, setSelectedFrameColor] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(5000);
+
   // const [sortOption, setSortOption] = useState('Price: High to Low');
   const [sortOption, setSortOption] = useState('Price: All');
   const [wishlistItems, setWishlistItems] = useState([]);
