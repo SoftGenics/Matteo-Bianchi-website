@@ -948,40 +948,45 @@ const Header = () => {
             <Link className='login-sinup' to="/login"><CgProfile size={25} /></Link>
             <div className="cart-container">
               <FaShoppingCart className="icon" size={20} />
-              <div className="cart-badge" onClick={() => setIsCartOpen(true)}>{productCount}</div>
-            </div>
+              <div className="cart-badge" 
+              onClick={() => {
+                // alert("Cart badge clicked!");
+                setIsCartOpen(true); // Optional: only if you're toggling cart popup
+              }}
+                 >{productCount}</div>
           </div>
-        </div>
-
-        {/* Search Bar */}
-        <div className="search-container">
-          <div className='search-home-main'>
-            <input
-              type="search"
-              placeholder="What are you looking for?"
-              className="search-input"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onFocus={() => setShowDropdown(true)}
-              onBlur={() => setTimeout(() => setShowDropdown(false), 2000)}
-            />
-            <FaSearch className="search-icon" onClick={() => onHandleSearch()} size={28} />
-          </div>
-
-          {showDropdown && (
-            <div className="search-dropdown">
-              <div className="search-dropdown-header">Trending Search</div>
-              <ul>
-                {trendingSearches.map((item, index) => (
-                  <li key={index} onMouseDown={() => setQuery(item)}>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
       </div>
+
+      {/* Search Bar */}
+      <div className="search-container">
+        <div className='search-home-main'>
+          <input
+            type="search"
+            placeholder="What are you looking for?"
+            className="search-input"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onFocus={() => setShowDropdown(true)}
+            onBlur={() => setTimeout(() => setShowDropdown(false), 2000)}
+          />
+          <FaSearch className="search-icon" onClick={() => onHandleSearch()} size={28} />
+        </div>
+
+        {showDropdown && (
+          <div className="search-dropdown">
+            <div className="search-dropdown-header">Trending Search</div>
+            <ul>
+              {trendingSearches.map((item, index) => (
+                <li key={index} onMouseDown={() => setQuery(item)}>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </div >
     </>
   );
 };
