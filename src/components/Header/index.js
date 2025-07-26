@@ -325,8 +325,8 @@ const Header = () => {
                 {/* <img src={dceyewrLogo} alt="Lenskart" className="logo" /> */}
                 <div className="contact">
                   {/* <span className='eyezone-text'>Eyezones</span> */}
-                  <button className="btn-tryon" style={{ padding: "5px 8px", border: "none", borderRadius: "2px", fontWeight: "900" }}>AANCHAL</button>
-                  {/* <button className="btn-tryon" style={{ padding: "5px 8px", border: "none", borderRadius: "2px", fontWeight: "900" }}>Matteo Bianchi</button> */}
+                  {/* <button className="btn-tryon" style={{ padding: "5px 8px", border: "none", borderRadius: "2px", fontWeight: "900" }}>AANCHAL</button> */}
+                  <button className="btn-tryon" style={{ padding: "5px 8px", border: "none", borderRadius: "2px", fontWeight: "900" }}>Matteo Bianchi</button>
                   {/* <FaPhone className="icon" size={20} /> */}
                   {/* <span>99998 99998</span> */}
                 </div>
@@ -936,14 +936,14 @@ const Header = () => {
             <Link to="/" style={{ textDecoration: "none" }}>
               <div className="logo-container">
                 <div className="contact">
-                  {/* <button className=""
-                    style={{ width: "auto", height: "30px", fontSize: "15px", padding: "5px 8px", border: "none", borderRadius: "2px", fontWeight: "800", background: "#00c2cb", color: "#fff" }}>
-                    Matteo Bianchi
-                  </button> */}
                   <button className=""
                     style={{ width: "auto", height: "30px", fontSize: "15px", padding: "5px 8px", border: "none", borderRadius: "2px", fontWeight: "800", background: "#00c2cb", color: "#fff" }}>
-                    AANCHAL
+                    Matteo Bianchi
                   </button>
+                  {/* <button className=""
+                    style={{ width: "auto", height: "30px", fontSize: "15px", padding: "5px 8px", border: "none", borderRadius: "2px", fontWeight: "800", background: "#00c2cb", color: "#fff" }}>
+                    AANCHAL
+                  </button> */}
                 </div>
               </div>
             </Link>
@@ -953,45 +953,45 @@ const Header = () => {
             <Link className='login-sinup' to="/login"><CgProfile size={25} /></Link>
             <div className="cart-container">
               <FaShoppingCart className="icon" size={20} />
-              <div className="cart-badge" 
-              onClick={() => {
-                // alert("Cart badge clicked!");
-                setIsCartOpen(true); // Optional: only if you're toggling cart popup
-              }}
-                 >{productCount}</div>
+              <div className="cart-badge"
+                onClick={() => {
+                  // alert("Cart badge clicked!");
+                  setIsCartOpen(true); // Optional: only if you're toggling cart popup
+                }}
+              >{productCount}</div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Search Bar */}
-      <div className="search-container">
-        <div className='search-home-main'>
-          <input
-            type="search"
-            placeholder="What are you looking for?"
-            className="search-input"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onFocus={() => setShowDropdown(true)}
-            onBlur={() => setTimeout(() => setShowDropdown(false), 2000)}
-          />
-          <FaSearch className="search-icon" onClick={() => onHandleSearch()} size={28} />
-        </div>
-
-        {showDropdown && (
-          <div className="search-dropdown">
-            <div className="search-dropdown-header">Trending Search</div>
-            <ul>
-              {trendingSearches.map((item, index) => (
-                <li key={index} onMouseDown={() => setQuery(item)}>
-                  {item}
-                </li>
-              ))}
-            </ul>
+        {/* Search Bar */}
+        <div className="search-container">
+          <div className='search-home-main'>
+            <input
+              type="search"
+              placeholder="What are you looking for?"
+              className="search-input"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => setShowDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 2000)}
+            />
+            <FaSearch className="search-icon" onClick={() => onHandleSearch()} size={28} />
           </div>
-        )}
-      </div>
-    </div >
+
+          {showDropdown && (
+            <div className="search-dropdown">
+              <div className="search-dropdown-header">Trending Search</div>
+              <ul>
+                {trendingSearches.map((item, index) => (
+                  <li key={index} onMouseDown={() => setQuery(item)}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </div >
     </>
   );
 };
