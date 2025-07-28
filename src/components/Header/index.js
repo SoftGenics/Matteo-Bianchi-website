@@ -380,13 +380,13 @@ const Header = () => {
                     {wishlistCount}</div>
                 ) : (null)}
               </div>
-              <span onClick={() => setIsWishlistOpen(true)}>Wishlist</span>
+              <span className='cart-button' onClick={() => setIsWishlistOpen(true)}>Wishlist</span>
 
               <div className="cart-container">
                 <FaShoppingCart className="icon" size={20} />
                 <div className="cart-badge">{productCount}</div>
               </div>
-              <span onClick={() => setIsCartOpen(true)}>Cart</span>
+              <span className='cart-button' onClick={() => setIsCartOpen(true)}>Cart</span>
             </div>
           </div>
 
@@ -524,20 +524,28 @@ const Header = () => {
             <h2>Shopping Cart</h2>
 
             {cartListItems.length > 0 ? (
-              <div className="cart-items">
-                {cartListItems.map((item, index) => (
-                  <div key={index} className="cart-item-card">
-                    <img className="cart-item-image" src={`${SERVER_API_URL}/${item?.product_thumnail_img}`} alt={item.product_title} />
-                    <div className="cart-item-details">
-                      <h4>{item.name}</h4>
-                      <p>{item.product_title}</p>
-                      <p> ₹{(item.product_price - (item.product_price * item.discount / 100)).toFixed(0)}/-</p>
-                      <p>Quantity: {item.quantity}</p>
+              <>
+                <div className="cart-items">
+                  {cartListItems.map((item, index) => (
+                    <div key={index} className="cart-item-card">
+                      <img className="cart-item-image" src={`${SERVER_API_URL}/${item?.product_thumnail_img}`} alt={item.product_title} />
+
+                      <div className="cart-item-details">
+                        <h4>{item.name}</h4>
+                        <p>{item.product_title}</p>
+                        <p> ₹{(item.product_price - (item.product_price * item.discount / 100)).toFixed(0)}/-</p>
+                        <p>Quantity: {item.quantity}</p>
+                      </div>
+                     
+                      <div className='button-byenow-container'>
+                        <button className="buy-now buy-now-cart" style={{fontSize:"8px", width:""}}>Buy Now</button>
+                        <button className="remove-btn" onClick={() => removeFromCart(item.product_id)}>🗑</button>
+                      </div>
                     </div>
-                    <button className="remove-btn" onClick={() => removeFromCart(item.product_id)}>🗑</button>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+               
+              </>
             ) : (
               <p className="empty-cart">Your cart is empty.</p>
             )}
@@ -940,10 +948,6 @@ const Header = () => {
                     style={{ width: "auto", height: "30px", fontSize: "15px", padding: "5px 8px", border: "none", borderRadius: "2px", fontWeight: "800", background: "#00c2cb", color: "#fff" }}>
                     Matteo Bianchi
                   </button>
-                  {/* <button className=""
-                    style={{ width: "auto", height: "30px", fontSize: "15px", padding: "5px 8px", border: "none", borderRadius: "2px", fontWeight: "800", background: "#00c2cb", color: "#fff" }}>
-                    AANCHAL
-                  </button> */}
                 </div>
               </div>
             </Link>
@@ -951,7 +955,7 @@ const Header = () => {
 
           <div className="user-actions">
             <Link className='login-sinup' to="/login"><CgProfile size={25} /></Link>
-            <div className="cart-container">
+            <div className="cart-container cart-button">
               <FaShoppingCart className="icon" size={20} />
               <div className="cart-badge"
                 onClick={() => {
@@ -991,6 +995,40 @@ const Header = () => {
             </div>
           )}
         </div>
+
+        {/* cart popup */}
+        <div className={`cart-popup ${isCartOpen ? "open" : ""}`}>
+          <div className="cart-popup-content">
+            <button className="close-btn" onClick={() => setIsCartOpen(false)}>×</button>
+            <h2>Shopping Cart</h2>
+
+            {cartListItems.length > 0 ? (
+              <>
+                <div className="cart-items">
+                  {cartListItems.map((item, index) => (
+                    <div key={index} className="cart-item-card">
+                      <img className="cart-item-image" src={`${SERVER_API_URL}/${item?.product_thumnail_img}`} alt={item.product_title} />
+                      <div className="cart-item-details">
+                        <h4>{item.name}</h4>
+                        <p>{item.product_title}</p>
+                        <p> ₹{(item.product_price - (item.product_price * item.discount / 100)).toFixed(0)}/-</p>
+                        <p>Quantity: {item.quantity}</p>
+                      </div>
+                      <div className='button-byenow-container'>
+                        <button className="buy-now">Buy Now</button>
+                        <button className="remove-btn" onClick={() => removeFromCart(item.product_id)}>🗑</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+              </>
+            ) : (
+              <p className="empty-cart">Your cart is empty.</p>
+            )}
+          </div>
+        </div>
+
       </div >
     </>
   );
