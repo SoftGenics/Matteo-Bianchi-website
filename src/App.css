@@ -2,6 +2,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box; /* Ensures consistent box-sizing for all elements */
+  /* overflow-y: hidden; */
+  /* overflow-x: hidden; */
 }
 
 .App {

@@ -3,8 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { SERVER_API_URL } from '../../server/server';
 import { GlobleInfo } from '../../App';
 import axios from "axios";
-// import { BsBagHeart, BsBagHeartFill } from "react-icons/bs";
-// import { CiHeart } from "react-icons/ci";
+import { jwtDecode } from "jwt-decode";
 import { IoReorderThreeOutline } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 
@@ -238,6 +237,9 @@ const trendingSearches = [
 const Header = () => {
   const navigate = useNavigate();
   const { productCount, wishlistCount } = useContext(GlobleInfo)
+  const [mobile_num, setMobile_num] = useState("");
+  const { saveCheckoutData } = useContext(GlobleInfo)
+  const [selectedColor, setSelectedColor] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupContent, setPopupContent] = useState('');   // State for popup content
   const [query, setQuery] = useState("");
@@ -272,6 +274,69 @@ const Header = () => {
   useEffect(() => {
     fetchCategories()
   }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token'); // Replace 'yourTokenKey' with your actual token key
+    if (token) {
+      // Decode the token to get user information
+      const decodedToken = jwtDecode(token);
+      const mobile_num = decodedToken.mobile_num;
+      setMobile_num(mobile_num)
+      // console.log("Decoded Mobile Number:", mobile_num);
+    }
+  }, []);
+
+  const saveColor = ((item) => {
+    if (item?.result?.frameColor && item?.result?.lenshColor) {
+      try {
+        const frameColors = JSON.parse(item.result.frameColor) || [];
+        const lensColors = JSON.parse(item.result.lenshColor) || [];
+
+        if (Array.isArray(frameColors) && frameColors.length > 0) {
+          const [frameName, frameHex] = Object.entries(frameColors[0])[0] || ["Unknown", "#ffffff"];
+          const lensObj = lensColors[0] || { "Default Lens": "#000000" };
+          const [lensName, lensHex] = Object.entries(lensObj)[0] || ["Default", "#000000"];
+
+          setSelectedColor({ frameName, frameHex, lensName, lensHex });
+        }
+      } catch (error) {
+        console.error("Error parsing colors:", error);
+      }
+    }
+  });
+
+  const handleDirectPayment = (data) => {
+    const { item, product_price, productQuntity, product_id } = data;
+  
+    if (item) {
+      saveColor(item);
+    }
+  
+    if (product_price && mobile_num && product_id && productQuntity) {
+      const power = {
+        selectedLensOrProducrPrice: product_price,
+      };
+  
+      const product = {
+        mobile_number: mobile_num,
+        selectedColor: selectedColor,
+        product_id: product_id,
+        productQuntity: productQuntity,
+      };
+  
+      saveCheckoutData({ power, product });
+      navigate("/ChekOutPage");
+    } else {
+      console.error("Missing data:", {
+        product_price,
+        product_id,
+        productQuntity,
+        mobile_num,
+      });
+      alert("Please select valid options.");
+    }
+  };
+  
 
 
   // Function to remove an item from the cart
@@ -536,15 +601,15 @@ const Header = () => {
                         <p> ₹{(item.product_price - (item.product_price * item.discount / 100)).toFixed(0)}/-</p>
                         <p>Quantity: {item.quantity}</p>
                       </div>
-                     
+
                       <div className='button-byenow-container'>
-                        <button className="buy-now buy-now-cart" style={{fontSize:"8px", width:""}}>Buy Now</button>
+                        <button className="buy-now buy-now-cart">Buy Now</button>
                         <button className="remove-btn" onClick={() => removeFromCart(item.product_id)}>🗑</button>
                       </div>
                     </div>
                   ))}
                 </div>
-               
+
               </>
             ) : (
               <p className="empty-cart">Your cart is empty.</p>
@@ -1015,7 +1080,19 @@ const Header = () => {
                         <p>Quantity: {item.quantity}</p>
                       </div>
                       <div className='button-byenow-container'>
-                        <button className="buy-now">Buy Now</button>
+                        <button
+                          className="buy-now"
+                          onClick={() =>
+                            handleDirectPayment({
+                              item: item,
+                              productQuntity: item.quantity,
+                              product_price: (item.product_price - (item.product_price * item.discount) / 100).toFixed(0),
+                              product_id: item.product_id,
+                            })
+                          }
+                        >
+                          Buy Now
+                        </button>
                         <button className="remove-btn" onClick={() => removeFromCart(item.product_id)}>🗑</button>
                       </div>
                     </div>

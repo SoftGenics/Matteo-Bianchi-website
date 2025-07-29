@@ -78,3 +78,42 @@
     align-items: first baseline;
     height: 55vh;
 }
+
+/* 📱 Responsive styles for mobile/tablet */
+@media (max-width: 768px) {
+
+    .bg-login {
+      width: 90%;
+      padding: 15px;
+      height: auto;
+    }
+  
+    .login-image {
+      width: 100%;
+      max-width: 250px;
+      height: auto;
+      padding-top: 10px;
+    }
+  
+    .login-signup-heding {
+      font-size: 18px;
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+  
+    .mobile-input,
+    .continue-btn {
+      font-size: 15px;
+      height: 48px;
+    }
+  
+    .login-desc {
+      font-size: 12px;
+      margin-top: 15px;
+    }
+  
+    .bg-login-rigth-cont {
+      flex-direction: column;
+      height: auto;
+    }
+  }

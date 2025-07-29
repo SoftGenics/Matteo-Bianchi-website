@@ -13,7 +13,6 @@ const CheckoutPage = () => {
     const [addressList, setAddressList] = useState([])
     const [selectedAddress, setSelectedAddress] = useState(null);
     const [addNewAddress, setAddNewAddress] = useState(true);
-
     const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
     const [addressToEdit, setAddressToEdit] = useState(null);
 
@@ -62,7 +61,7 @@ const CheckoutPage = () => {
                 },
             };
 
-            const response = await axios.get("http://localhost:8000/getalladdressinfo", config);
+            const response = await axios.get(`${SERVER_API_URL}/getalladdressinfo`, config);
             const data = response.data;
             setAddressList(data); // Set the address list
             console.log("data data", data)
@@ -262,7 +261,7 @@ const CheckoutPage = () => {
             };
 
             const response = await axios.post(
-                "http://localhost:8000/addaddress",
+                `${SERVER_API_URL}/addaddress`,
                 createformData,
                 config
             );
@@ -334,7 +333,7 @@ const CheckoutPage = () => {
         }
     };
 
-
+console.log("addressList", addressList)
     return (
         <>
             {addressList.length > 0 ? (

@@ -3,9 +3,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 20px 0;
+    margin-left: 15px;
     width: 98%;
+    overflow-x: hidden;
 }
+
 
 .home-main-container {
     display: flex;
@@ -831,5 +834,12 @@
 @media (min-width: 767px) {
     .mobile-view {
         display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .home-bg-container{
+        width: 100% !important;
+        padding: 20px 0 !important;
     }
 }

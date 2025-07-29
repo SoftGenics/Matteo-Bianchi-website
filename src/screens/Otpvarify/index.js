@@ -70,8 +70,11 @@ const Otpvarify = props => {
     return (
         <>
             {displayOtp && displayStoreOtp && (
+                <div className="six-digit-code">
+                <span className="six-digit-text">Please Enter your 6 digi code</span>
                 <div className="display-otp">
                     <h1 className="display-otp-text" style={{ color: "#000" }}>{displayStoreOtp}</h1>
+                </div>
                 </div>
             )}
 
