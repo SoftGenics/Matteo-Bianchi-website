@@ -306,24 +306,29 @@ const Header = () => {
   });
 
   const handleDirectPayment = (data) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login', { replace: true });
+      return;
+    }
     const { item, product_price, productQuntity, product_id } = data;
-  
+
     if (item) {
       saveColor(item);
     }
-  
+
     if (product_price && mobile_num && product_id && productQuntity) {
       const power = {
         selectedLensOrProducrPrice: product_price,
       };
-  
+
       const product = {
         mobile_number: mobile_num,
         selectedColor: selectedColor,
         product_id: product_id,
         productQuntity: productQuntity,
       };
-  
+
       saveCheckoutData({ power, product });
       navigate("/ChekOutPage");
     } else {
@@ -336,7 +341,7 @@ const Header = () => {
       alert("Please select valid options.");
     }
   };
-  
+
 
 
   // Function to remove an item from the cart
@@ -603,7 +608,19 @@ const Header = () => {
                       </div>
 
                       <div className='button-byenow-container'>
-                        <button className="buy-now buy-now-cart">Buy Now</button>
+                        <button
+                          className="buy-now"
+                          onClick={() =>
+                            handleDirectPayment({
+                              item: item,
+                              productQuntity: item.quantity,
+                              product_price: (item.product_price - (item.product_price * item.discount) / 100).toFixed(0),
+                              product_id: item.product_id,
+                            })
+                          }
+                        >
+                          Buy Now
+                        </button>
                         <button className="remove-btn" onClick={() => removeFromCart(item.product_id)}>🗑</button>
                       </div>
                     </div>

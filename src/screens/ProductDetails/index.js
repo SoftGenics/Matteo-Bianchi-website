@@ -347,6 +347,12 @@ const ProductDetails = () => {
     };
 
     const handleDirectPayment = () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            history('/login', { replace: true });
+            return;
+        }
+
         if (product_price, mobile_num, product_id, productQuntity) {
             const power = {
                 selectedLensOrProducrPrice: product_price,
