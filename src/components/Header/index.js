@@ -609,7 +609,7 @@ const Header = () => {
 
                       <div className='button-byenow-container'>
                         <button
-                          className="buy-now"
+                          className="buy-now buy-now-updated"
                           onClick={() =>
                             handleDirectPayment({
                               item: item,

@@ -820,6 +820,19 @@ h3 {
   font-weight: bold !important;
   margin-bottom: 20px !important;
 }
+.buy-now-updated{
+  width: 70px !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  padding: 5px !important;
+  margin-bottom: 10px;
+}
+.buy-now-updated.buy-now:hover {
+  background-color: #009ba2; /* Slightly darker shade for hover */
+  transform: scale(1.05);     /* Slight zoom effect */
+  box-shadow: 0 4px 15px rgba(0, 194, 203, 0.4); /* Soft shadow */
+}
+
 @media (max-width: 768px) {
   .button-byenow-container{
     display: flex;
