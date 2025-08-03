@@ -9,6 +9,7 @@ import './index.css'
 const Login = () => {
     const history = useNavigate();
     const [userLogin, setUserLogin] = useState({ mobile_num: "" });
+    const [activebtn, setActivebtn] = useState(true)
 
     const handlerInput = (event) => {
         setUserLogin({ mobile_num: event.target.value });
@@ -16,6 +17,7 @@ const Login = () => {
 
     const submitHandler = async (event) => {
         event.preventDefault();
+        setActivebtn(false)
         console.log(userLogin)
 
         try {
@@ -31,7 +33,7 @@ const Login = () => {
             if (data) {
                 localStorage.setItem('token', JSON.stringify(data.token));
                 localStorage.setItem('otp', JSON.stringify(data.otp));
-                history('/otp-varify', {replace:true})
+                history('/otp-varify', { replace: true })
             }
         } catch (error) {
             console.error("Login error:", error);
@@ -43,7 +45,7 @@ const Login = () => {
             <div className='login-main-home-container'>
                 <div className='bg-login'>
                     <form className='login-home-left-cont' onSubmit={submitHandler}>
-                        <img className='login-image' src={yourPerfectPairBanner} alt="yourPerfectPairBanner"/>
+                        <img className='login-image' src={yourPerfectPairBanner} alt="yourPerfectPairBanner" />
                         <h1 className='login-signup-heding'>Login or Sign up</h1>
 
                         <input placeholder='Enter a 10-digit mobile number'
@@ -55,7 +57,13 @@ const Login = () => {
                             required
                         />
 
-                        <button className='continue-btn' type="submit">CONTINUE</button>
+                        <button
+                            className='continue-btn'
+                            type="submit"
+                            disabled={!activebtn}
+                        >
+                            {activebtn ? "CONTINUE" : "Processing.."}
+                        </button>
                         <p className='login-desc'> By creating an account or logging in, you agree to Purplle's Terms of Use and Privacy Policy
                             and consent to the collection and use of your personal information/sensitive personal data or information.
                         </p>

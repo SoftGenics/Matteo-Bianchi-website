@@ -8,6 +8,7 @@ const Otpvarify = props => {
     const navigate = useNavigate();
     const [varifyOtp, setVarifyOtp] = useState({ otp: "" });
     const [displayOtp, setDisplayOtp] = useState(false); // Initially false to hide OTP
+    const [activebtn, setActivebtn] = useState(true)
     const [displayStoreOtp, setDisplayStoreOtp] = useState('');
 
     useEffect(() => {
@@ -45,6 +46,7 @@ const Otpvarify = props => {
 
     const submitHandler = async (event) => {
         event.preventDefault();
+        setActivebtn(false)
         console.log(varifyOtp.otp);
 
         try {
@@ -71,10 +73,10 @@ const Otpvarify = props => {
         <>
             {displayOtp && displayStoreOtp && (
                 <div className="six-digit-code">
-                <span className="six-digit-text">Please Enter your 6 digi code</span>
-                <div className="display-otp">
-                    <h1 className="display-otp-text" style={{ color: "#000" }}>{displayStoreOtp}</h1>
-                </div>
+                    <span className="six-digit-text">Please Enter your 6 digi code</span>
+                    <div className="display-otp">
+                        <h1 className="display-otp-text" style={{ color: "#000" }}>{displayStoreOtp}</h1>
+                    </div>
                 </div>
             )}
 
@@ -93,7 +95,13 @@ const Otpvarify = props => {
                             required
                         />
 
-                        <button className='continue-btn' type="submit">Verify</button>
+                        <button
+                            className='continue-btn'
+                            type="submit"
+                            disabled={!activebtn}
+                        >
+                            {activebtn ? "Verify" : "Processing.."}
+                        </button>
                     </form>
                 </div>
                 {/* <div className='bg-login-rigth-cont'>X</div> */}
