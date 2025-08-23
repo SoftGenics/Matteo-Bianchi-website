@@ -464,6 +464,11 @@ const ProductDetails = () => {
 
         // Alert user
         alert(`${productDetails.product_title} added to cart successfully!`);
+
+        // ✅ Use window.location.reload() to bypass ESLint restriction
+        setTimeout(() => {
+            window.location.reload();
+        }, 100);
     };
 
     // Run effect whenever wishlistItems updates
@@ -597,7 +602,7 @@ const ProductDetails = () => {
                     ariaLabel="blocks-loading"
                     wrapperStyle={{}}
                     wrapperClass="blocks-wrapper"
-                    colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+                    colors={['#FF6B6B', '#FFD93D', '#6BCB77', '#4D96FF', '#845EC2']}
                 />
             ) : (
                 <div className="product-details-container">

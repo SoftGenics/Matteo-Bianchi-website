@@ -7,7 +7,7 @@ import { jwtDecode } from "jwt-decode";
 import { IoReorderThreeOutline } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 
-import { FaHeart, FaShoppingCart, FaPhone } from "react-icons/fa";
+import { FaShoppingCart } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 // import { IoBagOutline } from "react-icons/io5";
 import { ImFire } from "react-icons/im";
@@ -236,9 +236,9 @@ const trendingSearches = [
 
 const Header = () => {
   const navigate = useNavigate();
-  const { productCount, wishlistCount } = useContext(GlobleInfo)
+  const { productCount, wishlistCount, saveCheckoutData } = useContext(GlobleInfo)
   const [mobile_num, setMobile_num] = useState("");
-  const { saveCheckoutData } = useContext(GlobleInfo)
+  // const { saveCheckoutData } = useContext(GlobleInfo)
   const [selectedColor, setSelectedColor] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupContent, setPopupContent] = useState('');   // State for popup content
@@ -286,24 +286,29 @@ const Header = () => {
     }
   }, []);
 
-  const saveColor = ((item) => {
-    if (item?.result?.frameColor && item?.result?.lenshColor) {
-      try {
-        const frameColors = JSON.parse(item.result.frameColor) || [];
-        const lensColors = JSON.parse(item.result.lenshColor) || [];
-
-        if (Array.isArray(frameColors) && frameColors.length > 0) {
-          const [frameName, frameHex] = Object.entries(frameColors[0])[0] || ["Unknown", "#ffffff"];
-          const lensObj = lensColors[0] || { "Default Lens": "#000000" };
-          const [lensName, lensHex] = Object.entries(lensObj)[0] || ["Default", "#000000"];
-
-          setSelectedColor({ frameName, frameHex, lensName, lensHex });
-        }
-      } catch (error) {
-        console.error("Error parsing colors:", error);
+  const parseColorData = (colorData) => {
+    if (!colorData) return [];
+    try {
+      // If it starts with [ or { → parse as JSON
+      if (/^[\[{]/.test(colorData.trim())) {
+        return JSON.parse(colorData);
       }
+      // Otherwise, treat as plain string
+      return [{ [colorData]: "#000000" }];
+    } catch {
+      return [];
     }
-  });
+  };
+  
+  const saveColor = (item) => {
+    const frameColors = parseColorData(item?.result?.frameColor);
+    const lensColors = parseColorData(item?.result?.lenshColor);
+  
+    const [frameName, frameHex] = Object.entries(frameColors[0] || { Unknown: "#ffffff" })[0];
+    const [lensName, lensHex] = Object.entries(lensColors[0] || { Default: "#000000" })[0];
+  
+    setSelectedColor({ frameName, frameHex, lensName, lensHex });
+  };
 
   const handleDirectPayment = (data) => {
     const token = localStorage.getItem('token');
@@ -349,6 +354,11 @@ const Header = () => {
     const updatedCart = cartListItems.filter((item) => item.product_id !== id);
     setCartlistItems(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart)); // Update localStorage
+
+    // ✅ Use window.location.reload() to bypass ESLint restriction
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   };
 
 

@@ -52,10 +52,7 @@ const LensPricing = () => {
     };
 
     useEffect(() => {
-        // Retrieve cart items from local storage
-        // const cartItemsFromLocalStorage = JSON.parse(localStorage.getItem('cart')) || [];
-        // Access token from local storage
-        const token = localStorage.getItem('token'); // Replace 'yourTokenKey' with your actual token key
+        const token = localStorage.getItem('token');
         if (token) {
             // Decode the token to get user information
             const decodedToken = jwtDecode(token);

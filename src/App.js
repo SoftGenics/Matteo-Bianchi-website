@@ -9,6 +9,14 @@ import LensPricing from './screens/LensPricing';
 import Testing from './screens/Testing';
 import ChekOutPage from './screens/ChekOutPage';
 import FaqPage from './screens/FaqPage'
+import ContactUs from "./screens/ContactUs";
+import PrivacyPolicy from "./screens/PrivacyPolicy";
+import RefundPolicy from "./screens/RefundPolicy";
+import ShippingPolicy from "./screens/ShippingPolicy";
+import TermsAndConditions from "./screens/TermsAndConditions";
+import AboutUs from "./screens/AboutUs";
+import OrdersPage from "./screens/OrdersPage";
+import TrackingStatus from "./screens/TrackingStatus"
 
 import "./App.css";
 
@@ -69,6 +77,14 @@ function App() {
           <Route exact path="/product-item/:product_id" element={<ProductDetails />} />
           <Route exact path="/ChekOutPage" element={<ChekOutPage />} />
           <Route exact path="/Faq-page" element={<FaqPage />} />
+          <Route exact path="/ContactUs" element={<ContactUs />} />
+          <Route exact path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+          <Route exact path="/RefundPolicy" element={<RefundPolicy />} />
+          <Route exact path="/ShippingPolicy" element={<ShippingPolicy />} />
+          <Route exact path="/TermsAndConditions" element={<TermsAndConditions />} />
+          <Route exact path="/AboutUs" element={<AboutUs />} />
+          <Route exact path="/track-order" element={<OrdersPage />} />
+          <Route exact path="/tracking-status/:product_id" element={<TrackingStatus />} />
         </Routes>
       </BrowserRouter>
     </GlobleInfo.Provider>

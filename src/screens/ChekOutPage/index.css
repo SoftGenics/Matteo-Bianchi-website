@@ -345,6 +345,32 @@
     font-weight: 500;
     cursor: pointer;
   }
+
+  @media (max-width: 768px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .full-width {
+      grid-column: span 1;
+    }
+  
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .form-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .save-btn,
+    .cancel-btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
   
   /* Edit Address */
 

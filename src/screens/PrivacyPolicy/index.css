@@ -1,0 +1,62 @@
+.legal-page {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #222;
+    line-height: 1.6;
+    background-color: #fff;
+  }
+  
+  .legal-page h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #009ba2; /* Your brand color */
+    text-align: center;
+  }
+  
+  .legal-page h3 {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #333;
+    border-left: 4px solid #009ba2;
+    padding-left: 12px;
+  }
+  
+  .legal-page p {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: #444;
+  }
+  
+  .legal-page ul {
+    padding-left: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .legal-page li {
+    margin-bottom: 8px;
+  }
+  
+  @media (max-width: 768px) {
+    .legal-page {
+      margin: 30px 10px;
+      padding: 0 10px;
+    }
+  
+    .legal-page h1 {
+      font-size: 1.6rem;
+    }
+  
+    .legal-page h3 {
+      font-size: 1.1rem;
+    }
+  
+    .legal-page p,
+    .legal-page li {
+      font-size: 0.95rem;
+    }
+  }
+  
