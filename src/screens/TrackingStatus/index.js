@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {SERVER_API_URL} from '../../server/server'
 import { ColorRing } from 'react-loader-spinner';
 import axios from "axios";
 import "./index.css";
@@ -30,7 +31,7 @@ const TrackingStatus = () => {
   useEffect(() => {
     const fetchTracking = async () => {
       try {
-        const res = await axios.post("http://localhost:8000/api/tracking/track", {
+        const res = await axios.post(`${SERVER_API_URL}/api/tracking/track`, {
           courier: "dtdc",
           trackingNumber: "7D155069823".trim()
         });
@@ -78,14 +79,14 @@ const TrackingStatus = () => {
               {!isLast && <div className="timeline-line"></div>}
               <div className="timeline-content">
                 <h4 className="timeline-status">
-                  {step.stage}{" "}
+                  {step.stage}
                   <span className="timeline-date">
                     {new Date(`${step.date}T${step.time}`).toLocaleDateString("en-GB", {
                       weekday: "short",
                       day: "numeric",
                       month: "short",
                       year: "numeric",
-                    })}{" "}
+                    })}
                     {new Date(`${step.date}T${step.time}`).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </span>
                 </h4>
