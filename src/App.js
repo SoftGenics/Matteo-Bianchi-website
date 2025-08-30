@@ -84,7 +84,7 @@ function App() {
           <Route exact path="/TermsAndConditions" element={<TermsAndConditions />} />
           <Route exact path="/AboutUs" element={<AboutUs />} />
           <Route exact path="/track-order" element={<OrdersPage />} />
-          <Route exact path="/tracking-status/:product_id" element={<TrackingStatus />} />
+          <Route exact path="/tracking-status/:id" element={<TrackingStatus />} />
         </Routes>
       </BrowserRouter>
     </GlobleInfo.Provider>

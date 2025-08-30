@@ -109,12 +109,12 @@ const CheckoutPage = () => {
     // handlePaymentVerify Function
     const handlePaymentVerify = async (data) => {
         const options = {
-            key: "rzp_test_6nQE4mF6koMgtv",
+            key: "rzp_live_RAkH4wvm69Kmlh",
             // amount: data.amount,
             amount: Math.round(data.amount * 100), // Convert to smallest unit
             currency: data.currency,
-            name: "EYE ZONES",
-            description: "Test Mode",
+            name: "matteo-bianchi",
+            description: "live Mode",
             order_id: data.id,
             handler: async (response) => {
                 console.log("response", response)
@@ -199,12 +199,12 @@ const CheckoutPage = () => {
         }
 
         const options = {
-            key: "rzp_test_6nQE4mF6koMgtv",
+            key: "rzp_live_RAkH4wvm69Kmlh",
             // amount: data.amount,
             amount: Math.round(data.amount * 100), // Convert to smallest unit
             currency: data.currency,
-            name: "EYE ZONES",
-            description: "Test Mode",
+            name: "matteo-bianchi",
+            description: "Live Mode",
             order_id: data.id,
             handler: async (response) => {
                 console.log("response", response)
@@ -333,7 +333,8 @@ const CheckoutPage = () => {
         }
     };
 
-console.log("addressList", addressList)
+    // console.log("addressList", addressList)
+
     return (
         <>
             {addressList.length > 0 ? (
@@ -520,7 +521,7 @@ console.log("addressList", addressList)
             {isEditPopupOpen && (
                 <div className="popup-overlay">
                     <div className="popup-box">
-                        <div className="delivery-header" style={{marginBottom:"20px", justifyContent:"center"}}>
+                        <div className="delivery-header" style={{ marginBottom: "20px", justifyContent: "center" }}>
                             <span className="header-title">EDIT DELIVERY ADDRESS</span>
                         </div>
 

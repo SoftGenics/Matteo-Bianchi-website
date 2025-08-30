@@ -38,6 +38,7 @@ const OrdersPage = () => {
                 { mobile_number: mobile_num },
                 { headers: { "Content-Type": "application/json" } }
             );
+            console.log("res.data.data", res.data.data)
             setOrders(res.data.data || []);
         } catch (err) {
             console.error("Error fetching orders:", err);
@@ -111,6 +112,7 @@ const OrdersPage = () => {
                         <ul className="orders-table-header">
                             <li className="orders-col orders-col-img">Product Image</li>
                             <li className="orders-col orders-col-title">Product Title</li>
+                            <li className="orders-col orders-col-quantity">Quantity</li>
                             <li className="orders-col orders-col-price">Price</li>
                             <li className="orders-col orders-col-status">Status</li>
                         </ul>
@@ -119,53 +121,54 @@ const OrdersPage = () => {
                             const { image, title } = getProductDetails(order.product_id);
 
                             return (
-                                <Link className="navigate-traking" to={`/tracking-status/${order.product_id}`}>
-                                <div key={index} className="order-card">
-                                    {image ? (
-                                        <img src={image} alt={title} className="order-card__img" />
-                                    ) : (
-                                        'No Image'
-                                    )}
+                                <Link className="navigate-traking" to={`/tracking-status/${order.id}`}>
+                                    <div key={index} className="order-card">
+                                        {image ? (
+                                            <img src={image} alt={title} className="order-card__img" />
+                                        ) : (
+                                            'No Image'
+                                        )}
 
-                                    <div className="order-card__details">
-                                        <h4 className="order-card__title">{title}</h4>
-                                        <p className="order-card__price">
-                                            ₹{order.selected_Lens_Or_ProductPrice}
-                                        </p>
+                                        <div className="order-card__details">
+                                            <h4 className="order-card__title">{title}</h4>
+                                            <p className="order-card__quantity"><span className="qty">Qty: </span>{order.product_quantity ? order.product_quantity : "1"}</p>
+                                            <p className="order-card__price">
+                                                ₹{order.selected_Lens_Or_ProductPrice}
+                                            </p>
 
-                                        <div>
-                                            {order.delivery_status === "Processing" ? (
-                                                <>
-                                                    <span className="order-card__status order-card__status--red">
-                                                        ● Processing
+                                            <div>
+                                                {order.delivery_status === "Processing" ? (
+                                                    <>
+                                                        <span className="order-card__status order-card__status--red">
+                                                            ● Processing
+                                                        </span>
+                                                        <p className="order-card__message">
+                                                            Your item has been shipped.
+                                                        </p>
+                                                    </>
+                                                ) : order.delivery_status === "Delivered" ? (
+                                                    <>
+                                                        <span className="order-card__status order-card__status--green">
+                                                            ● Delivered
+                                                        </span>
+                                                        <p className="order-card__message">
+                                                            Item delivered on{" "}
+                                                            {new Date(
+                                                                new Date(order.updatedAt).setDate(
+                                                                    new Date(order.updatedAt).getDate() + 7
+                                                                )
+                                                            ).toLocaleDateString()}
+                                                        </p>
+
+                                                    </>
+                                                ) : (
+                                                    <span className="order-card__status order-card__status--orange">
+                                                        ● {order.delivery_status}
                                                     </span>
-                                                    <p className="order-card__message">
-                                                        Your item has been shipped.
-                                                    </p>
-                                                </>
-                                            ) : order.delivery_status === "Delivered" ? (
-                                                <>
-                                                    <span className="order-card__status order-card__status--green">
-                                                        ● Delivered
-                                                    </span>
-                                                    <p className="order-card__message">
-                                                        Item delivered on{" "}
-                                                        {new Date(
-                                                            new Date(order.updatedAt).setDate(
-                                                                new Date(order.updatedAt).getDate() + 7
-                                                            )
-                                                        ).toLocaleDateString()}
-                                                    </p>
-
-                                                </>
-                                            ) : (
-                                                <span className="order-card__status order-card__status--orange">
-                                                    ● {order.delivery_status}
-                                                </span>
-                                            )}
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                 </Link>
                             );
                         })}
