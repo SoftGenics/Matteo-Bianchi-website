@@ -256,8 +256,13 @@ select {
   text-align: end;
 }
 
-.carousel-image2 {
+/* .carousel-image2 {
   width: 100%;
+} */
+
+.carousel-image2 {
+    width: 350px;
+    height: 220px;
 }
 
 .product-image {
@@ -304,6 +309,7 @@ select {
 .product-attribute {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   font-size: 0.9rem;
   color: #666;
@@ -518,10 +524,11 @@ select {
 
 .color-options {
   display: flex;
+  justify-content: flex-end;
   gap: 8px;
   margin-top: 5px;
   overflow-x: auto;
-  width: 120px;
+  width: 135px;
 }
 
 .color-box {
@@ -989,3 +996,10 @@ select {
 }
 
 /* input fillter price end */
+
+@media (max-width: 768px) {
+  .carousel-image2{
+    width: 200px;
+    height: 150px;
+  }
+}
