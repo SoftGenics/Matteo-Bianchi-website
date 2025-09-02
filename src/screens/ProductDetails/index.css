@@ -1095,9 +1095,8 @@
 
 /* Product Image */
 .product-image {
-    width: 100%;
+    width: 130px;
     height: 80px;
-    object-fit: contain;
     margin-bottom: 0px;
 }
 
