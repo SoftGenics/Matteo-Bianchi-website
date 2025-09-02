@@ -1038,7 +1038,7 @@ const ProductDetails = () => {
                                                 >
                                                     <div className="frame-image">
                                                         {frame.product_thumnail_img ? (
-                                                            <img src={`${SERVER_API_URL}/${frame.product_thumnail_img}`} alt={frame.name} style={{ maxWidth: "100%" }} />
+                                                            <img className='suggested-frame-image' src={`${SERVER_API_URL}/${frame.product_thumnail_img}`} alt={frame.name}  />
                                                         ) : (
                                                             <div className="no-image">Image Not Available</div>
                                                         )}

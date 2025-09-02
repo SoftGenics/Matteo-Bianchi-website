@@ -468,16 +468,29 @@
     margin-bottom: 10px;
 }
 
+.suggested-frame-image{
+    width: 100%;
+    max-width: 212px;
+    height: 150px;
+}
+
 @media screen and (max-width: 768px) {
     .frame-card {
         width: 350px;
-        /* height: 300px; */
     }
 
     .frame-image {
        margin-bottom: 65px;
-    }    
+    }  
+    
+    .suggested-frame-image{
+        max-width: 322px !important;
+        height: 200px;
+    }
+    
 }
+
+
 
 .frame-price {
     font-weight: bold;
@@ -1097,6 +1110,7 @@
 .product-image {
     width: 130px;
     height: 80px;
+    margin-top: 10px;
     margin-bottom: 0px;
 }
 
@@ -1750,4 +1764,5 @@ a {
         width: 340px;
     }
   }
+  
   
