@@ -767,9 +767,9 @@
     border-radius: 10px;
     padding: 16px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-
     text-align: left;
     height: 350px;
+    /* margin: 10px; */
 }
 
 .glass-icons {
@@ -787,13 +787,26 @@
 }
 
 .glass-img {
-    width: 100%;
+    /* width: 100%; */
+    width: 220px;
     height: 170px;
     margin: 0 auto 12px;
     display: block;
     padding-bottom: 30px;
 }
 
+/* Tablet and below */
+@media screen and (max-width: 1300px) {
+    .glass-img {
+        width: 100%;       /* container ke hisaab se adjust */
+        max-width: 230px;  /* kabhi bhi 230px se bada na ho */
+        height: 170px;      /* height automatic adjust */
+        padding-bottom: 15px;
+    }
+    .glass-card{
+        height: 400px;
+    }
+}
 .glass-brand {
     font-size: 12px;
     font-weight: 700;
@@ -838,7 +851,7 @@
 }
 
 @media screen and (max-width: 768px) {
-    .home-bg-container{
+    .home-bg-container {
         width: 100% !important;
         padding: 20px 0 !important;
     }

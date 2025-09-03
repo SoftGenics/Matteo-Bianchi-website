@@ -478,6 +478,7 @@ const Home = () => {
                           alt={frame.product_title}
                           className="glass-img"
                         />
+            
                         <h3 className="glass-brand">{frame.product_title}</h3>
                         <p className="glass-name">{frame.highlights}</p>
                         <div className="product-discount-info">
