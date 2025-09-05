@@ -1624,7 +1624,7 @@ a {
     align-items: flex-start;
     flex-wrap: wrap;
     width: 100%;
-    gap: 20px;
+    gap: 10px;
 }
 
 .custom-close-btn {
@@ -1644,14 +1644,19 @@ a {
 }
 
 .custom-modal-image {
-    width: 48%;
-    max-width: 100%;
-    height: auto;
+    width: 100%;
+    width: 600px !important;
+    height: 400px;
     border-radius: 12px;
     object-fit: contain;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
     border: 2px solid #444;
 }
+
+@media (max-width: 768px) {
+    
+  }
+  
 
 .custom-details-list {
     list-style: none;
@@ -1734,11 +1739,16 @@ a {
       align-items: center;
     }
   
-    .custom-modal-image,
+    
     .custom-details-list {
-      width: 100%;
+      width: 95%;
       height: auto;
     }
+
+    .custom-modal-image {
+        max-width: 100%;   /* tablet/mobile par chhoti kar do */
+        height: 30vh;
+      }
   
     .custom-details-list {
       max-height: 250px;

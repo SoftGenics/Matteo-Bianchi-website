@@ -972,17 +972,16 @@ const ProductDetails = () => {
                                                                 alt="Large Product"
                                                             />
                                                             <ul className="custom-details-list">
-                                                                <li><strong>Product ID:</strong> DCM413</li>
+                                                                <li><strong>Product Code:</strong> MB {item?.result?.product_id} </li>
                                                                 <li><strong>Product Price:</strong> ₹{item?.result?.product_price - (item?.result?.product_price * item?.result?.discount / 100).toFixed(0)}/-</li>
-
                                                                 <li><strong>Frame Shape:</strong> {item?.result?.frame_shape}</li>
                                                                 <li><strong>Frame Type:</strong> {item?.result?.frem_type}</li>
                                                                 <li><strong>Discount:</strong> {item?.result?.discount}%</li>
-                                                                <li><strong>Frame Material:</strong> fiber</li>
+                                                                <li><strong>Frame Material:</strong> {item?.result?.frameMaterial}</li>
                                                                 <li><strong>Frame Description:</strong> {item?.result?.highlights}</li>
-                                                                <li><strong>Lens Information:</strong> 54 mm / 16 mm / 145 mm</li>
-                                                                <li><strong>Model No:</strong> DCM413</li>
-                                                                <li><strong>Frame Size:</strong> 54 mm / 16 mm / 145 mm</li>
+                                                                {/* <li><strong>Lens Information:</strong> 54 mm / 16 mm / 145 mm</li> */}
+                                                                {/* <li><strong>Model No:</strong> DCM413</li> */}
+                                                                {/* <li><strong>Frame Size:</strong> 54 mm / 16 mm / 145 mm</li> */}
                                                             </ul>
                                                         </div>
 
