@@ -118,6 +118,7 @@
 
 .thumbnail-container {
     position: relative;
+    width: 525px;
 }
 
 .scroll-btn-thumb {
@@ -166,7 +167,7 @@
     overflow-x: scroll;
     overflow-y: hidden;
     scroll-behavior: smooth;
-    width: 525px;
+    /* width: 525px; */
 }
 
 @media screen and (max-width: 768px) {
@@ -180,7 +181,7 @@
 
 .thumbnail {
     width: 136px;
-    height: 120px;
+    height: 98px;
     background: #ccc;
 }
 
@@ -190,7 +191,12 @@
 
 .mini-image {
     width: 136px;
-    height: 120px;
+    height: 98px;
+    border: 2px solid #312f2f;
+    border-radius: 6px;
+}
+.active-thumbnail-pop{
+    border: 3px solid #00bcd4;
 }
 
 .modified-thumbnail {
@@ -729,7 +735,6 @@
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 1px;
-
     position: absolute;
     right: 8px;
     bottom: 0;
@@ -749,78 +754,49 @@
     transform: scale(1.1);
 }
 
-/* .color-box.selected {
-    border: 2px solid black; 
-    box-shadow: 0 0 5px rgba(0, 0, 255, 0.5); 
-    transform: scale(1.1);
-} */
-
-.selected-color {
-    border: 5px solid rgb(227, 158, 158) !important;
-}
-
-
-
-/* ====== Popup Modal Styling ====== */
-/* .image-popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    opacity: 0;
-    animation: fadeIn 0.4s ease-in-out forwards;
-} */
-
 .image-popup-overlay {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     position: fixed;
-    top: 0;
+    top: -12%;
     left: 0;
     width: 100%;
-    height: 100%;
-    /* background: rgba(0, 0, 0, 0.8); */
-    /* background-color: #000; */
-    /* background-color: #009688; */
-    background-color: #fff;
-    display: flex;
+    height: 120%;
+    background: rgba(0, 0, 0, 0.5); /* 0.5 = 50% transparent */
     z-index: 1000;
-    opacity: 0;
     transform: scale(0.8);
     animation: popupFadeZoom 0.5s ease-in-out forwards;
-}
-
-/* 🎬 Unique Popup Animation */
-@keyframes popupFadeZoom {
-    0% {
-        opacity: 0;
-        transform: scale(0.8) translateY(-50px);
+  }
+  
+  @keyframes popupFadeZoom {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
     }
-
-    50% {
-        opacity: 0.5;
-        transform: scale(1.05) translateY(10px);
+    to {
+      opacity: 1;
+      transform: scale(1);
     }
+  }
 
-    100% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
+  .popup-background{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    width: 75%;
+    height: 80vh;
+    border-radius: 5px;
+    /* padding: 10px; */
+  }
+  
 
 .image-popup {
     position: relative;
-    /* max-width: 1200px; */
-    /* width: 70%; */
-    /* background: white; */
     padding: 10px;
     border-radius: 8px;
     text-align: center;
@@ -828,10 +804,8 @@
 }
 
 .popup-image {
-    /* width: 100%; */
-    width: 770px;
-    height: 75vh;
-    border-radius: 8px;
+    width: 460px;
+    height: auto;
 }
 @media screen and (max-width: 768px) {
     .popup-image {
@@ -849,8 +823,6 @@
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
-    /* color: red; */
-    /* color: #000; */
     color: rgba(0, 0, 0, 0.8);
     transition: transform 0.2s ease-in-out;
 }
@@ -1101,7 +1073,7 @@
     background: white;
     /* margin: 10px; */
     width: 142px;
-    height: 200px;
+    height: 210px;
 }
 
 /* Selected Product */
@@ -1114,7 +1086,7 @@
 .product-image {
     width: 130px;
     height: 80px;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-bottom: 0px;
 }
 
@@ -1344,7 +1316,8 @@ a {
     font-size: 16px;
     font-weight: bold;
     margin: 10px 0;
-    color: #333;
+    color: #443737 !important;
+    /* color: blue !important; */
 }
 
 .product-discount-info {
@@ -1779,4 +1752,17 @@ a {
     }
   }
   
-  
+  .selected-color {
+    display: inline-block;
+    width: 30px;
+    height: 13px;
+    border-radius: 4px;
+    margin-right: 6px;
+    vertical-align: middle;
+    border: 1px solid #ccc; /* optional border */
+  }
+  .selected-text{
+    font-size: 15px;
+    font-weight: 800;
+    color: #009688;
+  }

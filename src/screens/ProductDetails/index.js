@@ -122,7 +122,7 @@ const ProductDetails = () => {
     const history = useNavigate();
     const { product_id } = useParams();
     const [mobile_num, setMobile_num] = useState("");
-    const { getProductCount, saveCheckoutData, updateCounts } = useContext(GlobleInfo)
+    const { saveCheckoutData, updateCounts } = useContext(GlobleInfo)
     const [item, setItem] = useState({});
     const [allProducts, setAllProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -160,25 +160,7 @@ const ProductDetails = () => {
     console.log("productQuntity", productQuntity)
     console.log("selectedColor", selectedColor)
 
-    useEffect(() => {
-        if (item?.result?.frameColor && item?.result?.lenshColor) {
-            try {
-                const frameColors = JSON.parse(item.result.frameColor) || [];
-                const lensColors = JSON.parse(item.result.lenshColor) || [];
-
-                if (Array.isArray(frameColors) && frameColors.length > 0) {
-                    const [frameName, frameHex] = Object.entries(frameColors[0])[0] || ["Unknown", "#ffffff"];
-                    const lensObj = lensColors[0] || { "Default Lens": "#000000" };
-                    const [lensName, lensHex] = Object.entries(lensObj)[0] || ["Default", "#000000"];
-
-                    setSelectedColor({ frameName, frameHex, lensName, lensHex });
-                }
-            } catch (error) {
-                console.error("Error parsing colors:", error);
-            }
-        }
-    }, [item]); // Runs when item changes
-
+    // Decoded Mobile Number
     useEffect(() => {
         const token = localStorage.getItem('token'); // Replace 'yourTokenKey' with your actual token key
         if (token) {
@@ -188,8 +170,9 @@ const ProductDetails = () => {
             setMobile_num(mobile_num)
             // console.log("Decoded Mobile Number:", mobile_num);
         }
-    }, []);
+    }, [product_id]);
 
+    // getallUserinfo
     useEffect(() => {
         const fetchAddress = async () => {
             try {
@@ -205,7 +188,7 @@ const ProductDetails = () => {
                     },
                 };
 
-                const response = await axios.get("http://localhost:8000/getallUserinfo", config);
+                const response = await axios.get(`${SERVER_API_URL}/getallUserinfo`, config);
                 const data = response.data;
 
                 console.log("Full API response:", data);
@@ -231,7 +214,7 @@ const ProductDetails = () => {
         };
 
         fetchAddress();
-    }, [product_id]); // Add dependencies here if needed
+    }, [item]); // Add dependencies here if needed
 
     // scrollToSection
     const scrollToSection = (ref) => {
@@ -477,6 +460,7 @@ const ProductDetails = () => {
         setWishlistItems(storedWishlist);
     }, []); // ✅ Add wishlistItems as dependency
 
+    // toggleWishlist
     const toggleWishlist = (product) => {
         setWishlistItems((prevWishlist) => {
             let updatedWishlist = [...prevWishlist];
@@ -498,22 +482,38 @@ const ProductDetails = () => {
         }, 100);
     };
 
-
+    // fetch product by id
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${SERVER_API_URL}/product/productdetail/${product_id}`);
-                console.log("response new", response.data)
+                const response = await axios.get(
+                    `${SERVER_API_URL}/product/productdetail/${product_id}`
+                );
+                console.log("response new", response.data);
                 setItem(response.data);
+
+                const frameColor = response.data?.result?.frameColor;
+                const lensColor = response.data?.result?.lenshColor;
+
+                handleColorSelect(frameColor, lensColor);
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error("Error fetching data:", error);
             } finally {
                 setLoading(false);
             }
         };
+
         fetchData();
-        setSelectedImage(null)
+        setSelectedImage(null);
     }, [product_id]);
+
+    const handleColorSelect = (frameColor, lensColor) => {
+        setSelectedColor({
+            frameColor,
+            lensColor
+        });
+    };
+
 
     useEffect(() => {
         const fetchData1 = async () => {
@@ -529,13 +529,6 @@ const ProductDetails = () => {
         };
         fetchData1();
     }, [product_id]);
-
-    const handleColorSelect = (frameColor, lensColor) => {
-        setSelectedColor({
-            frameColor,
-            lensColor
-        });
-    };
 
     const getColorsForProduct = (productTitle) => {
         // ✅ Ensure allProducts.result is an array before filtering
@@ -689,62 +682,71 @@ const ProductDetails = () => {
                                     {/* ====== Popup Modal Product ====== */}
                                     {isPopupOpen && (
                                         <div className="image-popup-overlay">
-                                            <div className="image-popup">
+                                            <div className='popup-background'>
                                                 <span className="close-btn" style={{ fontSize: "30px" }} onClick={() => {
                                                     closePopup();
                                                     setVideoUrl("");
                                                 }}>&times;</span>
+                                                <div className="image-popup">
+                                                    {/* <button className="prev-btn1" onClick={handlePrev}><img className='forword-btn' src={backword} alt="forword-btn" /></button> */}
 
-                                                <button className="prev-btn1" onClick={handlePrev}><img className='forword-btn' src={backword} alt="forword-btn" /></button>
+
+                                                    {videoUrl === "" ? (
+                                                        <img className="popup-image" src={selectedImage} alt="Popup Large View" />
+                                                    ) : (
+                                                        <video controls autoPlay className="product-video-container" style={{ width: "100%", height: "60vh" }}>
+                                                            <source src={videoUrl} type="video/mp4" />
+                                                            Your browser does not support the video tag.
+                                                        </video>
+                                                        // null
+                                                    )}
+
+                                                    {/* <button className="next-btn1" onClick={handleNext}><img className='forword-btn' src={forword} alt="forword-btn" /></button> */}
+                                                </div>
+                                                <div className="thumbnail-row" style={{ width: "90%", justifyContent: "space-around" }}>
+                                                    {item?.result && item.result.product_all_img && (
+                                                        <>
+                                                            <button onClick={handlePrev} style={{ background: "transparent", border: "none", fontSize: "25px" }}><IoIosArrowBack color='#fff' /></button>
+
+                                                            {/* Conditional Video Thumbnail Rendering */}
+                                                            {item?.result?.video_thumbnail &&
+                                                                item?.result?.video_thumbnail !== "" &&
+                                                                item?.result?.video_thumbnail !== "undefined" && (
+                                                                    <div className="thumbnail">
+                                                                        <img
+                                                                            className={`mini-image modified-mini-image ${selectedThumbnail === 'video' ? 'active-thumbnail-pop' : ''
+                                                                                }`}
+                                                                            src={`${SERVER_API_URL}/${item.result.video_thumbnail}`}
+                                                                            alt="Video Thumbnail"
+                                                                            onMouseEnter={() => {
+                                                                                handleVideoClick(`${SERVER_API_URL}/${item.result.video_url}`);
+                                                                                setSelectedThumbnail('video');
+                                                                            }}
+                                                                        />
+                                                                    </div>
+                                                                )}
 
 
-                                                {videoUrl === "" ? (
-                                                    <img className="popup-image" src={selectedImage} alt="Popup Large View" />
-                                                ) : (
-                                                    <video controls autoPlay className="product-video-container" style={{ width: "100%", height: "78vh" }}>
-                                                        <source src={videoUrl} type="video/mp4" />
-                                                        Your browser does not support the video tag.
-                                                    </video>
-                                                    // null
-                                                )}
-
-                                                <button className="next-btn1" onClick={handleNext}><img className='forword-btn' src={forword} alt="forword-btn" /></button>
-                                            </div>
-                                            <div className="thumbnail-row" style={{ width: "60%", justifyContent: "space-around" }}>
-                                                {item?.result && item.result.product_all_img && (
-                                                    <>
-                                                        <button onClick={handlePrev} style={{ background: "transparent", border: "none", fontSize: "25px" }}><IoIosArrowBack color='#fff' /></button>
-
-                                                        {/* Conditional Video Thumbnail Rendering */}
-                                                        {item?.result?.video_thumbnail &&
-                                                            item?.result?.video_thumbnail !== "" &&
-                                                            item?.result?.video_thumbnail !== "undefined" && (
-                                                                <div className="thumbnail">
+                                                            {item.result.product_all_img.map((img, index) => (
+                                                                <div className="thumbnail" key={index}>
                                                                     <img
-                                                                        className="mini-image modified-mini-image"
-                                                                        src={`${SERVER_API_URL}/${item.result.video_thumbnail}`}
-                                                                        alt="Video Thumbnail"
-                                                                        onMouseEnter={() => handleVideoClick(`${SERVER_API_URL}/${item.result.video_url}`)}
+                                                                        className={`mini-image ${selectedThumbnail === index ? 'active-thumbnail-pop' : ''
+                                                                            }`}
+                                                                        src={`${SERVER_API_URL}/${img}`}
+                                                                        alt={`ImageItem ${product_id}_${index + 1}`}
+                                                                        onMouseEnter={() => {
+                                                                            handleImageClick(`${SERVER_API_URL}/${img}`);
+                                                                            setSelectedThumbnail(index);
+                                                                        }}
                                                                     />
                                                                 </div>
-                                                            )}
+                                                            ))}
 
+                                                            <button className="" style={{ background: "transparent", border: "none", fontSize: "25px" }} onClick={handleNext}><IoIosArrowForward color='#fff' /></button>
+                                                        </>
+                                                    )}
 
-                                                        {item.result.product_all_img.slice(0, 4).map((img, index) => (
-                                                            <div className="thumbnail" key={index}>
-                                                                <img
-                                                                    className="mini-image"
-                                                                    src={`${SERVER_API_URL}/${img}`}
-                                                                    alt={`ImageItem ${product_id + index + 1}`}
-                                                                    onMouseEnter={() => handleImageClick(`${SERVER_API_URL}/${img}`)}
-                                                                />
-                                                            </div>
-                                                        ))}
-
-                                                        <button className="" style={{ background: "transparent", border: "none", fontSize: "25px" }} onClick={handleNext}><IoIosArrowForward color='#fff' /></button>
-                                                    </>
-                                                )}
-
+                                                </div>
                                             </div>
                                         </div>
                                     )}
@@ -878,10 +880,24 @@ const ProductDetails = () => {
                                             <h3 className="color-title">
                                                 {selectedColor && (
                                                     <p>
-                                                        Selected Color: <strong>{selectedColor.frameColor}</strong> (Frame) &{" "}
-                                                        <strong>{selectedColor.lensColor}</strong> (Lens)
+                                                        <strong className='selected-text'>
+                                                            Frame:{"  "}
+                                                            <span
+                                                                className="selected-color"
+                                                                style={{ backgroundColor: selectedColor.frameColor }}
+                                                            />
+                                                        </strong>
+                                                        <br />
+                                                        <strong className='selected-text'>
+                                                            Lens:{"  "}
+                                                            <span
+                                                                className="selected-color"
+                                                                style={{ backgroundColor: selectedColor.lensColor, marginLeft: "9.5px" }}
+                                                            />
+                                                        </strong>
                                                     </p>
                                                 )}
+
                                             </h3>
                                             <div className="grid-container-product-details">
                                                 {getColorsForProduct(item?.result?.product_title).length > 0 ? (
@@ -899,13 +915,12 @@ const ProductDetails = () => {
                                                             >
                                                                 <img src={`${SERVER_API_URL}/${colorObj.product_thumnail_img}`} alt="Sunglasses" className="product-image" />
                                                                 <div className="product-info">
-                                                                    <p className='product-title' style={{ marginBottom: "8px", fontSize: "12px" }}>{colorObj.highlights || "N/A"}</p>
+                                                                    <p className='product-title' style={{ marginBottom: "6px", fontSize: "10px" }}>{colorObj.highlights || "N/A"}</p>
 
-                                                                    {/* <h3>{colorObj.product_title || "Unnamed Product"}</h3>
-                                                                    <div className="product-discount">
+                                                                    <div className="product-discount" style={{ height: "30px" }}>
                                                                         <p className="discount-title" style={{ fontSize: "10px" }}>₹{colorObj.product_price}</p>
                                                                         <span className="discount-off" style={{ fontSize: "10px" }}>({colorObj.discount}% OFF)<span className='out-of-stock' style={{ color: "#e8a617", textTransform: "uppercase", fontSize: "6px" }}>For {colorObj.gender}</span></span>
-                                                                    </div> */}
+                                                                    </div>
                                                                     <p className="product-price1">
                                                                         ₹{(colorObj.product_price - (colorObj.product_price * colorObj.discount / 100)).toFixed(0)}/-
                                                                     </p>
@@ -1037,7 +1052,7 @@ const ProductDetails = () => {
                                                 >
                                                     <div className="frame-image">
                                                         {frame.product_thumnail_img ? (
-                                                            <img className='suggested-frame-image' src={`${SERVER_API_URL}/${frame.product_thumnail_img}`} alt={frame.name}  />
+                                                            <img className='suggested-frame-image' src={`${SERVER_API_URL}/${frame.product_thumnail_img}`} alt={frame.name} />
                                                         ) : (
                                                             <div className="no-image">Image Not Available</div>
                                                         )}
@@ -1291,9 +1306,11 @@ const ProductDetails = () => {
                                 </select>
 
                                 <button className="add-to-cart" onClick={() => addToCart(item)}>Add to Cart</button>
-                                <button className="buy-now" onClick={handleDirectPayment}
+                                {/* <button className="buy-now" onClick={handleDirectPayment}
                                     disabled={!selectedColor} // Disable if selectedColor is null
-                                    style={{ opacity: !selectedColor ? 0.5 : 1, cursor: !selectedColor ? "not-allowed" : "pointer" }}>Buy Now</button>
+                                    style={{ opacity: !selectedColor ? 0.5 : 1, cursor: !selectedColor ? "not-allowed" : "pointer" }}>Buy Now </button> */}
+                                <button className="buy-now" onClick={handleDirectPayment}>Buy Now </button>
+
 
                                 <p className="seller-info">Ships from <strong>Softgenics Ind. Pvt. Ltd.</strong></p>
                                 <p className="sold-by">Sold by <a href="#">SOJOS Vision</a></p>
