@@ -805,7 +805,7 @@
 
 .popup-image {
     width: 460px;
-    height: auto;
+    height: 60vh;
 }
 @media screen and (max-width: 768px) {
     .popup-image {

@@ -5,6 +5,7 @@ import { SERVER_API_URL } from '../../server/server';
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { CiEdit } from "react-icons/ci";
 import toast, { Toaster } from "react-hot-toast";
+import { load } from "@cashfreepayments/cashfree-js";
 import axios from "axios";
 import "./index.css"; // Import the external CSS file
 
@@ -335,8 +336,97 @@ const CheckoutPage = () => {
 
     // console.log("addressList", addressList)
 
+    // Step 1: Order Create
+    const createCashfreeOrder = async (amount) => {
+        try {
+            const { data } = await axios.post(`${SERVER_API_URL}/api/cashfree-order`, { amount });
+
+            if (!data.payment_session_id || !data.order_id) {
+                toast.error("Order creation failed ❌");
+                console.error("Backend order response missing session or order_id:", data);
+                return;
+            }
+
+            startCashfreeCheckout(data.payment_session_id, data.order_id);
+        } catch (err) {
+            console.error("Order API Error:", err.response?.data || err.message);
+            toast.error("Order creation failed ❌");
+        }
+    };
+
+    // Step 2: Checkout + Verify
+    const startCashfreeCheckout = async (payment_session_id, order_id) => {
+        try {
+            const cashfree = await load({ mode: "sandbox" }); // ya "production"
+            console.log("Cashfree SDK loaded");
+
+            cashfree.checkout({
+                paymentSessionId: payment_session_id,
+                // redirectTarget: "_self",
+                redirectTarget: "_modal", // 🔑 Page reload नहीं होगा
+                businessName: "matteo-bianchi",
+
+                onSuccess: async (event) => {
+                    console.log("PAYMENT_SUCCESS event:", event);
+                    toast.success("Payment completed. Verifying...");
+
+                    try {
+                        const res = await axios.post(`${SERVER_API_URL}/api/cashfree-verify`, {
+                            orderId: order_id,
+                        });
+
+                        // Cashfree verify API returns array of payments
+                        const paymentData = Array.isArray(res.data)
+                            ? res.data[0]
+                            : res.data;
+                        const paymentStatus = paymentData?.payment_status;
+
+                        if (paymentStatus === "SUCCESS") {
+                            toast.success("Payment Verified Successfully 🎉");
+                            setTimeout(() => navigate("/product-display/All"), 2000);
+                        } else {
+                            toast.error("Payment Failed ❌");
+                            console.error("Verify Response:", res.data);
+                        }
+
+                    } catch (err) {
+                        console.error("Verify API Error:", err.response?.data || err.message);
+                        toast.error("Verification API error ❌");
+                    }
+                },
+
+                onFailure: (event) => {
+                    console.error("PAYMENT_FAILURE event:", event);
+                    toast.error("Payment Failed ❌");
+                },
+            });
+        } catch (err) {
+            console.error("Payment Error:", err.response?.data || err.message || err);
+            toast.error("Something went wrong ❌");
+        }
+    };
+
+    // Master Function
+    const startPayment = () => {
+        if (!selectedAddress) {
+            toast.error("Please select an address");
+            return;
+        }
+
+        const amount = checkoutData?.power?.selectedLensOrProducrPrice;
+        if (!amount || isNaN(amount)) {
+            toast.error("Invalid amount for payment");
+            return;
+        }
+
+        createCashfreeOrder(amount);
+    };
+
+
+
     return (
         <>
+            <Toaster position="top-right" reverseOrder={false} />
             {addressList.length > 0 ? (
                 <div className="delivery-container">
                     {/* Header */}
@@ -382,7 +472,11 @@ const CheckoutPage = () => {
                                     ><RiDeleteBin6Line /></button>
                                 </div>
 
-                                <button className="deliver-btn" onClick={() => handleDeliverHereAndPayment()} style={{ opacity: selectedAddress?.addresses_id === user.addresses_id ? 1 : 0.5, cursor: selectedAddress?.addresses_id === user.addresses_id ? "pointer" : "not-allowed" }}>DELIVER HERE</button>
+                                {/* razorpay Getway */}
+                                {/* <button className="deliver-btn" onClick={() => handleDeliverHereAndPayment()} style={{ opacity: selectedAddress?.addresses_id === user.addresses_id ? 1 : 0.5, cursor: selectedAddress?.addresses_id === user.addresses_id ? "pointer" : "not-allowed" }}>DELIVER HERE</button> */}
+
+                                {/* Cashfree Payment Gatway */}
+                                <button className="deliver-btn" onClick={() => startPayment()} style={{ opacity: selectedAddress?.addresses_id === user.addresses_id ? 1 : 0.5, cursor: selectedAddress?.addresses_id === user.addresses_id ? "pointer" : "not-allowed" }}>DELIVER HERE</button>
                             </div>
                         )}
                     </div>
@@ -512,7 +606,7 @@ const CheckoutPage = () => {
                             <button className="save-btn" type="submit">SAVE AND DELIVER HERE</button>
                             <button className="cancel-btn" onClick={() => setAddNewAddress(!addNewAddress)}>CANCEL</button>
                         </div>
-                        <Toaster />
+                        {/* <Toaster position="top-right" reverseOrder={false} /> */}
                     </form>
                 </div>
             )}
