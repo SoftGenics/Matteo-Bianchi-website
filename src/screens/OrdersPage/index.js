@@ -115,7 +115,6 @@ const OrdersPage = () => {
                             <li className="orders-col orders-col-quantity">Quantity</li>
                             <li className="orders-col orders-col-price">Price</li>
                             <li className="orders-col orders-col-status">Status</li>
-                            <li className="orders-col orders-col-status">Date</li>
                         </ul>
 
                         {filteredOrders.map((order, index) => {
@@ -167,10 +166,11 @@ const OrdersPage = () => {
                                                         ● {order.delivery_status}
                                                     </span>
                                                 )}
+                                                <span className="order-date"  >
+                                                    {new Date(order.createdAt).toLocaleString()}
+                                                </span>
                                             </div>
-                                            <span className="order-date">
-                                            {new Date(order.createdAt).toLocaleString()}
-                                            </span>
+
                                         </div>
                                     </div>
                                 </Link>
