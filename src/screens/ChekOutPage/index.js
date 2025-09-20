@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { GlobleInfo } from "../../App";
 import { SERVER_API_URL } from '../../server/server';
@@ -16,6 +16,14 @@ const CheckoutPage = () => {
     const [addNewAddress, setAddNewAddress] = useState(true);
     const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
     const [addressToEdit, setAddressToEdit] = useState(null);
+    const [cashfree, setCashfree] = useState(null);
+    const [orderId, setOrderId] = useState("");
+    const orderIdRef = useRef(""); // ✅ immediate availability
+    // safe initialization
+    const [amount, setAmount] = useState(
+        checkoutData?.power?.selectedLensOrProducrPrice ?? 0
+    );
+
 
 
     const navigate = useNavigate();
@@ -33,19 +41,21 @@ const CheckoutPage = () => {
         landmark: "",
     });
 
-    // const [message, setMessage] = useState(""); // Fix message variable
-
-    // Redirect if checkoutData is empty
+    // Redirect + Safe amount calculation in same hook
     useEffect(() => {
         if (!checkoutData || Object.keys(checkoutData).length === 0) {
             navigate(-1); // Go back to the previous page
+            return;
         }
-    }, [checkoutData, navigate]);
 
-    const amount = checkoutData.power.selectedLensOrProducrPrice
+        if (!amount || amount <= 0) {
+            toast.error("Invalid amount ❌");
+        }
+    }, [checkoutData, amount, navigate]);
 
     console.log("checkoutData", checkoutData)
     console.log("selectedAddress", selectedAddress)
+    console.log("amount", amount)
 
     // Fetch address data from the API
     const fetchData = async () => {
@@ -53,7 +63,8 @@ const CheckoutPage = () => {
             const token = localStorage.getItem("token");
             if (!token) {
                 console.error("Token is missing.");
-                return;
+                toast.error("Please Login");
+                navigate('/login');
             }
 
             const config = {
@@ -271,7 +282,8 @@ const CheckoutPage = () => {
 
             if (response.status === 201) {
                 toast.success("Address submitted successfully!");
-                handlePayment(amount); // Call only on success
+                // handlePayment(amount); // Call only on success Razorpay Getway
+                handleCashfeePaymentWithoutAddId() // Cashfree Payment Getway Without Address Id
             } else {
                 toast.error("Failed to submit the address.");
             }
@@ -336,97 +348,185 @@ const CheckoutPage = () => {
 
     // console.log("addressList", addressList)
 
-    // Step 1: Order Create
-    const createCashfreeOrder = async (amount) => {
-        try {
-            const { data } = await axios.post(`${SERVER_API_URL}/api/cashfree-order`, { amount });
-
-            if (!data.payment_session_id || !data.order_id) {
-                toast.error("Order creation failed ❌");
-                console.error("Backend order response missing session or order_id:", data);
-                return;
+    ////////////// Cashfree Payment Getway With Address Id //////////////////////////////////////
+    // ✅ Step 1: Initialize SDK
+    useEffect(() => {
+        const initializeSDK = async () => {
+            try {
+                const cf = await load({ mode: "sandbox" }); // "production" in live
+                setCashfree(cf);
+                console.log("Cashfree SDK initialized ✅");
+            } catch (err) {
+                console.error("SDK Init Error:", err);
+                toast.error("Cashfree SDK load failed ❌");
             }
+        };
+        initializeSDK();
+    }, []);
 
-            startCashfreeCheckout(data.payment_session_id, data.order_id);
-        } catch (err) {
-            console.error("Order API Error:", err.response?.data || err.message);
+    // ✅ Step 2: Create Order (Get Session ID from backend)
+    const getSessionId = async (amount) => {
+        try {
+            const res = await axios.post(`${SERVER_API_URL}/api/cashfree-order`, {
+                amount,
+                mobile_number: checkoutData.product.mobile_number,
+            });
+
+            if (res.data && res.data.payment_session_id) {
+                setOrderId(res.data.order_id); // state update
+                orderIdRef.current = res.data.order_id; // ✅ ref update
+                return res.data.payment_session_id;
+            } else {
+                toast.error("Failed to get session id ❌");
+                return null;
+            }
+        } catch (error) {
+            console.error("Order API Error:", error.response?.data || error.message);
             toast.error("Order creation failed ❌");
+            return null;
         }
     };
 
-    // Step 2: Checkout + Verify
-    const startCashfreeCheckout = async (payment_session_id, order_id) => {
+    // ✅ Step 3: Verify Payment (backend verify API hit)
+    const verifyPayment = async (oid) => {
         try {
-            const cashfree = await load({ mode: "sandbox" }); // ya "production"
-            console.log("Cashfree SDK loaded");
+            const idToVerify = oid || orderIdRef.current; // ✅ always use ref fallback
 
-            cashfree.checkout({
-                paymentSessionId: payment_session_id,
-                // redirectTarget: "_self",
-                redirectTarget: "_modal", // 🔑 Page reload नहीं होगा
-                businessName: "matteo-bianchi",
+            if (!idToVerify) {
+                console.error("No orderId available for verification");
+                return;
+            }
 
-                onSuccess: async (event) => {
-                    console.log("PAYMENT_SUCCESS event:", event);
-                    toast.success("Payment completed. Verifying...");
-
-                    try {
-                        const res = await axios.post(`${SERVER_API_URL}/api/cashfree-verify`, {
-                            orderId: order_id,
-                        });
-
-                        // Cashfree verify API returns array of payments
-                        const paymentData = Array.isArray(res.data)
-                            ? res.data[0]
-                            : res.data;
-                        const paymentStatus = paymentData?.payment_status;
-
-                        if (paymentStatus === "SUCCESS") {
-                            toast.success("Payment Verified Successfully 🎉");
-                            setTimeout(() => navigate("/product-display/All"), 2000);
-                        } else {
-                            toast.error("Payment Failed ❌");
-                            console.error("Verify Response:", res.data);
-                        }
-
-                    } catch (err) {
-                        console.error("Verify API Error:", err.response?.data || err.message);
-                        toast.error("Verification API error ❌");
-                    }
-                },
-
-                onFailure: (event) => {
-                    console.error("PAYMENT_FAILURE event:", event);
-                    toast.error("Payment Failed ❌");
-                },
+            const res = await axios.post(`${SERVER_API_URL}/api/cashfree-verify`, {
+                checkoutData: checkoutData,
+                selectedAddressId: selectedAddress.addresses_id,
+                orderId: idToVerify,
             });
-        } catch (err) {
-            console.error("Payment Error:", err.response?.data || err.message || err);
+
+            console.log("Verify Response:", res.data);
+            const status = res.data?.paymentData?.payment_status;
+
+            if (status === "SUCCESS") {
+                toast.success("✅ Payment Verified Successfully 🎉");
+            } else {
+                toast.error("❌ Payment Failed / Pending");
+            }
+
+        } catch (error) {
+            console.error("Verify API Error:", error.response?.data || error.message);
+            toast.error("Verification API failed ❌");
+        }
+    };
+
+    // ✅ Step 4: Handle Payment Button Click
+    const handleCashfeePayment = async () => {
+        const sessionId = await getSessionId(amount);
+
+        if (!sessionId || !cashfree) return;
+
+        try {
+            let checkoutOptions = {
+                paymentSessionId: sessionId,
+                redirectTarget: "_modal", // iframe/modal
+                // redirectTarget: "_self", // 🔄 पूरी window redirect होगी
+            };
+
+            cashfree.checkout(checkoutOptions).then((res) => {
+                console.log("Checkout Response:", res);
+
+                // ⚡ Checkout response सिर्फ info देगा (success/fail हमेशा नहीं आता)
+                const msg =
+                    res?.paymentDetails?.paymentMessage ||
+                    "Payment finished. Verifying...";
+
+                toast(msg); // ✅ info message
+
+                // ✅ हमेशा backend verify करना है
+                verifyPayment(res?.order?.orderId || orderIdRef.current);
+
+                // ✅ Redirect only after success
+                // setTimeout(() => {
+                //     navigate(`/product-display/${"all"}`);
+                // }, 2000);
+            });
+        } catch (error) {
+            console.error("Payment Error:", error);
             toast.error("Something went wrong ❌");
         }
     };
 
-    // Master Function
-    const startPayment = () => {
-        if (!selectedAddress) {
-            toast.error("Please select an address");
-            return;
-        }
+    ////////////// Cashfree Payment Getway Without Address Id //////////////////////////////////////
+    // ✅ Step 3: Verify Payment (backend verify API hit)
+    const verifyPaymentWithoutAddId = async (oid) => {
+        try {
+            const idToVerify = oid || orderIdRef.current; // ✅ always use ref fallback
 
-        const amount = checkoutData?.power?.selectedLensOrProducrPrice;
-        if (!amount || isNaN(amount)) {
-            toast.error("Invalid amount for payment");
-            return;
-        }
+            if (!idToVerify) {
+                console.error("No orderId available for verification");
+                return;
+            }
 
-        createCashfreeOrder(amount);
+            const res = await axios.post(`${SERVER_API_URL}/api/cashfree-verify`, {
+                checkoutData: checkoutData,
+                orderId: idToVerify,
+            });
+
+            console.log("Verify Response:", res.data);
+            const status = res.data?.paymentData?.payment_status;
+
+            if (status === "SUCCESS") {
+                toast.success("✅ Payment Verified Successfully 🎉");
+            } else {
+                toast.error("❌ Payment Failed / Pending");
+            }
+
+        } catch (error) {
+            console.error("Verify API Error:", error.response?.data || error.message);
+            toast.error("Verification API failed ❌");
+        }
     };
 
+    // ✅ Step 4: Handle Payment Button Click
+    const handleCashfeePaymentWithoutAddId = async () => {
+        const sessionId = await getSessionId(amount);
+
+        if (!sessionId || !cashfree) return;
+
+        try {
+            let checkoutOptions = {
+                paymentSessionId: sessionId,
+                redirectTarget: "_modal", // iframe/modal
+                // redirectTarget: "_self", // 🔄 पूरी window redirect होगी
+            };
+
+            cashfree.checkout(checkoutOptions).then((res) => {
+                console.log("Checkout Response:", res);
+
+                // ⚡ Checkout response सिर्फ info देगा (success/fail हमेशा नहीं आता)
+                const msg =
+                    res?.paymentDetails?.paymentMessage ||
+                    "Payment finished. Verifying...";
+
+                toast(msg); // ✅ info message
+
+                // ✅ हमेशा backend verify करना है
+                verifyPaymentWithoutAddId(res?.order?.orderId || orderIdRef.current);
+
+                // ✅ Redirect only after success
+                // setTimeout(() => {
+                //     navigate(`/product-display/${"all"}`);
+                // }, 2000);
+            });
+        } catch (error) {
+            console.error("Payment Error:", error);
+            toast.error("Something went wrong ❌");
+        }
+    };
 
 
     return (
         <>
-            <Toaster position="top-right" reverseOrder={false} />
+            <Toaster position="top-right" reverseOrder={false} autoClose={4000} />
             {addressList.length > 0 ? (
                 <div className="delivery-container">
                     {/* Header */}
@@ -475,8 +575,8 @@ const CheckoutPage = () => {
                                 {/* razorpay Getway */}
                                 {/* <button className="deliver-btn" onClick={() => handleDeliverHereAndPayment()} style={{ opacity: selectedAddress?.addresses_id === user.addresses_id ? 1 : 0.5, cursor: selectedAddress?.addresses_id === user.addresses_id ? "pointer" : "not-allowed" }}>DELIVER HERE</button> */}
 
-                                {/* Cashfree Payment Gatway */}
-                                <button className="deliver-btn" onClick={() => startPayment()} style={{ opacity: selectedAddress?.addresses_id === user.addresses_id ? 1 : 0.5, cursor: selectedAddress?.addresses_id === user.addresses_id ? "pointer" : "not-allowed" }}>DELIVER HERE</button>
+                                {/* Cashfree Payment Gatway With Address Id */}
+                                <button className="deliver-btn" onClick={handleCashfeePayment} style={{ opacity: selectedAddress?.addresses_id === user.addresses_id ? 1 : 0.5, cursor: selectedAddress?.addresses_id === user.addresses_id ? "pointer" : "not-allowed" }}>DELIVER HERE</button>
                             </div>
                         )}
                     </div>

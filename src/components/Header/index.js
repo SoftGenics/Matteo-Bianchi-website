@@ -613,7 +613,7 @@ const Header = () => {
                       <div className="cart-item-details">
                         <h4>{item.name}</h4>
                         <p>{item.product_title}</p>
-                        <p> ₹{(item.product_price - (item.product_price * item.discount / 100)).toFixed(0)}/-</p>
+                        <p> ₹{((item.product_price - (item.product_price * item.discount / 100))*item.quantity).toFixed(0)}/-</p>
                         <p>Quantity: {item.quantity}</p>
                       </div>
 
@@ -624,7 +624,7 @@ const Header = () => {
                             handleDirectPayment({
                               item: item,
                               productQuntity: item.quantity,
-                              product_price: (item.product_price - (item.product_price * item.discount) / 100).toFixed(0),
+                              product_price: ((item.product_price - (item.product_price * item.discount / 100))*item.quantity).toFixed(0),
                               product_id: item.product_id,
                             })
                           }

@@ -78,7 +78,7 @@ const TrackingStatus = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${SERVER_API_URL}/api/payment/orders/${id}`);
+        const response = await axios.get(`${SERVER_API_URL}/api/cashfree/orders/${id}`);
         console.log("response order", response.data)
         setOrder(response.data);
       } catch (error) {

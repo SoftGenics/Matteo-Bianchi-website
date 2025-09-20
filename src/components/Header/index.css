@@ -858,6 +858,7 @@ h3 {
     font-size: 15px;
   }
   .cart-item-details p {
+    width: 130px;
     font-size: 13px;
   }
   .remove-btn {

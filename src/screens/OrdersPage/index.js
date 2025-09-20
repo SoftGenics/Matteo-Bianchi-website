@@ -34,7 +34,7 @@ const OrdersPage = () => {
     const fetchOrders = async () => {
         try {
             const res = await axios.post(
-                `${SERVER_API_URL}/api/payment/orders`,
+                `${SERVER_API_URL}/api/cashfree/orders/number`,
                 { mobile_number: mobile_num },
                 { headers: { "Content-Type": "application/json" } }
             );
@@ -115,6 +115,7 @@ const OrdersPage = () => {
                             <li className="orders-col orders-col-quantity">Quantity</li>
                             <li className="orders-col orders-col-price">Price</li>
                             <li className="orders-col orders-col-status">Status</li>
+                            <li className="orders-col orders-col-status">Date</li>
                         </ul>
 
                         {filteredOrders.map((order, index) => {
@@ -167,6 +168,9 @@ const OrdersPage = () => {
                                                     </span>
                                                 )}
                                             </div>
+                                            <span className="order-date">
+                                            {new Date(order.createdAt).toLocaleString()}
+                                            </span>
                                         </div>
                                     </div>
                                 </Link>

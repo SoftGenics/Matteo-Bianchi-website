@@ -580,10 +580,11 @@ const ProductDetails = () => {
         setSelectedImage(`${SERVER_API_URL}/${images[prevIndex]}`);
     };
 
-    const product_price = (item?.result?.product_price - (item?.result?.product_price * item?.result?.discount / 100)) * productQuntity;
+    const raw_price = ((item?.result?.product_price - (item?.result?.product_price * item?.result?.discount / 100)) * productQuntity);
+    const product_price = Math.round(raw_price);
 
     // console.log("item", item.result)
-
+    console.log("product_price", product_price)
     return (
         <>
             <Header />
@@ -812,7 +813,7 @@ const ProductDetails = () => {
 
                                 {/* price container */}
                                 <div className="price-product-card mobile-view">
-                                    <h1 className="price">₹{product_price.toFixed(0)}/-</h1>
+                                    <h1 className="price">₹{product_price}/-</h1>
                                     <p className="shipping-info">
                                         Get <strong>Fast, Free Shipping</strong> with
                                     </p>
