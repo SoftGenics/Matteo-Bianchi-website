@@ -529,12 +529,12 @@ select {
 
 .color-options {
   display: flex;
-  /* justify-content: flex-end; */
+  flex-direction: row-reverse; 
   gap: 8px;
   margin-top: 5px;
-  overflow-x: scroll;
-  /* width: 135px; */
+  overflow-x: auto;
   width: 135px;
+  scrollbar-width: thin; 
 }
 
 .color-box {
