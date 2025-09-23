@@ -742,7 +742,7 @@ const ProductDisplay = () => {
                       <h4 className='out-of-stock' style={{ color: "green" }}>In stock</h4>
                     )}
                     <h4 className="product-hilight">{product.product_title}</h4>
-                    <strong className="product-title">{product.highlights}</strong>
+                    <strong className="product-title font-styleing" >{product.highlights.slice(0, 50)}..</strong>
                     <div className="product-discount">
                       <p className="discount-title">₹{product.product_price}</p>
                       <span className="discount-off">({product.discount}% OFF)<span className='out-of-stock' style={{ color: "#e8a617", textTransform: "uppercase", fontSize:"9px"}}>For {product.gender}</span></span>

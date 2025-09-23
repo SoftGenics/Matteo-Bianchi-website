@@ -655,6 +655,7 @@ const ProductDetails = () => {
 
                                         <button
                                             onClick={() => scroll('left')}
+                                            // onClick={() => handlePrev()}
                                             className="scroll-btn-main-image prev-btn-thumb"
                                         >
                                             <MdKeyboardArrowLeft size={25} />
@@ -673,6 +674,7 @@ const ProductDetails = () => {
                                         {/* Next Button */}
                                         <button
                                             onClick={() => scroll('right')}
+                                            // onClick={() => handleNext()}
                                             className="scroll-btn-main-image next-btn-thumb"
                                         >
                                             <MdKeyboardArrowRight size={25} />
@@ -916,7 +918,7 @@ const ProductDetails = () => {
                                                             >
                                                                 <img src={`${SERVER_API_URL}/${colorObj.product_thumnail_img}`} alt="Sunglasses" className="product-image" />
                                                                 <div className="product-info">
-                                                                    <p className='product-title' style={{ marginBottom: "6px", fontSize: "10px" }}>{colorObj.highlights || "N/A"}</p>
+                                                                    <p className='product-title' style={{ marginBottom: "6px", fontSize: "10px" }}>{colorObj.highlights.slice(0, 50) || "N/A"}..</p>
 
                                                                     <div className="product-discount" style={{ height: "30px" }}>
                                                                         <p className="discount-title" style={{ fontSize: "10px" }}>₹{colorObj.product_price}</p>
@@ -943,37 +945,8 @@ const ProductDetails = () => {
                                             <li><strong>Product ID:</strong> DCM413</li>
                                             <li><strong>Frame Shape:</strong> {item?.result?.frame_shape}</li>
                                             <li><strong>Frame Type:</strong> {item?.result?.frem_type}</li>
-                                            {/* <li className="color-section">
-                                                <strong>Frame Color: </strong>
-                                                {selectedColor ? (null) : (<p className='chose-color'>Please select color</p>)}
-                                                <div className="color-options">
-                                                    {getColorsForProduct(item?.result?.product_title).length > 0 ? (
-                                                        getColorsForProduct(item?.result?.product_title).map((colorObj) => (
 
-                                                            <Link to={`/product-item/${colorObj.productId}`}>
-                                                                <span
-                                                                    key={colorObj.productId}  // ✅ Using Product ID as key
-                                                                    className={`color-box ${selectedColor?.frameColor === colorObj.frameColor && selectedColor?.lensColor === colorObj.lensColor ? "selected-color" : ""}`}
-                                                                    title={`Frame: ${colorObj.frameColor}, Lens: ${colorObj.lensColor}`}
-                                                                    style={{
-                                                                        background: `linear-gradient(to top, ${colorObj.frameColor} 50%, ${colorObj.lensColor} 50%)`,
-                                                                        display: 'inline-block',
-                                                                        width: '30px',
-                                                                        height: '30px',
-                                                                        borderRadius: '15px',
-                                                                        margin: '0 5px',
-                                                                        border: '1px solid #ddd',
-                                                                        cursor: 'pointer'
-                                                                    }}
-                                                                    onClick={() => handleColorSelect(colorObj.frameColor, colorObj.lensColor)}
-                                                                ></span>
-                                                            </Link>
-                                                        ))
-                                                    ) : (
-                                                        <span>No Colors Available</span>
-                                                    )}
-                                                </div>
-                                            </li> */}
+                                            
                                             {/* Show the remaining list items only when "See All" is clicked */}
                                             {showAll && (
                                                 <div className="custom-modal-overlay">
@@ -988,16 +961,20 @@ const ProductDetails = () => {
                                                                 alt="Large Product"
                                                             />
                                                             <ul className="custom-details-list">
-                                                                <li><strong>Product Code:</strong> MB {item?.result?.product_id} </li>
+                                                                <li><strong>Product Code:</strong> MB{item?.result?.product_id} </li>
                                                                 <li><strong>Product Price:</strong> ₹{item?.result?.product_price - (item?.result?.product_price * item?.result?.discount / 100).toFixed(0)}/-</li>
-                                                                <li><strong>Frame Shape:</strong> {item?.result?.frame_shape}</li>
-                                                                <li><strong>Frame Type:</strong> {item?.result?.frem_type}</li>
                                                                 <li><strong>Discount:</strong> {item?.result?.discount}%</li>
+                                                                <li><strong>Frame Shape:</strong> {item?.result?.frame_shape}</li>
+                                                                <li><strong>Frame Type:</strong> {item?.result?.frem_type}</li>  
+                                                                <li><strong>Frame Clolor:</strong> {item?.result?.frameColor}</li>
+                                                                 <li><strong>Lens Clolor:</strong>{item?.result?.lenshColor}</li>
+                                                                 <li><strong>Gender:</strong>{item?.result?.gender}</li> 
+                                                                <li><strong>Product Title:</strong> {item?.result?.product_title}</li>
+                                                                <li><strong>Frame Highligths:</strong> {item?.result?.highlights}</li>
                                                                 <li><strong>Frame Material:</strong> {item?.result?.frameMaterial}</li>
-                                                                <li><strong>Frame Description:</strong> {item?.result?.highlights}</li>
-                                                                {/* <li><strong>Lens Information:</strong> 54 mm / 16 mm / 145 mm</li> */}
-                                                                {/* <li><strong>Model No:</strong> DCM413</li> */}
-                                                                {/* <li><strong>Frame Size:</strong> 54 mm / 16 mm / 145 mm</li> */}
+                                                                <li><strong>Lens Frame Desc.:</strong> {item?.result?.frameDescription}</li>
+                                                                <li><strong>Lens Information:</strong> {item?.result?.lensInformation}</li> 
+                                                                
                                                             </ul>
                                                         </div>
 
@@ -1007,13 +984,7 @@ const ProductDetails = () => {
 
                                         </ul>
 
-                                        {/* Display selected color */}
-                                        {selectedColor && (
-                                            <p>
-                                                Selected Color: <strong>{selectedColor.frameColor}</strong> (Frame) &{" "}
-                                                <strong>{selectedColor.lensColor}</strong> (Lens)
-                                            </p>
-                                        )}
+                                
                                         {/* Show "See All" button if more than 3 details */}
                                         <button
                                             className="see-all-btn"
