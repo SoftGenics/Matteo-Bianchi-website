@@ -353,7 +353,8 @@ const CheckoutPage = () => {
     useEffect(() => {
         const initializeSDK = async () => {
             try {
-                const cf = await load({ mode: "sandbox" }); // "production" in live
+                // const cf = await load({ mode: "sandbox" }); // "production" in live
+                const cf = await load({ mode: "production" });
                 setCashfree(cf);
                 console.log("Cashfree SDK initialized ✅");
             } catch (err) {
@@ -427,8 +428,8 @@ const CheckoutPage = () => {
         try {
             let checkoutOptions = {
                 paymentSessionId: sessionId,
-                redirectTarget: "_modal", // iframe/modal
-                // redirectTarget: "_self", // 🔄 पूरी window redirect होगी
+                // redirectTarget: "_modal", // iframe/modal
+                redirectTarget: "_self", // 🔄 पूरी window redirect होगी
             };
 
             cashfree.checkout(checkoutOptions).then((res) => {
