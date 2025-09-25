@@ -428,8 +428,8 @@ const CheckoutPage = () => {
         try {
             let checkoutOptions = {
                 paymentSessionId: sessionId,
-                // redirectTarget: "_modal", // iframe/modal
-                redirectTarget: "_self", // 🔄 पूरी window redirect होगी
+                redirectTarget: "_modal", // iframe/modal
+                // redirectTarget: "_self", // 🔄 पूरी window redirect होगी
             };
 
             cashfree.checkout(checkoutOptions).then((res) => {
@@ -442,13 +442,13 @@ const CheckoutPage = () => {
 
                 toast(msg); // ✅ info message
 
-                // ✅ हमेशा backend verify करना है
+                // ✅  backend verify 
                 verifyPayment(res?.order?.orderId || orderIdRef.current);
 
                 // ✅ Redirect only after success
-                // setTimeout(() => {
-                //     navigate(`/product-display/${"all"}`);
-                // }, 2000);
+                setTimeout(() => {
+                    navigate(`/product-display/${"all"}`);
+                }, 2000);
             });
         } catch (error) {
             console.error("Payment Error:", error);
@@ -510,13 +510,13 @@ const CheckoutPage = () => {
 
                 toast(msg); // ✅ info message
 
-                // ✅ हमेशा backend verify करना है
+                // ✅ backend verify 
                 verifyPaymentWithoutAddId(res?.order?.orderId || orderIdRef.current);
 
                 // ✅ Redirect only after success
-                // setTimeout(() => {
-                //     navigate(`/product-display/${"all"}`);
-                // }, 2000);
+                setTimeout(() => {
+                    navigate(`/product-display/${"all"}`);
+                }, 2000);
             });
         } catch (error) {
             console.error("Payment Error:", error);
