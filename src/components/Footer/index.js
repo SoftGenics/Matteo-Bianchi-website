@@ -32,7 +32,13 @@ const footerData = {
     account: [
         { name: "Your Orders", link: "/orders" },
         { name: "Your Saved Frames", link: "/saved-frames" },
-        { name: "Your Dashboard", link: "/" }
+        { name: "Your Dashboard", link: "/" },
+        { name: "Contact Us", link: "/ContactUs" },
+        { name: "About Us", link: "/AboutUs" },
+        { name: "Privacy Policy", link: "/PrivacyPolicy" },
+        { name: "Refund Policy", link: "/RefundPolicy" },
+        { name: "Shipping Policy", link: "/ShippingPolicy" },
+        { name: "Terms And Conditions", link: "/TermsAndConditions" },
     ]
 };
 

@@ -156,6 +156,7 @@ const ProductDetails = () => {
     const [selectedId, setSelectedId] = useState(null);
     const rattingAndReview = useRef(null);
     const scrollRef = useRef(null);
+    const thumbRowRef = useRef(null);
 
     console.log("productQuntity", productQuntity)
     console.log("selectedColor", selectedColor)
@@ -366,6 +367,7 @@ const ProductDetails = () => {
         setVideoUrl(videoSrc);
     };
 
+    // scrooling featers impliment
     const scroll = (direction) => {
         if (scrollRef.current) {
             const scrollAmount = 150; // adjust as needed
@@ -375,6 +377,24 @@ const ProductDetails = () => {
             });
         }
     };
+
+    const handleScroll = (direction) => {
+        if (thumbRowRef.current) {
+            const scrollAmount = 200; // adjust as needed
+            thumbRowRef.current.scrollBy({
+                left: direction === 'left' ? -scrollAmount : scrollAmount,
+                behavior: 'smooth',
+            });
+        }
+    };
+    // End scrooling featers impliment
+
+    const handeClickPrevNext = (click) => {
+        if (click === "next") {
+            alert("next click")
+        }
+        alert("prev click")
+    }
 
     const handlePowerClick = () => {
         const token = localStorage.getItem('token'); // Replace 'yourTokenKey' with your actual token key
@@ -654,8 +674,8 @@ const ProductDetails = () => {
                                         )}
 
                                         <button
-                                            onClick={() => scroll('left')}
-                                            // onClick={() => handlePrev()}
+                                            // onClick={() => scroll('left')}
+                                            onClick={() => handlePrev()}
                                             className="scroll-btn-main-image prev-btn-thumb"
                                         >
                                             <MdKeyboardArrowLeft size={25} />
@@ -673,8 +693,8 @@ const ProductDetails = () => {
 
                                         {/* Next Button */}
                                         <button
-                                            onClick={() => scroll('right')}
-                                            // onClick={() => handleNext()}
+                                            // onClick={() => scroll('right')}
+                                            onClick={() => handleNext()}
                                             className="scroll-btn-main-image next-btn-thumb"
                                         >
                                             <MdKeyboardArrowRight size={25} />
@@ -692,6 +712,7 @@ const ProductDetails = () => {
                                                 }}>&times;</span>
                                                 <div className="image-popup">
                                                     {/* <button className="prev-btn1" onClick={handlePrev}><img className='forword-btn' src={backword} alt="forword-btn" /></button> */}
+                                                    <button className="prev-btn1" onClick={handlePrev}><img className='forword-btn' src={backword} alt="forword-btn" /></button>
 
 
                                                     {videoUrl === "" ? (
@@ -704,56 +725,63 @@ const ProductDetails = () => {
                                                         // null
                                                     )}
 
+                                                    <button className="next-btn1" onClick={handleNext}><img className='forword-btn' src={forword} alt="forword-btn" /></button>
+
                                                     {/* <button className="next-btn1" onClick={handleNext}><img className='forword-btn' src={forword} alt="forword-btn" /></button> */}
                                                 </div>
-                                                <div className="thumbnail-row" style={{ width: "90%", justifyContent: "space-around" }}>
-                                                    {item?.result && item.result.product_all_img && (
-                                                        <>
-                                                            <button onClick={handlePrev} style={{ background: "transparent", border: "none", fontSize: "25px" }}><IoIosArrowBack color='#fff' /></button>
 
-                                                            {/* Conditional Video Thumbnail Rendering */}
-                                                            {item?.result?.video_thumbnail &&
-                                                                item?.result?.video_thumbnail !== "" &&
-                                                                item?.result?.video_thumbnail !== "undefined" && (
-                                                                    <div className="thumbnail">
+                                                <div className='button-thmb-row'>
+                                                    <button className='popup-btn' onClick={() => handleScroll('rigth')} style={{ background: "transparent", border: "none", fontSize: "20px" }}><IoIosArrowBack color='#000' /></button>
+
+                                                    <div className="thumbnail-row" ref={thumbRowRef} style={{ justifyContent: "space-around" }}>
+                                                        {item?.result && item.result.product_all_img && (
+                                                            <>
+                                                                {/* Conditional Video Thumbnail Rendering */}
+                                                                {item?.result?.video_thumbnail &&
+                                                                    item?.result?.video_thumbnail !== "" &&
+                                                                    item?.result?.video_thumbnail !== "undefined" && (
+                                                                        <div className="thumbnail">
+                                                                            <img
+                                                                                className={`mini-image modified-mini-image ${selectedThumbnail === 'video' ? 'active-thumbnail-pop' : ''
+                                                                                    }`}
+                                                                                src={`${SERVER_API_URL}/${item.result.video_thumbnail}`}
+                                                                                alt="Video Thumbnail"
+                                                                                onMouseEnter={() => {
+                                                                                    handleVideoClick(`${SERVER_API_URL}/${item.result.video_url}`);
+                                                                                    setSelectedThumbnail('video');
+                                                                                }}
+                                                                            />
+                                                                        </div>
+                                                                    )}
+
+
+                                                                {item.result.product_all_img.map((img, index) => (
+                                                                    <div className="thumbnail" key={index}>
                                                                         <img
-                                                                            className={`mini-image modified-mini-image ${selectedThumbnail === 'video' ? 'active-thumbnail-pop' : ''
+                                                                            className={`mini-image ${selectedThumbnail === index ? 'active-thumbnail-pop' : ''
                                                                                 }`}
-                                                                            src={`${SERVER_API_URL}/${item.result.video_thumbnail}`}
-                                                                            alt="Video Thumbnail"
+                                                                            src={`${SERVER_API_URL}/${img}`}
+                                                                            alt={`ImageItem ${product_id}_${index + 1}`}
                                                                             onMouseEnter={() => {
-                                                                                handleVideoClick(`${SERVER_API_URL}/${item.result.video_url}`);
-                                                                                setSelectedThumbnail('video');
+                                                                                handleImageClick(`${SERVER_API_URL}/${img}`);
+                                                                                setSelectedThumbnail(index);
                                                                             }}
                                                                         />
                                                                     </div>
-                                                                )}
+                                                                ))}
+                                                            </>
+                                                        )}
+                                                    </div>
 
-
-                                                            {item.result.product_all_img.map((img, index) => (
-                                                                <div className="thumbnail" key={index}>
-                                                                    <img
-                                                                        className={`mini-image ${selectedThumbnail === index ? 'active-thumbnail-pop' : ''
-                                                                            }`}
-                                                                        src={`${SERVER_API_URL}/${img}`}
-                                                                        alt={`ImageItem ${product_id}_${index + 1}`}
-                                                                        onMouseEnter={() => {
-                                                                            handleImageClick(`${SERVER_API_URL}/${img}`);
-                                                                            setSelectedThumbnail(index);
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                            ))}
-
-                                                            <button className="" style={{ background: "transparent", border: "none", fontSize: "25px" }} onClick={handleNext}><IoIosArrowForward color='#fff' /></button>
-                                                        </>
-                                                    )}
-
+                                                    <button className="popup-btn" style={{ background: "transparent", border: "none", fontSize: "20px" }} onClick={() => handleScroll('left')}><IoIosArrowForward color='#000' /></button>
                                                 </div>
+
                                             </div>
                                         </div>
                                     )}
+                                    {/* ====== Popup Modal Product ====== */}
 
+                                    {/* ====== Product ====== */}
                                     <div className="thumbnail-container">
                                         {/* Prev Button */}
                                         <button
@@ -811,7 +839,9 @@ const ProductDetails = () => {
                                             <MdKeyboardArrowRight size={25} />
                                         </button>
                                     </div>
+                                    {/* ====== EndProduct ====== */}
                                 </div>
+
 
                                 {/* price container */}
                                 <div className="price-product-card mobile-view">
@@ -918,7 +948,7 @@ const ProductDetails = () => {
                                                             >
                                                                 <img src={`${SERVER_API_URL}/${colorObj.product_thumnail_img}`} alt="Sunglasses" className="product-image" />
                                                                 <div className="product-info">
-                                                                    <p className='product-title' style={{ marginBottom: "6px", fontSize: "10px" }}>{colorObj.highlights.slice(0, 50) || "N/A"}..</p>
+                                                                    <p className='product-title' style={{ marginBottom: "6px", fontSize: "10px" }}>{colorObj.highlights.slice(0, 40) || "N/A"}..</p>
 
                                                                     <div className="product-discount" style={{ height: "30px" }}>
                                                                         <p className="discount-title" style={{ fontSize: "10px" }}>₹{colorObj.product_price}</p>
@@ -946,7 +976,7 @@ const ProductDetails = () => {
                                             <li><strong>Frame Shape:</strong> {item?.result?.frame_shape}</li>
                                             <li><strong>Frame Type:</strong> {item?.result?.frem_type}</li>
 
-                                            
+
                                             {/* Show the remaining list items only when "See All" is clicked */}
                                             {showAll && (
                                                 <div className="custom-modal-overlay">
@@ -965,16 +995,16 @@ const ProductDetails = () => {
                                                                 <li><strong>Product Price:</strong> ₹{item?.result?.product_price - (item?.result?.product_price * item?.result?.discount / 100).toFixed(0)}/-</li>
                                                                 <li><strong>Discount:</strong> {item?.result?.discount}%</li>
                                                                 <li><strong>Frame Shape:</strong> {item?.result?.frame_shape}</li>
-                                                                <li><strong>Frame Type:</strong> {item?.result?.frem_type}</li>  
+                                                                <li><strong>Frame Type:</strong> {item?.result?.frem_type}</li>
                                                                 <li><strong>Frame Clolor:</strong> {item?.result?.frameColor}</li>
-                                                                 <li><strong>Lens Clolor:</strong>{item?.result?.lenshColor}</li>
-                                                                 <li><strong>Gender:</strong>{item?.result?.gender}</li> 
+                                                                <li><strong>Lens Clolor:</strong>{item?.result?.lenshColor}</li>
+                                                                <li><strong>Gender:</strong>{item?.result?.gender}</li>
                                                                 <li><strong>Product Title:</strong> {item?.result?.product_title}</li>
                                                                 <li><strong>Frame Highligths:</strong> {item?.result?.highlights}</li>
                                                                 <li><strong>Frame Material:</strong> {item?.result?.frameMaterial}</li>
                                                                 <li><strong>Lens Frame Desc.:</strong> {item?.result?.frameDescription}</li>
-                                                                <li><strong>Lens Information:</strong> {item?.result?.lensInformation}</li> 
-                                                                
+                                                                <li><strong>Lens Information:</strong> {item?.result?.lensInformation}</li>
+
                                                             </ul>
                                                         </div>
 
@@ -984,7 +1014,7 @@ const ProductDetails = () => {
 
                                         </ul>
 
-                                
+
                                         {/* Show "See All" button if more than 3 details */}
                                         <button
                                             className="see-all-btn"
