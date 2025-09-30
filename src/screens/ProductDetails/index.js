@@ -127,8 +127,12 @@ const ProductDetails = () => {
     const [allProducts, setAllProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [selectedThumbnail, setSelectedThumbnail] = useState(null);
     const [videoUrl, setVideoUrl] = useState("");
+    const [selectedThumbnail, setSelectedThumbnail] = useState(null);
+
+    const [selectedPopImage, setSelectedPopImage] = useState(null);
+    const [videoUrlPop, setVideoUrlPop] = useState("");
+
     const [showPowerPopup, setShowPowerPopup] = useState(false);
     const [showPopupContainer, setShowPopupContainer] = useState(true);
     const [showPopuplensePrice, setShowPopuplensePrice] = useState(false);
@@ -358,15 +362,6 @@ const ProductDetails = () => {
 
     }
 
-    const handleImageClick = (imageSrc) => {
-        setSelectedImage(imageSrc);
-        setVideoUrl("")
-    };
-
-    const handleVideoClick = (videoSrc) => {
-        setVideoUrl(videoSrc);
-    };
-
     // scrooling featers impliment
     const scroll = (direction) => {
         if (scrollRef.current) {
@@ -388,13 +383,6 @@ const ProductDetails = () => {
         }
     };
     // End scrooling featers impliment
-
-    const handeClickPrevNext = (click) => {
-        if (click === "next") {
-            alert("next click")
-        }
-        alert("prev click")
-    }
 
     const handlePowerClick = () => {
         const token = localStorage.getItem('token'); // Replace 'yourTokenKey' with your actual token key
@@ -576,11 +564,47 @@ const ProductDetails = () => {
     // console.log("wishlist", wishlistItems)
     // console.log("item?.result?", item?.result?.product_id)
 
+    // for main product image
+    const handleImageClick = (imageSrc) => {
+        setSelectedImage(imageSrc);
+        setVideoUrl("")
+    };
+
+    // for popup product image
+    const handlePopImageClick = (imageSrc) => {
+        setSelectedPopImage(imageSrc);
+        setVideoUrlPop("")
+    };
+
+    // for main product image
+    const handleVideoClick = (videoSrc) => {
+        setVideoUrl(videoSrc);
+    };
+
+    // for popup product image
+    const handleVideoClickPop = (videoSrc) => {
+        setVideoUrlPop(videoSrc);
+    };
+
+    // for main product image
     const images = item?.result?.product_all_img || [];
+
+    // for popup product image
+    const popupNextbtn = () => {
+        const nextIndex = (currentIndex + 1) % images.length;
+        setCurrentIndex(nextIndex);
+        setSelectedPopImage(`${SERVER_API_URL}/${images[nextIndex]}`);
+    }
+
+    const popupPrevbtn = () => {
+        const prevIndex = (currentIndex - 1 + images.length) % images.length;
+        setCurrentIndex(prevIndex);
+        setSelectedPopImage(`${SERVER_API_URL}/${images[prevIndex]}`);
+    }
 
     const handleImageClickPopup = (index) => {
         setCurrentIndex(index);
-        setSelectedImage(`${SERVER_API_URL}/${images[index]}`);
+        setSelectedPopImage(`${SERVER_API_URL}/${images[index]}`);
         setIsPopupOpen(true);
     };
 
@@ -712,20 +736,20 @@ const ProductDetails = () => {
                                                 }}>&times;</span>
                                                 <div className="image-popup">
                                                     {/* <button className="prev-btn1" onClick={handlePrev}><img className='forword-btn' src={backword} alt="forword-btn" /></button> */}
-                                                    <button className="prev-btn1" onClick={handlePrev}><img className='forword-btn' src={backword} alt="forword-btn" /></button>
+                                                    <button className="prev-btn1" onClick={popupPrevbtn}><img className='forword-btn' src={backword} alt="forword-btn" /></button>
 
 
-                                                    {videoUrl === "" ? (
-                                                        <img className="popup-image" src={selectedImage} alt="Popup Large View" />
+                                                    {videoUrlPop === "" ? (
+                                                        <img className="popup-image" src={selectedPopImage} alt="Popup Large View" />
                                                     ) : (
                                                         <video controls autoPlay className="product-video-container" style={{ width: "100%", height: "60vh" }}>
-                                                            <source src={videoUrl} type="video/mp4" />
+                                                            <source src={videoUrlPop} type="video/mp4" />
                                                             Your browser does not support the video tag.
                                                         </video>
                                                         // null
                                                     )}
 
-                                                    <button className="next-btn1" onClick={handleNext}><img className='forword-btn' src={forword} alt="forword-btn" /></button>
+                                                    <button className="next-btn1" onClick={popupNextbtn}><img className='forword-btn' src={forword} alt="forword-btn" /></button>
 
                                                     {/* <button className="next-btn1" onClick={handleNext}><img className='forword-btn' src={forword} alt="forword-btn" /></button> */}
                                                 </div>
@@ -747,7 +771,7 @@ const ProductDetails = () => {
                                                                                 src={`${SERVER_API_URL}/${item.result.video_thumbnail}`}
                                                                                 alt="Video Thumbnail"
                                                                                 onMouseEnter={() => {
-                                                                                    handleVideoClick(`${SERVER_API_URL}/${item.result.video_url}`);
+                                                                                    handleVideoClickPop(`${SERVER_API_URL}/${item.result.video_url}`);
                                                                                     setSelectedThumbnail('video');
                                                                                 }}
                                                                             />
@@ -763,7 +787,7 @@ const ProductDetails = () => {
                                                                             src={`${SERVER_API_URL}/${img}`}
                                                                             alt={`ImageItem ${product_id}_${index + 1}`}
                                                                             onMouseEnter={() => {
-                                                                                handleImageClick(`${SERVER_API_URL}/${img}`);
+                                                                                handlePopImageClick(`${SERVER_API_URL}/${img}`);
                                                                                 setSelectedThumbnail(index);
                                                                             }}
                                                                         />
