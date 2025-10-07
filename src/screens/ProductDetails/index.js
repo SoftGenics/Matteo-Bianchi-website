@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
+import ReactImageMagnify from 'react-image-magnify';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { SERVER_API_URL } from '../../server/server';
 import { SERVER_URL } from '../../server/server';
@@ -735,23 +736,59 @@ const ProductDetails = () => {
                                                     setVideoUrl("");
                                                 }}>&times;</span>
                                                 <div className="image-popup">
-                                                    {/* <button className="prev-btn1" onClick={handlePrev}><img className='forword-btn' src={backword} alt="forword-btn" /></button> */}
                                                     <button className="prev-btn1" onClick={popupPrevbtn}><img className='forword-btn' src={backword} alt="forword-btn" /></button>
 
-
-                                                    {videoUrlPop === "" ? (
+                                                    {/* {videoUrlPop === "" ? (
                                                         <img className="popup-image" src={selectedPopImage} alt="Popup Large View" />
                                                     ) : (
                                                         <video controls autoPlay className="product-video-container" style={{ width: "100%", height: "60vh" }}>
                                                             <source src={videoUrlPop} type="video/mp4" />
                                                             Your browser does not support the video tag.
                                                         </video>
-                                                        // null
+                                                    )} */}
+
+                                                    {videoUrlPop === "" ? (
+                                                        <ReactImageMagnify
+                                                            {...{
+                                                                smallImage: {
+                                                                    alt: "Popup Large View",
+                                                                    src: selectedPopImage,
+                                                                    isFluidWidth: false,
+                                                                    width: 460,
+                                                                    height: 440,
+                                                                },
+                                                                largeImage: {
+                                                                    src: selectedPopImage,
+                                                                    // width: 800,  
+                                                                    // height: 800, 
+                                                                    width: 1200,
+                                                                    height: 1600,
+                                                                },
+                                                                lensStyle: { backgroundColor: "rgba(0,0,0,.3)" },
+                                                                enlargedImageContainerStyle: { zIndex: 1500 }, // ensures zoom shows above popup
+                                                                isHintEnabled: true,
+                                                                enlargedImageContainerStyle: {
+                                                                    zIndex: 1500,
+                                                                    background: "#fff",
+                                                                    // marginTop: "-40px",
+                                                                },
+                                                                // enlargedImageContainerDimensions: {
+                                                                //     width: '900',   
+                                                                //     height: '900'  
+                                                                // },
+                                                                // lensStyle: { backgroundColor: "rgba(255,255,255,0.3)", border: "1px solid #000" },
+                                                                
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        <video controls autoPlay className="product-video-container" style={{ width: "100%", height: "60vh" }}>
+                                                            <source src={videoUrlPop} type="video/mp4" />
+                                                            Your browser does not support the video tag.
+                                                        </video>
                                                     )}
 
-                                                    <button className="next-btn1" onClick={popupNextbtn}><img className='forword-btn' src={forword} alt="forword-btn" /></button>
 
-                                                    {/* <button className="next-btn1" onClick={handleNext}><img className='forword-btn' src={forword} alt="forword-btn" /></button> */}
+                                                    <button className="next-btn1" onClick={popupNextbtn}><img className='forword-btn' src={forword} alt="forword-btn" /></button>
                                                 </div>
 
                                                 <div className='button-thmb-row'>
