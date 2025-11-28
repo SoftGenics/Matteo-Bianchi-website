@@ -17,6 +17,12 @@ import TermsAndConditions from "./screens/TermsAndConditions";
 import AboutUs from "./screens/AboutUs";
 import OrdersPage from "./screens/OrdersPage";
 import TrackingStatus from "./screens/TrackingStatus"
+import Jewellery from "./screens/Jewellery"
+import PurseAndBags from "./screens/PurseAndBags"
+import Eyewear from "./screens/Eyewear"
+import Clothings from "./screens/Clothings"
+import Footwears from "./screens/Footwears"
+import ProductDetailsNew from "./screens/ProductDetailsNew"
 
 import "./App.css";
 
@@ -75,6 +81,8 @@ function App() {
           <Route exact path="/testing" element={<Testing />} />
           <Route exact path="/product-display/:category" element={<ProductDisplay />} />
           <Route exact path="/product-item/:product_id" element={<ProductDetails />} />
+          <Route exact path="/product-item/:cetegory/:product_id" element={<ProductDetailsNew />} />
+          
           <Route exact path="/ChekOutPage" element={<ChekOutPage />} />
           <Route exact path="/Faq-page" element={<FaqPage />} />
           <Route exact path="/ContactUs" element={<ContactUs />} />
@@ -85,6 +93,11 @@ function App() {
           <Route exact path="/AboutUs" element={<AboutUs />} />
           <Route exact path="/track-order" element={<OrdersPage />} />
           <Route exact path="/tracking-status/:id" element={<TrackingStatus />} />
+          <Route exact path="/jewellery" element={<Jewellery />} />
+          <Route exact path="/purse-nd-bags" element={<PurseAndBags />} />
+          <Route exact path="/eyewear" element={<Eyewear />} />
+          <Route exact path="/clothings" element={<Clothings />} />
+          <Route exact path="/footwear" element={<Footwears />} />
         </Routes>
       </BrowserRouter>
     </GlobleInfo.Provider>
