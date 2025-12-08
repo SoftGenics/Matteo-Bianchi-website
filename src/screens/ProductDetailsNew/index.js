@@ -125,6 +125,8 @@ const ProductDetails = () => {
   const [mobile_num, setMobile_num] = useState("");
   const { saveCheckoutData, updateCounts } = useContext(GlobleInfo)
   const [item, setItem] = useState({});
+  const [suggProd, setSuggProd] = useState({});
+
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -275,7 +277,8 @@ const ProductDetails = () => {
       const product = {
         mobile_number: mobile_num,
         selectedColor: selectedColor,
-        product_id: product_id
+        product_id: product_id,
+        main_category: cetegory
       }
 
       // Save the data to context
@@ -350,6 +353,7 @@ const ProductDetails = () => {
         mobile_number: mobile_num,
         selectedColor: selectedColor,
         product_id: product_id,
+        main_category: cetegory,
         productQuntity: productQuntity
       }
       // Save the data to context
@@ -430,7 +434,7 @@ const ProductDetails = () => {
 
   const addToCart = (item) => {
     // Extract product details from `result`
-    const productDetails = item.result;
+    const productDetails = item;
 
     // Get existing cart items from localStorage
     const existingCartItems = JSON.parse(localStorage.getItem("cart")) || [];
@@ -500,9 +504,10 @@ const ProductDetails = () => {
         );
         console.log("details new", response.data.data);
         setItem(response.data.data);
+        setSuggProd(response.data.suggestedProducts)
 
-        const frameColor = response.data?.result?.frameColor;
-        const lensColor = response.data?.result?.lenshColor;
+        const frameColor = response.data.data?.color;
+        const lensColor = response.data.data?.color;
 
         handleColorSelect(frameColor, lensColor);
       } catch (error) {
@@ -527,10 +532,10 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchData1 = async () => {
       try {
-        const response = await axios.get(`${SERVER_API_URL}/product`);
-        const products = response.data;
+        const response = await axios.get(`${SERVER_API_URL}/api/allCetegory`);
+        const products = response.data.data;
         setAllProducts(products);
-        console.log("products", products)
+        console.log("allCetegory", products)
 
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -539,24 +544,30 @@ const ProductDetails = () => {
     fetchData1();
   }, [product_id]);
 
-  const getColorsForProduct = (productTitle) => {
+  const getColorsForProduct = (same_color_type, main_category) => {
     // ✅ Ensure allProducts.result is an array before filtering
-    const productsArray = Array.isArray(allProducts?.result) ? allProducts.result : [];
+    const productsArray = Array.isArray(allProducts) ? allProducts : [];
 
     // Filter products that match the same title
-    const matchingProducts = productsArray.filter(p => p.product_title === productTitle);
+    const matchingProducts = productsArray.filter(p => p.same_color_type === same_color_type && p.main_category === main_category);
 
     // Extract frame and lens colors
     const colors = matchingProducts.map(p => ({
       productId: p.product_id,  // ✅ Include product ID
       frameColor: p.frameColor || "#FFFFFF", // Default White if null
       lensColor: p.lenshColor || "#000000",  // Default Black if null
-      product_thumnail_img: p.product_thumnail_img,
+      thumbnail_url: p.thumbnail_url,
       product_title: p.product_title,
       product_price: p.product_price,
       discount: p.discount,
       highlights: p.highlights,
       gender: p.gender,
+
+      main_category: p.main_category || "",
+      description: p.description || "",
+      price: p.price || 0,
+      discount_percent: p.discount_percent || 0,
+      sub_category: p.sub_category || "N/A",
     }));
 
     return colors;
@@ -941,8 +952,8 @@ const ProductDetails = () => {
 
                 {/* Product Info Section */}
                 <div className="product-info-section">
-                  <h1 className="product-title">{item?.result?.highlights} Stylish Sunglasses</h1>
-                  <h3 className="product-title">{item?.result?.product_title}</h3>
+                  <h1 className="product-title">{item?.product_name} Stylish </h1>
+                  <h3 className="product-title">{item?.product_variant}</h3>
                   <div className="rating-container" onClick={() => scrollToSection(rattingAndReview)}>
                     <span className="rating-value">4.4</span>
                     <div className="stars">
@@ -965,48 +976,41 @@ const ProductDetails = () => {
                         {selectedColor && (
                           <p>
                             <strong className='selected-text'>
-                              Frame:{"  "}
+                              product color:{"  "}
                               <span
                                 className="selected-color"
                                 style={{ backgroundColor: selectedColor.frameColor }}
                               />
                             </strong>
                             <br />
-                            <strong className='selected-text'>
-                              Lens:{"  "}
-                              <span
-                                className="selected-color"
-                                style={{ backgroundColor: selectedColor.lensColor, marginLeft: "9.5px" }}
-                              />
-                            </strong>
                           </p>
                         )}
 
                       </h3>
                       <div className="grid-container-product-details">
-                        {getColorsForProduct(item?.result?.product_title).length > 0 ? (
-                          getColorsForProduct(item?.result?.product_title).map((colorObj) => (
+                        {getColorsForProduct(item?.same_color_type, item?.main_category).length > 0 ? (
+                          getColorsForProduct(item?.same_color_type, item?.main_category).map((colorObj) => (
 
-                            <Link to={`/product-item/${colorObj.productId}`}>
+                            <Link to={`/product-item/${colorObj.main_category}/${colorObj.productId}`}>
                               <div
                                 key={colorObj.productId}
                                 className={`product-card-product-details ${selectedId === colorObj.productId ? "selected" : ""}`}
                                 // onClick={() => setSelectedId(colorObj.productId)}
                                 onClick={() => {
-                                  handleColorSelect(colorObj.frameColor, colorObj.lensColor);
+                                  handleColorSelect(colorObj.color, colorObj.color);
                                   setSelectedId(colorObj.productId);
                                 }}
                               >
-                                <img src={`${SERVER_API_URL}/${colorObj.product_thumnail_img}`} alt="Sunglasses" className="product-image" />
+                                <img src={`${SERVER_API_URL}/${colorObj.thumbnail_url}`} alt="Sunglasses" className="product-image" />
                                 <div className="product-info">
-                                  <p className='product-title' style={{ marginBottom: "6px", fontSize: "10px" }}>{colorObj.highlights.slice(0, 40) || "N/A"}..</p>
+                                  <p className='product-title' style={{ marginBottom: "6px", fontSize: "10px" }}>{colorObj?.description?.slice(0, 40) || "N/A"}..</p>
 
                                   <div className="product-discount" style={{ height: "30px" }}>
-                                    <p className="discount-title" style={{ fontSize: "10px" }}>₹{colorObj.product_price}</p>
-                                    <span className="discount-off" style={{ fontSize: "10px" }}>({colorObj.discount}% OFF)<span className='out-of-stock' style={{ color: "#e8a617", textTransform: "uppercase", fontSize: "6px" }}>For {colorObj.gender}</span></span>
+                                    <p className="discount-title" style={{ fontSize: "10px" }}>₹{colorObj.price}</p>
+                                    <span className="discount-off" style={{ fontSize: "10px" }}>({colorObj.discount_percent}% OFF)<span className='out-of-stock' style={{ color: "#e8a617", textTransform: "uppercase", fontSize: "6px" }}>For {colorObj.sub_category}</span></span>
                                   </div>
                                   <p className="product-price1">
-                                    ₹{(colorObj.product_price - (colorObj.product_price * colorObj.discount / 100)).toFixed(0)}/-
+                                    ₹{(colorObj.price - (colorObj.price * colorObj.discount_percent / 100)).toFixed(0)}/-
                                   </p>
 
                                 </div>
@@ -1023,9 +1027,67 @@ const ProductDetails = () => {
                   <div className="technical-details">
                     <h3>Technical Details</h3>
                     <ul>
-                      <li><strong>Product ID:</strong> DCM413</li>
-                      <li><strong>Frame Shape:</strong> {item?.result?.frame_shape}</li>
-                      <li><strong>Frame Type:</strong> {item?.result?.frem_type}</li>
+
+                      {/* ---------------- CLOTHINGS ONLY ---------------- */}
+                      {item?.main_category === "clothings" && (
+                        <>
+                          <li><strong>Product ID:</strong> DCM{item?.product_id}</li>
+
+                          {item?.size && (
+                            <li><strong>Size:</strong> [{item?.size.join(", ")}]</li>
+                          )}
+
+                          {item?.fabric_type && (
+                            <li><strong>Fabric Type:</strong> {item?.fabric_type}</li>
+                          )}
+                        </>
+                      )}
+
+                      {/* ---------------- JEWELLERY ONLY ---------------- */}
+                      {item?.main_category === "Jewellery" && (
+                        <>
+                          <li><strong>Product ID:</strong> DCM{item?.product_id}</li>
+
+                          {item?.weight && (
+                            <li><strong>Weight:</strong> {item?.weight}</li>
+                          )}
+
+                          {item?.stone_type && (
+                            <li><strong>Stone Type:</strong> {item?.stone_type}</li>
+                          )}
+                        </>
+                      )}
+
+                      {/* ---------------- PURSE ONLY ---------------- */}
+                      {item?.main_category === "purse" && (
+                        <>
+                          <li><strong>Product ID:</strong> DCM{item?.product_id}</li>
+
+                          {item?.size_type && (
+                            <li><strong>Size Type:</strong> {item?.size_type}</li>
+                          )}
+
+                          {item?.pattern_type && (
+                            <li><strong>Pattern Type:</strong> {item?.pattern_type}</li>
+                          )}
+                        </>
+                      )}
+
+
+                      {/* ---------------- FOOTWEAR ONLY ---------------- */}
+                      {item?.main_category === "footwear" && (
+                        <>
+                          <li><strong>Product ID:</strong> DCM{item?.product_id}</li>
+
+                          {item?.heel_height && (
+                            <li><strong>Heel Height:</strong> {item?.heel_height}</li>
+                          )}
+
+                          {item?.closure_type && (
+                            <li><strong>Closure Type:</strong> {item?.closure_type}</li>
+                          )}
+                        </>
+                      )}
 
 
                       {/* Show the remaining list items only when "See All" is clicked */}
@@ -1038,7 +1100,7 @@ const ProductDetails = () => {
                             <div className='custom-modal-row-container'>
                               <img
                                 className="custom-modal-image"
-                                src={selectedImage ? selectedImage : `${SERVER_API_URL}/${item?.result?.product_thumnail_img}`}
+                                src={selectedImage ? selectedImage : `${SERVER_API_URL}/${item?.thumbnail_url}`}
                                 alt="Large Product"
                               />
                               <ul className="custom-details-list">
@@ -1095,17 +1157,17 @@ const ProductDetails = () => {
               <div className="suggested-frames">
                 <h2>Suggested Frames</h2>
                 <div className="frames-row">
-                  {item?.suggestedProducts?.length > 0 ? (
-                    item.suggestedProducts.map((frame) => (
-                      <div key={frame.id} className="frame-card">
+                  {suggProd?.length > 0 ? (
+                    suggProd.map((frame) => (
+                      <div key={frame.product_id} className="frame-card">
                         <Link
-                          to={`/product-item/${frame.product_id}`}
+                          to={`/product-item/${frame.main_category}/${frame.product_id}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
                           <div className="frame-image">
-                            {frame.product_thumnail_img ? (
-                              <img className='suggested-frame-image' src={`${SERVER_API_URL}/${frame.product_thumnail_img}`} alt={frame.name} />
+                            {frame.thumbnail_url ? (
+                              <img className='suggested-frame-image' src={`${SERVER_API_URL}/${frame.thumbnail_url}`} alt={frame.product_id} />
                             ) : (
                               <div className="no-image">Image Not Available</div>
                             )}
@@ -1114,16 +1176,16 @@ const ProductDetails = () => {
                         <h3>{frame.product_title || "Unnamed Product"}</h3>
 
                         <div className="product-discount">
-                          <p className="discount-title">₹{frame.product_price}</p>
-                          <span className="discount-off">({frame.discount}% OFF)<span className='out-of-stock' style={{ color: "#e8a617", textTransform: "uppercase", fontSize: "9px" }}>For {frame.gender}</span></span>
+                          <p className="discount-title">₹{frame.price}</p>
+                          <span className="discount-off">({frame.discount_percent}% OFF)<span className='out-of-stock' style={{ color: "#e8a617", textTransform: "uppercase", fontSize: "9px" }}>For {frame.sub_category}</span></span>
                         </div>
                         <p className="product-price1">
-                          ₹{(frame.product_price - (frame.product_price * frame.discount / 100)).toFixed(0)}/-
+                          ₹{(frame.price - (frame.price * frame.discount_percent / 100)).toFixed(0)}/-
                         </p>
 
-                        <p style={{ marginBottom: "8px" }}>{frame.highlights || "N/A"}</p>
+                        <p style={{ marginBottom: "8px" }}>{frame.product_name || "N/A"}</p>
 
-                        <p>Material: {frame.material || "fiber"}</p>
+                        <p>Material: {frame.material_type || "fiber"}</p>
 
                       </div>
                     ))

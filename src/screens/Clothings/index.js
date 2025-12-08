@@ -440,7 +440,7 @@ const Clothings = () => {
                       <img src={wishlist1} alt="wishlist" className='wishlist-image' onClick={() => toggleWishlist(product)} />
                     )}
                   </div>
-                  <Link to={`/product-item/${product.product_id}`}>
+                  <Link to={`/product-item/${product.main_category}/${product.product_id}`}>
                     <img
                       className="carousel-image2"
                       src={`${SERVER_API_URL}/${imageSrc}`}

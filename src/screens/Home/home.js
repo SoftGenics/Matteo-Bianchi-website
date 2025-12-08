@@ -185,9 +185,12 @@ const Home = () => {
             {!isLoading && slidersData.length > 0 ? (
               slidersData.map((data, index) => {
                 if (data.slider_name === "top_mini_image") {
+                  const link = data.slider_link?.toLowerCase();
+                  const isEyewear = link?.includes("eyewear");
+
                   return (
                     <Link
-                      to={`/product-display/${data.slider_link}`}
+                      to={isEyewear ? `/product-display/${link}` : `/${link}`}
                       target="_blank"
                     >
                       <div key={index} className="card-container">
@@ -204,7 +207,7 @@ const Home = () => {
                           <p>Starting from ₹2000</p>
                           <p>Air Light-Weight Powered Lenses</p>
                           <p>Starting from ₹2000</p>
-                        </div> */}
+                          </div> */}
 
                         </div>
                       </div>
@@ -478,7 +481,7 @@ const Home = () => {
                           alt={frame.product_title}
                           className="glass-img"
                         />
-            
+
                         <h3 className="glass-brand">{frame.product_title}</h3>
                         <p className="glass-name">{frame.highlights}</p>
                         <div className="product-discount-info">
