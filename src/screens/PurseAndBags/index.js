@@ -9,67 +9,68 @@ import { LuArrowDownUp } from "react-icons/lu";
 import wishlist from '../../Assets/images/wishlist.svg'
 import wishlist1 from '../../Assets/images/wishlist1.svg'
 
-import Aviator from '../../Assets/images/Aviator.png'
-import CatsEye from '../../Assets/images/CatsEye.png'
-import Rectangle from '../../Assets/images/Rectangle.png'
-import Round from '../../Assets/images/Round.png'
-import Square from '../../Assets/images/Square.png'
-import Sports from '../../Assets/images/Sports.png'
-import Hexagonal from '../../Assets/images/Hexagonal.png'
-import Oval from '../../Assets/images/Oval.png'
+// import Aviator from '../../Assets/images/Aviator.png'
+// import CatsEye from '../../Assets/images/CatsEye.png'
+// import Rectangle from '../../Assets/images/Rectangle.png'
+// import Round from '../../Assets/images/Round.png'
+// import Square from '../../Assets/images/Square.png'
+// import Sports from '../../Assets/images/Sports.png'
+// import Hexagonal from '../../Assets/images/Hexagonal.png'
+// import Oval from '../../Assets/images/Oval.png'
 
-import Fullrim from '../../Assets/images/Fullrim.svg'
-import Halfrim from '../../Assets/images/Halfrim.svg'
-import Rimless from '../../Assets/images/Rimless.svg'
+// import Fullrim from '../../Assets/images/Fullrim.svg'
+// import Halfrim from '../../Assets/images/Halfrim.svg'
+// import Rimless from '../../Assets/images/Rimless.svg'
 import "./index.css";
 
-const frameType = ['Fullrim', 'Halfrim', 'Rimless',];
-const frameShapes = [
-    'Aviator', 'CatsEye', 'Rectangle', 'Round', 'Square', 'Oval'];
-// Mapping frame shapes to their respective imported images
-const frameImages = {
-    Aviator,
-    CatsEye,
-    Rectangle,
-    Round,
-    Square,
-    Sports,
-    Hexagonal,
-    Oval,
-    Fullrim,
-    Halfrim,
-    Rimless,
-};
+// const frameType = ['Fullrim', 'Halfrim', 'Rimless',];
+// const frameShapes = [
+//     'Aviator', 'CatsEye', 'Rectangle', 'Round', 'Square', 'Oval'];
 
-const genders = ['Men', 'Women', 'Unisex', 'Kids'];
-const frameColors = [
-    { name: "Black" },
-    { name: "Gold" },
-    { name: "Brown" },
-    { name: "Blue" },
-    { name: "Silver" },
-    { name: "Transparent" },
-    { name: "Green" },
-    { name: "Grey" },
-    { name: "Pink" },
-    { name: "Red" },
-    { name: "White" },
-    { name: "Purple" },
-    { name: "Orange" },
-];
-const lensColors = [
-    { name: "Blue", count: 0 },
-    { name: "Green", count: 0 },
-    { name: "Yellow", count: 0 },
-    { name: "Transparent", count: 0 },
-    { name: "Pink", count: 0 },
-    { name: "Brown", count: 0 },
-    { name: "Grey", count: 0 },
-    { name: "Black", count: 0 },
-    { name: "Red", count: 0 },
-    { name: "Violet", count: 0 },
-    { name: "White", count: 0 },
-];
+// const frameImages = {
+//     Aviator,
+//     CatsEye,
+//     Rectangle,
+//     Round,
+//     Square,
+//     Sports,
+//     Hexagonal,
+//     Oval,
+//     Fullrim,
+//     Halfrim,
+//     Rimless,
+// };
+
+// const genders = ['Men', 'Women', 'Unisex', 'Kids'];
+// const frameColors = [
+//     { name: "Black" },
+//     { name: "Gold" },
+//     { name: "Brown" },
+//     { name: "Blue" },
+//     { name: "Silver" },
+//     { name: "Transparent" },
+//     { name: "Green" },
+//     { name: "Grey" },
+//     { name: "Pink" },
+//     { name: "Red" },
+//     { name: "White" },
+//     { name: "Purple" },
+//     { name: "Orange" },
+// ];
+// const lensColors = [
+//     { name: "Blue", count: 0 },
+//     { name: "Green", count: 0 },
+//     { name: "Yellow", count: 0 },
+//     { name: "Transparent", count: 0 },
+//     { name: "Pink", count: 0 },
+//     { name: "Brown", count: 0 },
+//     { name: "Grey", count: 0 },
+//     { name: "Black", count: 0 },
+//     { name: "Red", count: 0 },
+//     { name: "Violet", count: 0 },
+//     { name: "White", count: 0 },
+// ];
+
 const PurseAndBags = () => {
     const [allProducts, setAllProducts] = useState([]);
     // const [filteredProducts, setFilteredProducts] = useState([]);
@@ -78,16 +79,16 @@ const PurseAndBags = () => {
 
     const [selectedFrameShape, setSelectedFrameShape] = useState([]);
     const [selectedFrameType, setSelectedFrameType] = useState([]);
-    const [selectedGender, setSelectedGender] = useState([]);
-    const [selectedColors, setSelectedColors] = useState([]);
-    const [selectedLensColor, setSelectedLensColor] = useState([]);
-    const [selectedFrameColor, setSelectedFrameColor] = useState([]);
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(5000);
+    // const [selectedGender, setSelectedGender] = useState([]);
+    // const [selectedColors, setSelectedColors] = useState([]);
+    // const [selectedLensColor, setSelectedLensColor] = useState([]);
+    // const [selectedFrameColor, setSelectedFrameColor] = useState([]);
+    // const [minPrice, setMinPrice] = useState(0);
+    // const [maxPrice, setMaxPrice] = useState(5000);
 
     // const [sortOption, setSortOption] = useState('Price: High to Low');
     const [sortOption, setSortOption] = useState('Price: All');
-    const [hoveredColor, setHoveredColor] = useState(null);
+    // const [hoveredColor, setHoveredColor] = useState(null);
     const [wishlistItems, setWishlistItems] = useState([]);
 
     const handleMouseEnter = (productId, hoverImage) => {
@@ -159,43 +160,43 @@ const PurseAndBags = () => {
         }, 100);
     };
 
-    const handleFrameTypeChange = (framtype) => {
-        setSelectedFrameType((prev) =>
-            prev.includes(framtype) ? prev.filter((f) => f !== framtype) : [...prev, framtype]
-        );
-    };
+    // const handleFrameTypeChange = (framtype) => {
+    //     setSelectedFrameType((prev) =>
+    //         prev.includes(framtype) ? prev.filter((f) => f !== framtype) : [...prev, framtype]
+    //     );
+    // };
 
-    const handleFrameShapeChange = (frame) => {
-        setSelectedFrameShape((prev) =>
-            prev.includes(frame) ? prev.filter((f) => f !== frame) : [...prev, frame]
-        );
-    };
+    // const handleFrameShapeChange = (frame) => {
+    //     setSelectedFrameShape((prev) =>
+    //         prev.includes(frame) ? prev.filter((f) => f !== frame) : [...prev, frame]
+    //     );
+    // };
 
-    const handleGenderChange = (gender) => {
-        setSelectedGender((prev) =>
-            prev.includes(gender) ? prev.filter((g) => g !== gender) : [...prev, gender]
-        );
-    };
+    // const handleGenderChange = (gender) => {
+    //     setSelectedGender((prev) =>
+    //         prev.includes(gender) ? prev.filter((g) => g !== gender) : [...prev, gender]
+    //     );
+    // };
 
 
-    const handleMinChange = (e) => {
-        const value = Math.min(Number(e.target.value), maxPrice - 1);
-        setMinPrice(value);
-    };
+    // const handleMinChange = (e) => {
+    //     const value = Math.min(Number(e.target.value), maxPrice - 1);
+    //     setMinPrice(value);
+    // };
 
-    const handleMaxChange = (e) => {
-        const value = Math.max(Number(e.target.value), minPrice + 1);
-        setMaxPrice(value);
-    };
+    // const handleMaxChange = (e) => {
+    //     const value = Math.max(Number(e.target.value), minPrice + 1);
+    //     setMaxPrice(value);
+    // };
 
-    const handleSliderChange = (e, type) => {
-        const value = Number(e.target.value);
-        if (type === "min") {
-            setMinPrice(Math.min(value, maxPrice - 1));
-        } else {
-            setMaxPrice(Math.max(value, minPrice + 1));
-        }
-    };
+    // const handleSliderChange = (e, type) => {
+    //     const value = Number(e.target.value);
+    //     if (type === "min") {
+    //         setMinPrice(Math.min(value, maxPrice - 1));
+    //     } else {
+    //         setMaxPrice(Math.max(value, minPrice + 1));
+    //     }
+    // };
 
     
 
@@ -205,22 +206,22 @@ const PurseAndBags = () => {
         // setSelectedGender([]);
     };
 
-    const handleFrameColor = (color) => {
-        setSelectedFrameColor((prev) =>
-            prev.includes(color)
-                ? prev.filter((item) => item !== color) // Remove if already selected
-                : [...prev, color] // Add if not selected
-        );
-    };
+    // const handleFrameColor = (color) => {
+    //     setSelectedFrameColor((prev) =>
+    //         prev.includes(color)
+    //             ? prev.filter((item) => item !== color) // Remove if already selected
+    //             : [...prev, color] // Add if not selected
+    //     );
+    // };
 
     // Handle color filter selection
-    const handleLensColor = (color) => {
-        setSelectedLensColor((prev) =>
-            prev.includes(color)
-                ? prev.filter((item) => item !== color) // Remove if already selected
-                : [...prev, color] // Add if not selected
-        );
-    };
+    // const handleLensColor = (color) => {
+    //     setSelectedLensColor((prev) =>
+    //         prev.includes(color)
+    //             ? prev.filter((item) => item !== color) // Remove if already selected
+    //             : [...prev, color] // Add if not selected
+    //     );
+    // };
     console.log("first1", allProducts)
 
     return (
@@ -250,7 +251,7 @@ const PurseAndBags = () => {
 
                 <div className="content-wrapper">
                     {/* Filter Container */}
-                    <div className="filter-container">
+                    {/* <div className="filter-container">
                         <h1 className="filters-title">FILTERS</h1>
                         <div className="filter-buttons">
                             <button className="apply-btn">Apply</button>
@@ -300,7 +301,6 @@ const PurseAndBags = () => {
                                 >
                                     <img
                                         className="frame-image-icon"
-                                        // src={`../../Assets/images/${shape}.png`}
                                         src={frameImages[shape]}
                                         alt={shape}
                                     />
@@ -309,7 +309,7 @@ const PurseAndBags = () => {
                             ))}
                         </div>
 
-                        {/* Add Filter Section Below */}
+                       
                         <h3 className="frame-color-title">Frame Color</h3>
                         <div className="frame-color-container">
                             <div className="frame-color-list">
@@ -317,8 +317,6 @@ const PurseAndBags = () => {
                                     <label
                                         className="frame-color-item"
                                         key={index}
-                                    // onMouseEnter={() => setHoveredColor(color.name)} // Show tooltip on hover
-                                    // onMouseLeave={() => setHoveredColor(null)} // Hide tooltip when not hovering
                                     >
                                         <input
                                             type="checkbox"
@@ -331,7 +329,6 @@ const PurseAndBags = () => {
                                                 backgroundColor: color.name.toLowerCase(),
                                             }}
                                         ></span>
-                                        {/* Tooltip */}
                                         {hoveredColor === color.name && (
                                             <span className="tooltip">{color.name}</span>
                                         )}
@@ -347,8 +344,8 @@ const PurseAndBags = () => {
                                     <label
                                         className="frame-color-item"
                                         key={index}
-                                        onMouseEnter={() => setHoveredColor(color.name)} // Show tooltip on hover
-                                        onMouseLeave={() => setHoveredColor(null)} // Hide tooltip when not hovering
+                                        onMouseEnter={() => setHoveredColor(color.name)} 
+                                        onMouseLeave={() => setHoveredColor(null)} 
                                     >
                                         <input
                                             type="checkbox"
@@ -361,7 +358,7 @@ const PurseAndBags = () => {
                                                 backgroundColor: color.name.toLowerCase(),
                                             }}
                                         ></span>
-                                        {/* Tooltip */}
+                                     
                                         {hoveredColor === color.name && (
                                             <span className="tooltip">{color.name}</span>
                                         )}
@@ -370,7 +367,7 @@ const PurseAndBags = () => {
                             </div>
                         </div>
 
-                        {/* price input container */}
+                       
                         <div className="price-slider">
                             <h3 className="price-slider-title">Price</h3>
                             <div className="price-input-container">
@@ -418,7 +415,7 @@ const PurseAndBags = () => {
                             </div>
                         </div>
 
-                    </div>
+                    </div> */}
 
                     {/* Product Grid Section */}
                     <div className="product-grid">
@@ -507,7 +504,7 @@ const PurseAndBags = () => {
                 </div>
 
                 {/* Pagination Section */}
-                <div className='pagination-main-container'>
+                {/* <div className='pagination-main-container'>
                     <div className="pagination">
                         <button className="prev-btn">
                             Prev
@@ -516,7 +513,7 @@ const PurseAndBags = () => {
                             Next
                         </button>
                     </div>
-                </div>
+                </div> */}
             </div>
         </>
     );

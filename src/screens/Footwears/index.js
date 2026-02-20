@@ -23,40 +23,41 @@ import Halfrim from '../../Assets/images/Halfrim.svg'
 import Rimless from '../../Assets/images/Rimless.svg'
 import "./index.css";
 
-const frameType = ['Fullrim', 'Halfrim', 'Rimless',];
-const frameShapes = [
-  'Aviator', 'CatsEye', 'Rectangle', 'Round', 'Square', 'Oval'];
-// Mapping frame shapes to their respective imported images
-const frameImages = {
-  Aviator,
-  CatsEye,
-  Rectangle,
-  Round,
-  Square,
-  Sports,
-  Hexagonal,
-  Oval,
-  Fullrim,
-  Halfrim,
-  Rimless,
-};
+// const frameType = ['Fullrim', 'Halfrim', 'Rimless',];
+// const frameShapes = [
+//   'Aviator', 'CatsEye', 'Rectangle', 'Round', 'Square', 'Oval'];
 
-const genders = ['Men', 'Women', 'Unisex', 'Kids'];
-const frameColors = [
-  { name: "Black" },
-  { name: "Gold" },
-  { name: "Brown" },
-  { name: "Blue" },
-  { name: "Silver" },
-  { name: "Transparent" },
-  { name: "Green" },
-  { name: "Grey" },
-  { name: "Pink" },
-  { name: "Red" },
-  { name: "White" },
-  { name: "Purple" },
-  { name: "Orange" },
-];
+// const frameImages = {
+//   Aviator,
+//   CatsEye,
+//   Rectangle,
+//   Round,
+//   Square,
+//   Sports,
+//   Hexagonal,
+//   Oval,
+//   Fullrim,
+//   Halfrim,
+//   Rimless,
+// };
+
+// const genders = ['Men', 'Women', 'Unisex', 'Kids'];
+// const frameColors = [
+//   { name: "Black" },
+//   { name: "Gold" },
+//   { name: "Brown" },
+//   { name: "Blue" },
+//   { name: "Silver" },
+//   { name: "Transparent" },
+//   { name: "Green" },
+//   { name: "Grey" },
+//   { name: "Pink" },
+//   { name: "Red" },
+//   { name: "White" },
+//   { name: "Purple" },
+//   { name: "Orange" },
+// ];
+
 const lensColors = [
   { name: "Blue", count: 0 },
   { name: "Green", count: 0 },
@@ -161,43 +162,43 @@ const Eyewear = () => {
     }, 100);
   };
 
-  const handleFrameTypeChange = (framtype) => {
-    setSelectedFrameType((prev) =>
-      prev.includes(framtype) ? prev.filter((f) => f !== framtype) : [...prev, framtype]
-    );
-  };
+  // const handleFrameTypeChange = (framtype) => {
+  //   setSelectedFrameType((prev) =>
+  //     prev.includes(framtype) ? prev.filter((f) => f !== framtype) : [...prev, framtype]
+  //   );
+  // };
 
-  const handleFrameShapeChange = (frame) => {
-    setSelectedFrameShape((prev) =>
-      prev.includes(frame) ? prev.filter((f) => f !== frame) : [...prev, frame]
-    );
-  };
+  // const handleFrameShapeChange = (frame) => {
+  //   setSelectedFrameShape((prev) =>
+  //     prev.includes(frame) ? prev.filter((f) => f !== frame) : [...prev, frame]
+  //   );
+  // };
 
-  const handleGenderChange = (gender) => {
-    setSelectedGender((prev) =>
-      prev.includes(gender) ? prev.filter((g) => g !== gender) : [...prev, gender]
-    );
-  };
+  // const handleGenderChange = (gender) => {
+  //   setSelectedGender((prev) =>
+  //     prev.includes(gender) ? prev.filter((g) => g !== gender) : [...prev, gender]
+  //   );
+  // };
 
 
-  const handleMinChange = (e) => {
-    const value = Math.min(Number(e.target.value), maxPrice - 1);
-    setMinPrice(value);
-  };
+  // const handleMinChange = (e) => {
+  //   const value = Math.min(Number(e.target.value), maxPrice - 1);
+  //   setMinPrice(value);
+  // };
 
-  const handleMaxChange = (e) => {
-    const value = Math.max(Number(e.target.value), minPrice + 1);
-    setMaxPrice(value);
-  };
+  // const handleMaxChange = (e) => {
+  //   const value = Math.max(Number(e.target.value), minPrice + 1);
+  //   setMaxPrice(value);
+  // };
 
-  const handleSliderChange = (e, type) => {
-    const value = Number(e.target.value);
-    if (type === "min") {
-      setMinPrice(Math.min(value, maxPrice - 1));
-    } else {
-      setMaxPrice(Math.max(value, minPrice + 1));
-    }
-  };
+  // const handleSliderChange = (e, type) => {
+  //   const value = Number(e.target.value);
+  //   if (type === "min") {
+  //     setMinPrice(Math.min(value, maxPrice - 1));
+  //   } else {
+  //     setMaxPrice(Math.max(value, minPrice + 1));
+  //   }
+  // };
 
 
 
@@ -252,8 +253,8 @@ const Eyewear = () => {
 
         <div className="content-wrapper">
           {/* Filter Container */}
-          <div className="filter-container">
-            <h1 className="filters-title">FILTERS</h1>
+          {/* <div className="filter-container"> */}
+            {/* <h1 className="filters-title">FILTERS</h1>
             <div className="filter-buttons">
               <button className="apply-btn">Apply</button>
               <button className="reset-btn" onClick={resetFilters}>Reset</button>
@@ -272,9 +273,9 @@ const Eyewear = () => {
                   {gender}
                 </label>
               ))}
-            </div>
+            </div> */}
 
-            <h3>Frame Type</h3>
+            {/* <h3>Frame Type</h3>
             <div className="frame-container">
               {frameType.map((shape) => (
                 <label
@@ -290,9 +291,9 @@ const Eyewear = () => {
                   <span className="frame-label">{shape}</span>
                 </label>
               ))}
-            </div>
+            </div> */}
 
-            <h3 style={{ marginTop: "10px" }}>Frame Shape</h3>
+            {/* <h3 style={{ marginTop: "10px" }}>Frame Shape</h3>
             <div className="frame-container">
               {frameShapes.map((shape) => (
                 <label
@@ -302,25 +303,22 @@ const Eyewear = () => {
                 >
                   <img
                     className="frame-image-icon"
-                    // src={`../../Assets/images/${shape}.png`}
                     src={frameImages[shape]}
                     alt={shape}
                   />
                   <span className="frame-label">{shape}</span>
                 </label>
               ))}
-            </div>
+            </div> */}
 
             {/* Add Filter Section Below */}
-            <h3 className="frame-color-title">Frame Color</h3>
+            {/* <h3 className="frame-color-title">Frame Color</h3>
             <div className="frame-color-container">
               <div className="frame-color-list">
                 {frameColors.map((color, index) => (
                   <label
                     className="frame-color-item"
                     key={index}
-                  // onMouseEnter={() => setHoveredColor(color.name)} // Show tooltip on hover
-                  // onMouseLeave={() => setHoveredColor(null)} // Hide tooltip when not hovering
                   >
                     <input
                       type="checkbox"
@@ -333,24 +331,24 @@ const Eyewear = () => {
                         backgroundColor: color.name.toLowerCase(),
                       }}
                     ></span>
-                    {/* Tooltip */}
+                    
                     {hoveredColor === color.name && (
                       <span className="tooltip">{color.name}</span>
                     )}
                   </label>
                 ))}
               </div>
-            </div>
+            </div> */}
 
-            <h3 className="frame-color-title" style={{ marginTop: "0" }}>Lens Color</h3>
+            {/* <h3 className="frame-color-title" style={{ marginTop: "0" }}>Lens Color</h3>
             <div className="frame-color-container">
               <div className="frame-color-list">
                 {lensColors.map((color, index) => (
                   <label
                     className="frame-color-item"
                     key={index}
-                    onMouseEnter={() => setHoveredColor(color.name)} // Show tooltip on hover
-                    onMouseLeave={() => setHoveredColor(null)} // Hide tooltip when not hovering
+                    onMouseEnter={() => setHoveredColor(color.name)} 
+                    onMouseLeave={() => setHoveredColor(null)} g
                   >
                     <input
                       type="checkbox"
@@ -363,17 +361,17 @@ const Eyewear = () => {
                         backgroundColor: color.name.toLowerCase(),
                       }}
                     ></span>
-                    {/* Tooltip */}
+                   
                     {hoveredColor === color.name && (
                       <span className="tooltip">{color.name}</span>
                     )}
                   </label>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             {/* price input container */}
-            <div className="price-slider">
+            {/* <div className="price-slider">
               <h3 className="price-slider-title">Price</h3>
               <div className="price-input-container">
                 <div className="price-input">
@@ -418,19 +416,19 @@ const Eyewear = () => {
                   className="slider slider-max"
                 />
               </div>
-            </div>
+            </div> */}
 
-          </div>
+          {/* </div> */}
 
           {/* Product Grid Section */}
-          <div className="product-grid">
+          <div className="product-grid" style={{width:"100%"}}>
             {allProducts?.map((product, index) => {
               const defaultImage = product.thumbnail_url;
               const hoverImage = product.images?.[2] || defaultImage;
               const imageSrc = hoveredImages[product.product_id] || defaultImage;
 
               return (
-                <div key={index} className="product-card">
+                <div key={index} className="product-card" style={{maxWidth:"335px"}}>
                   <div className="red-heart-container">
                     {wishlistItems.some(item => item.product_id === product.product_id) ? (
                       // <BsBagHeartFill className='hert-icon red-background' onClick={() => toggleWishlist(product)} />
@@ -509,7 +507,7 @@ const Eyewear = () => {
         </div>
 
         {/* Pagination Section */}
-        <div className='pagination-main-container'>
+        {/* <div className='pagination-main-container'>
           <div className="pagination">
             <button className="prev-btn">
               Prev
@@ -518,7 +516,7 @@ const Eyewear = () => {
               Next
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

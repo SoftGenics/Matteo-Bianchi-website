@@ -563,6 +563,7 @@ h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-left: 18px;
 }
 
 .navbar-buttons {

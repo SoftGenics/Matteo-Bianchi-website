@@ -299,14 +299,14 @@ const Header = () => {
       return [];
     }
   };
-  
+
   const saveColor = (item) => {
     const frameColors = parseColorData(item?.result?.frameColor);
     const lensColors = parseColorData(item?.result?.lenshColor);
-  
+
     const [frameName, frameHex] = Object.entries(frameColors[0] || { Unknown: "#ffffff" })[0];
     const [lensName, lensHex] = Object.entries(lensColors[0] || { Default: "#000000" })[0];
-  
+
     setSelectedColor({ frameName, frameHex, lensName, lensHex });
   };
 
@@ -485,12 +485,10 @@ const Header = () => {
                 ))}
             </div>
 
-            {/* Action Buttons */}
-            <div className="navbar-buttons">
-              <button className="btn-tryon1"> 3D TRY ON</button>
+            
+            {/* <div className="navbar-buttons">
               <button className="btn-blu">BLU</button>
-              <button className="btn-gold" onClick={() => openFaq()}>GOLD MAX</button>
-            </div>
+            </div> */}
           </div>
         </nav>
 
@@ -613,7 +611,7 @@ const Header = () => {
                       <div className="cart-item-details">
                         <h4>{item.name}</h4>
                         <p>{item.product_title}</p>
-                        <p> ₹{((item.product_price - (item.product_price * item.discount / 100))*item.quantity).toFixed(0)}/-</p>
+                        <p> ₹{((item.product_price - (item.product_price * item.discount / 100)) * item.quantity).toFixed(0)}/-</p>
                         <p>Quantity: {item.quantity}</p>
                       </div>
 
@@ -624,7 +622,7 @@ const Header = () => {
                             handleDirectPayment({
                               item: item,
                               productQuntity: item.quantity,
-                              product_price: ((item.product_price - (item.product_price * item.discount / 100))*item.quantity).toFixed(0),
+                              product_price: ((item.product_price - (item.product_price * item.discount / 100)) * item.quantity).toFixed(0),
                               product_id: item.product_id,
                             })
                           }

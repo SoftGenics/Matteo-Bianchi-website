@@ -25,6 +25,14 @@ import zeroPawer from '../../Assets/images/zero-power-glasses.webp'
 import forMenSection from '../../Assets/images/for-men-section.webp'
 import forWomenSection from '../../Assets/images/for-women-section.webp'
 import forChildSection from '../../Assets/images/for-child-section.webp'
+import thewedding from '../../Assets/images/thewedding.png'
+import thewedding2 from '../../Assets/images/thewedding2.png'
+import feet from '../../Assets/images/feet.jpeg'
+import ver_shoe from '../../Assets/images/ver_shoe.jpeg'
+import purse from '../../Assets/images/purse.jpeg'
+import purse2 from '../../Assets/images/purse2.jpeg'
+import Bridal_101 from '../../Assets/images/Bridal_102.jpeg'
+import Bridal_102 from '../../Assets/images/Bridal_101.webp'
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -89,6 +97,7 @@ const Home = () => {
   const [brandHeading, setBrandHeading] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [newArrivel, setNewArrivel] = useState([]);
+  const [bestSeller, setBestSeller] = useState([]);
   const [slidersData, setSlidersData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -136,9 +145,16 @@ const Home = () => {
         const products = productResponse.data.result;
         setAllProducts(products);
 
+        // Best Seller
+        const responseBestSeller = await axios.get(`${SERVER_API_URL}/api/bestseller/product`);
+        const bestseller = responseBestSeller.data.bestsellerProducts;
+        setBestSeller(bestseller)
+        console.log("bestSeller", bestseller)
+
         // New Arrvel
-        const newArrivelData = await axios.get(`${SERVER_API_URL}/new/arrivel/`);
-        const newArrivelProduct = newArrivelData.data.result;
+        const newArrivelData = await axios.get(`${SERVER_API_URL}/api/allCetegory/mix`);
+        const newArrivelProduct = newArrivelData.data.data;
+        console.log("PRODUCTS-newArrivelData:", newArrivelData.data.data);
         setNewArrivel(newArrivelProduct);
 
         setIsLoading(false); // ✅ Only after both are fetched
@@ -156,6 +172,7 @@ const Home = () => {
     fetchAllData();
   }, []);
 
+  // console.log("BEST", bestSeller)
 
   // Find banners by their `exact_place`
   // const yourPerfectPairBanner = bannerData?.length > 0 ? bannerData.find(b => b.place === "Group_A" && b.exact_place === "left")?.image_url : null;
@@ -174,14 +191,61 @@ const Home = () => {
 
   const EyePoppin = bannerData?.length > 0 ? bannerData.find(b => b.section === 'section_4' && b.place === "Group_C" && b.exact_place === "center_poster")?.image_url : null;
 
+  const sliderOrder = [
+    "eyewear",
+    "jewellery",
+    "purse-nd-bags",
+    "footwear",
+    "clothings",
+  ];
+
+  const sortedSliders = [...slidersData].sort((a, b) => {
+    const aIndex = sliderOrder.indexOf(a.slider_link?.toLowerCase());
+    const bIndex = sliderOrder.indexOf(b.slider_link?.toLowerCase());
+
+    return aIndex - bIndex;
+  });
+
+
   return (
     <>
       <Header />
       <div className='home-bg-container'>
         <div className='home-main-container'>
 
+          {/* top card modify */}
+          <div className="card-container-main">
+            {!isLoading && sortedSliders.length > 0 &&
+              sortedSliders.map((data, index) => {
+                if (data.slider_name === "top_mini_image") {
+                  const link = data.slider_link?.toLowerCase();
+                  const isEyewear = link?.includes("eyewear");
+
+                  return (
+                    <Link
+                      key={index}
+                      to={isEyewear ? `/product-display/${link}` : `/${link}`}
+                      target="_blank"
+                    >
+                      <div className="card-container">
+                        <div className="card">
+                          <img
+                            src={`${SERVER_API_URL}/uploads/${data.slider_url}`}
+                            alt={data.slider_link}
+                            className="card-image"
+                          />
+                          <h3 className="card-title">{data.slider_link}</h3>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                }
+                return null;
+              })}
+          </div>
+
           {/* top card */}
-          <div className='card-container-main'>
+          {/* <div className='card-container-main'>
             {!isLoading && slidersData.length > 0 ? (
               slidersData.map((data, index) => {
                 if (data.slider_name === "top_mini_image") {
@@ -202,12 +266,12 @@ const Home = () => {
                           />
                           <h3 className="card-title">{data.slider_link}</h3>
 
-                          {/* <div className="card-content">
+                          <div className="card-content">
                           <p>Air Light-Weight Powered Lenses</p>
                           <p>Starting from ₹2000</p>
                           <p>Air Light-Weight Powered Lenses</p>
                           <p>Starting from ₹2000</p>
-                          </div> */}
+                          </div>
 
                         </div>
                       </div>
@@ -219,7 +283,7 @@ const Home = () => {
               })
             ) : null}
 
-          </div>
+          </div> */}
 
           {/* // slider main */}
           <div className="slider-main-container">
@@ -274,7 +338,7 @@ const Home = () => {
 
           </div>
 
-          <div className="sunglasses-grid">
+          {/* <div className="sunglasses-grid">
             {slidersData.map((item, index) =>
               item.slider_name === 'product_image' ? (
                 <Link to={`/product-display/${item.slider_link}`}>
@@ -290,11 +354,42 @@ const Home = () => {
                   </div>
                 </Link>
               ) : (null))}
+          </div> */}
+
+          <div className="sunglasses-grid">
+            {!isLoading &&
+              slidersData.length > 0 &&
+              slidersData.map((item, index) => {
+                if (item.slider_name === "product_image") {
+                  const link = item.slider_link?.toLowerCase();
+                  const isEyewear = link?.includes("eyewear");
+
+                  return (
+                    <Link
+                      key={index}
+                      to={isEyewear ? `/product-display/${link}` : `/${link}`}
+                      target="_blank"
+                    >
+                      <div className="sunglasses-card">
+                        <img
+                          src={`${SERVER_API_URL}/uploads/${item.slider_url}`}
+                          alt={item.slider_link}
+                          className="sunglasses-img"
+                        />
+                        <div className="sunglasses-overlay">
+                          <p className="sunglasses-title">{item.slider_link}</p>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                }
+                return null;
+              })}
           </div>
 
           {/* New Arrivel */}
           <div className="glasses-swiper-container destop-view" style={{ backgroundImage: 'linear-gradient(180deg, #43cea2 0%, #185a9d 100%)' }}>
-            <h2 className="swiper-heading">New Arrivel</h2>
+            <h2 className="best-seller-title"> New Arrival</h2>
 
             {isLoading ? (
               <p>Loading...</p>
@@ -309,100 +404,65 @@ const Home = () => {
                 modules={[Navigation, Pagination, Autoplay]}
                 className="glasses-swiper"
               >
-                {newArrivel
-                  .slice(0, 6) // 👈 limit to only 6 items
-                  .map((frame) => (
-                    <SwiperSlide key={frame.product_id} className="glasses-slide">
+                {newArrivel.slice(0, 6).map((item) => {
+
+                  const isEyewear = item.category === "products";
+
+                  const id = item.product_id;
+                  const title = isEyewear ? item.product_title : item.product_name;
+                  const price = isEyewear ? item.product_price : item.price;
+                  const discount = isEyewear ? item.discount : item.discount_percent;
+                  const image = isEyewear ? item.product_thumnail_img : item.thumbnail_url;
+                  const gender = isEyewear ? item.gender : item.sub_category;
+                  const highlight = isEyewear ? item.highlights : item.description;
+
+                  // ✅ Dynamic Route
+                  const routePath = isEyewear
+                    ? `/product-item/${id}`
+                    : `/product-item/${item.main_category}/${id}`;
+
+                  const finalPrice = price - (price * discount / 100);
+
+                  return (
+                    <SwiperSlide key={id} className="glasses-slide">
                       <Link
-                        to={`/product-item/${frame.product_id}`}
+                        to={routePath}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="glass-card"
                       >
-                        <div className="glass-icons">
-                          {/* <span className="heart-icon">❤️</span> */}
-                        </div>
                         <img
-                          src={`${SERVER_API_URL}/${frame.product_thumnail_img}`}
-                          alt={frame.product_title}
+                          src={`${SERVER_API_URL}/${image}`}
+                          alt={title}
                           className="glass-img"
                         />
-                        <h3 className="glass-brand">{frame.product_title}</h3>
-                        <p className="glass-name">{frame.highlights}</p>
+
+                        <h3 className="glass-brand">{title.slice(0, 20)}</h3>
+                        <p className="glass-name">{highlight.slice(0, 35)}...</p>
+
                         <div className="product-discount-info">
-                          <p className="original-price" style={{ color: "#272932", fontSize: "11px", fontWeight: "700" }}>₹{frame.product_price}</p>
+                          <p className="original-price">
+                            ₹{price}
+                          </p>
+
                           <span className="discount-percentage" style={{ color: "#272932", fontSize: "12px", fontWeight: "700" }}>
-                            ({frame.discount}% OFF)
+                            ({discount}% OFF)
                             <span className="stock-warning" style={{ color: "#00c2cb" }}>
-                              For {frame.gender}
+                              For {gender}
                             </span>
                           </span>
                         </div>
+
                         <p className="final-price" style={{ color: "#272932", fontSize: "12px", fontWeight: "700" }}>
-                          ₹{(frame.product_price - (frame.product_price * frame.discount / 100)).toFixed(0)}/-
+                          ₹{finalPrice.toFixed(0)}/-
                         </p>
+
                         <p className="glass-tax">Inclusive of all taxes</p>
                       </Link>
                     </SwiperSlide>
-                  ))}
-              </Swiper>
-            ) : (
-              <p>No products found</p>
-            )}
-          </div>
+                  );
+                })}
 
-          <div className="glasses-swiper-container mobile-view" style={{ backgroundImage: 'linear-gradient(180deg, #43cea2 0%, #185a9d 100%)' }}>
-            <h2 className="swiper-heading">New Arrivel</h2>
-
-            {isLoading ? (
-              <p>Loading...</p>
-            ) : newArrivel?.length > 0 ? (
-              <Swiper
-                slidesPerView={1}
-                spaceBetween={30}
-                navigation
-                pagination={{ clickable: true }}
-                autoplay={{ delay: 2000, disableOnInteraction: false }}
-                loop={true}
-                modules={[Navigation, Pagination, Autoplay]}
-                className="glasses-swiper"
-              >
-                {newArrivel
-                  .slice(0, 6) // 👈 limit to only 6 items
-                  .map((frame) => (
-                    <SwiperSlide key={frame.product_id} className="glasses-slide">
-                      <Link
-                        to={`/product-item/${frame.product_id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="glass-card"
-                      >
-                        <div className="glass-icons">
-                          {/* <span className="heart-icon">❤️</span> */}
-                        </div>
-                        <img
-                          src={`${SERVER_API_URL}/${frame.product_thumnail_img}`}
-                          alt={frame.product_title}
-                          className="glass-img"
-                        />
-                        <h3 className="glass-brand">{frame.product_title}</h3>
-                        <p className="glass-name">{frame.highlights}</p>
-                        <div className="product-discount-info">
-                          <p className="original-price" style={{ color: "#272932", fontSize: "11px", fontWeight: "700" }}>₹{frame.product_price}</p>
-                          <span className="discount-percentage" style={{ color: "#272932", fontSize: "12px", fontWeight: "700" }}>
-                            ({frame.discount}% OFF)
-                            <span className="stock-warning" style={{ color: "#00c2cb" }}>
-                              For {frame.gender}
-                            </span>
-                          </span>
-                        </div>
-                        <p className="final-price" style={{ color: "#272932", fontSize: "12px", fontWeight: "700" }}>
-                          ₹{(frame.product_price - (frame.product_price * frame.discount / 100)).toFixed(0)}/-
-                        </p>
-                        <p className="glass-tax">Inclusive of all taxes</p>
-                      </Link>
-                    </SwiperSlide>
-                  ))}
               </Swiper>
             ) : (
               <p>No products found</p>
@@ -446,12 +506,12 @@ const Home = () => {
 
 
           {/* glasses-swiper-container */}
-          <div className="glasses-swiper-container destop-view">
-            <h2 className="swiper-heading">Frequently Bought</h2>
+          <div className="glasses-swiper-container destop-view" style={{ backgroundImage: 'linear-gradient(180deg, #43cea2 0%, #185a9d 100%)' }}>
+            <h2 className="best-seller-title"> Best Seller ! </h2>
 
             {isLoading ? (
               <p>Loading...</p>
-            ) : allProducts?.length > 0 ? (
+            ) : bestSeller?.length > 0 ? (
               <Swiper
                 slidesPerView={5}
                 spaceBetween={30}
@@ -462,50 +522,70 @@ const Home = () => {
                 modules={[Navigation, Pagination, Autoplay]}
                 className="glasses-swiper"
               >
-                {allProducts
-                  .filter(frame => frame.count_in_stock > 0 && frame.count_in_stock < 7)
-                  .slice(0, 6) // 👈 limit to only 6 items
-                  .map((frame) => (
-                    <SwiperSlide key={frame.product_id} className="glasses-slide">
+                {bestSeller.slice(0, 6).map((item) => {
+
+                  const isEyewear = !item.main_category;
+
+                  const id = item.product_id;
+                  const title = isEyewear ? item.product_title : item.product_name;
+                  const price = isEyewear ? item.product_price : item.price;
+                  const discount = isEyewear ? item.discount : item.discount_percent;
+                  const image = isEyewear ? item.product_thumnail_img : item.thumbnail_url;
+                  const gender = isEyewear ? item.gender : item.sub_category;
+                  const highlight = isEyewear ? item.highlights : item.description;
+
+                  // ✅ Dynamic Route
+                  const routePath = isEyewear
+                    ? `/product-item/${id}`
+                    : `/product-item/${item.main_category}/${id}`;
+
+                  const finalPrice = price - (price * discount / 100);
+
+                  return (
+                    <SwiperSlide key={id} className="glasses-slide">
                       <Link
-                        to={`/product-item/${frame.product_id}`}
+                        to={routePath}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="glass-card"
                       >
-                        <div className="glass-icons">
-                          {/* <span className="heart-icon">❤️</span> */}
-                        </div>
                         <img
-                          src={`${SERVER_API_URL}/${frame.product_thumnail_img}`}
-                          alt={frame.product_title}
+                          src={`${SERVER_API_URL}/${image}`}
+                          alt={title}
                           className="glass-img"
                         />
 
-                        <h3 className="glass-brand">{frame.product_title}</h3>
-                        <p className="glass-name">{frame.highlights}</p>
+                        <h3 className="glass-brand">{title}</h3>
+                        <p className="glass-name">{highlight}...</p>
+
                         <div className="product-discount-info">
-                          <p className="original-price" style={{ color: "#272932", fontSize: "11px", fontWeight: "700" }}>₹{frame.product_price}</p>
+                          <p className="original-price">
+                            ₹{price}
+                          </p>
+
                           <span className="discount-percentage" style={{ color: "#272932", fontSize: "12px", fontWeight: "700" }}>
-                            ({frame.discount}% OFF)
+                            ({discount}% OFF)
                             <span className="stock-warning" style={{ color: "#00c2cb" }}>
-                              For {frame.gender}
+                              For {gender}
                             </span>
                           </span>
                         </div>
+
                         <p className="final-price" style={{ color: "#272932", fontSize: "12px", fontWeight: "700" }}>
-                          ₹{(frame.product_price - (frame.product_price * frame.discount / 100)).toFixed(0)}/-
+                          ₹{finalPrice.toFixed(0)}/-
                         </p>
+
                         <p className="glass-tax">Inclusive of all taxes</p>
                       </Link>
                     </SwiperSlide>
-                  ))}
+                  );
+                })}
+
               </Swiper>
             ) : (
               <p>No products found</p>
             )}
           </div>
-
 
           {/* Top Banners */}
           {/* <Link to="#">
@@ -556,21 +636,21 @@ const Home = () => {
           {/* Eyeglasses-container */}
           <div className='Eyeglasses-container'>
             <div className='Eyeglasses-container-main'>
-              <h1 className='Eyeglasses-text'>Sunglass</h1>
+              <h1 className='Eyeglasses-text'>Wedding Jewelry</h1>
               <hr className='hr-line' />
               <div className='Eyeglasses-home'>
 
                 <div className='pawerGlass-container'>
-                  <Link to={`/product-display/HeliusGlasses`}
+                  <Link to="/jewellery"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src={pawerGlass} className='pawerGlass' />
+                    <img src={thewedding} className='pawerGlass' />
                   </Link>
                   <div className='pawerglass-text-container'>
-                    <p className='Power-Glasses-text'>Sunglass Glasses</p>
-                    <h1 className='Rim-Rectangle-text'>Black Full Rim Rectangle</h1>
-                    <h2 className='More-Details-text'>More Details</h2>
+                    <p className='Power-Glasses-text'>Wedding Jewelry</p>
+                    <h1 className='Rim-Rectangle-text'>Bridal Gold & Diamond Collection</h1>
+                    <h2 className='More-Details-text'>Explore More Details</h2>
                   </div>
                 </div>
 
@@ -579,12 +659,12 @@ const Home = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src={pawerGlass} className='pawerGlass' />
+                    <img src={thewedding2} className='pawerGlass' />
                   </Link>
                   <div className='pawerglass-text-container'>
-                    <p className='Power-Glasses-text'>Sunglass Glasses</p>
-                    <h1 className='Rim-Rectangle-text'>Black Full Rim Rectangle</h1>
-                    <h2 className='More-Details-text'>More Details </h2>
+                    <p className='Power-Glasses-text'>Fashion Jewelry</p>
+                    <h1 className='Rim-Rectangle-text'>Stylish & Minimal Pieces</h1>
+                    <h2 className='More-Details-text'>Discover Now</h2>
                   </div>
                 </div>
 
@@ -670,7 +750,7 @@ const Home = () => {
                 ))}
               <hr className='hr-line' />
             </div>
-            <Link to={`/product-item/${42}`}
+            <Link to="/footwear"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -681,7 +761,8 @@ const Home = () => {
           {/* Eyeglasses-container */}
           <div className='Eyeglasses-container'>
             <div className='Eyeglasses-container-main'>
-              <h1 className='Eyeglasses-text'>Sunglass</h1>
+              <h1 className='Eyeglasses-text'>Footwear Collection</h1>
+              <hr className='hr-line' />
               <div className='Eyeglasses-home'>
 
                 <div className='pawerGlass-container'>
@@ -689,11 +770,11 @@ const Home = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src={pawerGlass} className='pawerGlass' />
+                    <img src={ver_shoe} className='pawerGlass' />
                   </Link>
                   <div className='pawerglass-text-container'>
-                    <p className='Power-Glasses-text'>Sunglass Glasses</p>
-                    <h1 className='Rim-Rectangle-text'>Black Full Rim Rectangle</h1>
+                    <p className='Power-Glasses-text'>Shoes Collection</p>
+                    <h1 className='Rim-Rectangle-text'>Stylish & Comfortable Footwear</h1>
                     <h2 className='More-Details-text'>More Details</h2>
                   </div>
                 </div>
@@ -703,12 +784,12 @@ const Home = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src={pawerGlass} className='pawerGlass' />
+                    <img src={feet} className='pawerGlass' />
                   </Link>
                   <div className='pawerglass-text-container'>
-                    <p className='Power-Glasses-text'>Sunglass Glasses</p>
-                    <h1 className='Rim-Rectangle-text'>Black Full Rim Rectangle</h1>
-                    <h2 className='More-Details-text'>More Details </h2>
+                    <p className='Power-Glasses-text'>Sports Shoes</p>
+                    <h1 className='Rim-Rectangle-text'>Lightweight & Performance Ready</h1>
+                    <h2 className='More-Details-text'>Shop Now</h2>
                   </div>
                 </div>
 
@@ -781,7 +862,7 @@ const Home = () => {
                 ))}
               <hr className='hr-line' />
             </div>
-            <Link to={`/product-item/${43}`}
+            <Link to="/purse-nd-bags"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -792,7 +873,7 @@ const Home = () => {
           {/* Eyeglasses-container */}
           <div className='Eyeglasses-container'>
             <div className='Eyeglasses-container-main'>
-              <h1 className='Eyeglasses-text'>Premium Sunglasses</h1>
+              <h1 className='Eyeglasses-text'>Carry Your Style</h1>
               <div className='Eyeglasses-home'>
 
                 <div className='pawerGlass-container'>
@@ -800,12 +881,12 @@ const Home = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src={pawerGlass} className='pawerGlass' />
+                    <img src={purse} className='pawerGlass' />
                   </Link>
                   <div className='pawerglass-text-container'>
-                    <p className='Power-Glasses-text'>Sunglass Glasses</p>
-                    <h1 className='Rim-Rectangle-text'>Black Full Rim Rectangle</h1>
-                    <h2 className='More-Details-text'>More Details</h2>
+                    <p className='Power-Glasses-text'>Luxury Purses</p>
+                    <h1 className='Rim-Rectangle-text'>Elegant Designer Collection</h1>
+                    <h2 className='More-Details-text'>Explore Now</h2>
                   </div>
                 </div>
                 <div className='pawerGlass-container'>
@@ -813,12 +894,12 @@ const Home = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src={pawerGlass} className='pawerGlass' />
+                    <img src={purse2} className='pawerGlass' />
                   </Link>
                   <div className='pawerglass-text-container'>
-                    <p className='Power-Glasses-text'>Sunglass Glasses</p>
-                    <h1 className='Rim-Rectangle-text'>Black Full Rim Rectangle</h1>
-                    <h2 className='More-Details-text'>More Details </h2>
+                    <p className='Power-Glasses-text'>Everyday Handbags</p>
+                    <h1 className='Rim-Rectangle-text'>Perfect Blend of Style & Comfort</h1>
+                    <h2 className='More-Details-text'>Shop Now</h2>
                   </div>
                 </div>
               </div>
@@ -835,7 +916,7 @@ const Home = () => {
                 ))}
               <hr className='hr-line' />
             </div>
-            <Link to={`/product-item/${44}`}
+            <Link to="/jewellery"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -846,20 +927,20 @@ const Home = () => {
           {/* Eyeglasses-container */}
           <div className='Eyeglasses-container'>
             <div className='Eyeglasses-container-main'>
-              <h1 className='Eyeglasses-text'>Sunglass</h1>
+              <h1 className='Eyeglasses-text'>Elegant & Royal Designs</h1>
               <div className='Eyeglasses-home'>
 
                 <div className='pawerGlass-container'>
-                  <Link to={`/product-display/Sunglass Black FullRim Rectangle`}
+                  <Link to={`/jewellery`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src={pawerGlass} className='pawerGlass' />
+                    <img src={Bridal_101} className='pawerGlass' />
                   </Link>
                   <div className='pawerglass-text-container'>
-                    <p className='Power-Glasses-text'>Sunglass Glasses</p>
-                    <h1 className='Rim-Rectangle-text'>Black Full Rim Rectangle</h1>
-                    <h2 className='More-Details-text'>More Details</h2>
+                    <p className='Power-Glasses-text'>Wedding Jewelry</p>
+                    <h1 className='Rim-Rectangle-text'>Royal Bridal Collection</h1>
+                    <h2 className='More-Details-text'>Explore Now</h2>
                   </div>
                 </div>
                 <div className='pawerGlass-container'>
@@ -867,12 +948,12 @@ const Home = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src={pawerGlass} className='pawerGlass' />
+                    <img src={Bridal_102} className='pawerGlass' />
                   </Link>
                   <div className='pawerglass-text-container'>
-                    <p className='Power-Glasses-text'>Sunglass Glasses</p>
-                    <h1 className='Rim-Rectangle-text'>Black Full Rim Rectangle</h1>
-                    <h2 className='More-Details-text'>More Details </h2>
+                    <p className='Power-Glasses-text'>Jewelry Collection</p>
+                    <h1 className='Rim-Rectangle-text'>Elegant Gold & Diamond Designs</h1>
+                    <h2 className='More-Details-text'>More Details</h2>
                   </div>
                 </div>
               </div>
