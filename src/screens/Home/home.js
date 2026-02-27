@@ -22,6 +22,11 @@ import sunglasses from '../../Assets/images/sunglasses-image.webp'
 import prescription from '../../Assets/images/prescription-glasses.webp'
 import zeroPawer from '../../Assets/images/zero-power-glasses.webp'
 // import lykosEyewear from '../../Assets/images/lykos-banner.webp'
+
+import mangal1 from '../../Assets/images/mangals1.jpeg'
+import mangal2 from '../../Assets/images/mangals2.jpeg'
+import mangal3 from '../../Assets/images/mangals3.jpeg'
+
 import forMenSection from '../../Assets/images/for-men-section.webp'
 import forWomenSection from '../../Assets/images/for-women-section.webp'
 import forChildSection from '../../Assets/images/for-child-section.webp'
@@ -627,7 +632,7 @@ const Home = () => {
             <Link
               target="_blank"
               rel="noopener noreferrer"
-              to={`/product-item/${41}`}>
+              to="/jewellery">
               <img src={`${SERVER_API_URL}/uploads/${heliusGlasses}`} alt="Helius Glasses" className="helius-glasses-image" />
             </Link>
           </div>
@@ -655,7 +660,7 @@ const Home = () => {
                 </div>
 
                 <div className='pawerGlass-container'>
-                  <Link to={`/product-display/HeliusGlasses`}
+                  <Link to="/jewellery"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -766,7 +771,7 @@ const Home = () => {
               <div className='Eyeglasses-home'>
 
                 <div className='pawerGlass-container'>
-                  <Link to={`/product-display/Lykos Eyewear`}
+                  <Link to="/footwear"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -780,7 +785,7 @@ const Home = () => {
                 </div>
 
                 <div className='pawerGlass-container'>
-                  <Link to={`/product-display/Lykos Eyewear`}
+                  <Link to="/footwear"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -797,6 +802,7 @@ const Home = () => {
             </div>
           </div>
 
+
           {/* Card Group F */}
           <div className='eyeglasses-container'>
             {brandHeading
@@ -812,7 +818,7 @@ const Home = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className='eyeglasses-card eyeglasses-card1'
-                style={{ backgroundImage: `url(${forMenSection})` }}
+                style={{ backgroundImage: `url(${mangal1})` }}
               >
                 <div className='eyeglasses-info'>
                   <h2 className='eyeglasses-card-title'>Computer Glasses</h2>
@@ -826,7 +832,7 @@ const Home = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className='eyeglasses-card eyeglasses-card1'
-                style={{ backgroundImage: `url(${forWomenSection})` }}
+                style={{ backgroundImage: `url(${mangal2})` }}
               >
                 <div className='eyeglasses-info'>
                   <h2 className='eyeglasses-card-title'>Sunglasses</h2>
@@ -840,7 +846,7 @@ const Home = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className='eyeglasses-card eyeglasses-card1'
-                style={{ backgroundImage: `url(${forChildSection})` }}
+                style={{ backgroundImage: `url(${mangal3})` }}
               >
                 <div className='eyeglasses-info'>
                   <h2 className='eyeglasses-card-title'>Prescription</h2>
@@ -851,6 +857,7 @@ const Home = () => {
 
             </div>
           </div>
+
 
           {/* Lykos Eyewear Section Group G */}
           <div className='single-banner-container'>
@@ -877,7 +884,7 @@ const Home = () => {
               <div className='Eyeglasses-home'>
 
                 <div className='pawerGlass-container'>
-                  <Link to={`/product-display/Sunglass Black FullRim Rectangle`}
+                  <Link to="/purse-nd-bags"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -890,7 +897,7 @@ const Home = () => {
                   </div>
                 </div>
                 <div className='pawerGlass-container'>
-                  <Link to={`/product-display/Sunglass Black FullRim Rectangle`}
+                  <Link to="/purse-nd-bags"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -908,14 +915,17 @@ const Home = () => {
 
           {/* Blinkers Eyeglasses Section Group H*/}
           <div className='single-banner-container'>
-            <div className="helius-text">
+            <div className="helius-text" style={{ alignItems: "flex-start" }}>
               {brandHeading
                 .filter((heading) => heading.section === "section_6")
                 .map((heading, index) => (
-                  <h2 key={index} className='Helius-Eyewear'>{heading.brand_name}</h2>
+                  // <h2 key={index} className='Helius-Eyewear'>{heading.brand_name}</h2>
+                  <h2 key={index} className='footwear-crocs'>{heading.brand_name}</h2>
+
                 ))}
-              <hr className='hr-line' />
+              {/* <hr className='hr-line' /> */}
             </div>
+
             <Link to="/jewellery"
               target="_blank"
               rel="noopener noreferrer"
@@ -927,7 +937,7 @@ const Home = () => {
           {/* Eyeglasses-container */}
           <div className='Eyeglasses-container'>
             <div className='Eyeglasses-container-main'>
-              <h1 className='Eyeglasses-text'>Elegant & Royal Designs</h1>
+            <h1 className='Eyeglasses-text'>Fresh, Funky & Fashionable</h1>
               <div className='Eyeglasses-home'>
 
                 <div className='pawerGlass-container'>
@@ -938,22 +948,22 @@ const Home = () => {
                     <img src={Bridal_101} className='pawerGlass' />
                   </Link>
                   <div className='pawerglass-text-container'>
-                    <p className='Power-Glasses-text'>Wedding Jewelry</p>
-                    <h1 className='Rim-Rectangle-text'>Royal Bridal Collection</h1>
-                    <h2 className='More-Details-text'>Explore Now</h2>
+                    <p className='Power-Glasses-text'>Everyday Comfort</p>
+                    <h1 className='Rim-Rectangle-text'>Trendy Crocs Styles</h1>
+                    <h2 className='More-Details-text'>Shop Now</h2>
                   </div>
                 </div>
                 <div className='pawerGlass-container'>
-                  <Link to={`/product-display/Sunglass Black FullRim Rectangle`}
+                  <Link to="/jewellery"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <img src={Bridal_102} className='pawerGlass' />
                   </Link>
                   <div className='pawerglass-text-container'>
-                    <p className='Power-Glasses-text'>Jewelry Collection</p>
-                    <h1 className='Rim-Rectangle-text'>Elegant Gold & Diamond Designs</h1>
-                    <h2 className='More-Details-text'>More Details</h2>
+                    <p className='Power-Glasses-text'>Comfort Redefined</p>
+                    <h1 className='Rim-Rectangle-text'>Exclusive Crocs Range</h1>
+                    <h2 className='More-Details-text'>Discover More</h2>
                   </div>
                 </div>
               </div>

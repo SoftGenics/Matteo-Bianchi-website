@@ -652,7 +652,7 @@ const Header = () => {
             <div className="popup-content">
               <h2 className='popup-containt-heading'>{popupContent}</h2>
               <ul>
-                {popupContent === 'Power Glasses' && (
+                {popupContent === 'Eyewear' && (
                   <div className="power-glasses-container">
                     {/* Select Category Section */}
                     <div className="category-column">

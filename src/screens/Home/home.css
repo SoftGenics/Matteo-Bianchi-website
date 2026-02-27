@@ -901,3 +901,36 @@
         text-shadow: 0 0 6px #ff0000, 0 0 18px #ff4d4d;
     }
 }
+
+.footwear-crocs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 146px;
+    height: 30px;
+    border-radius: 7px;
+    font-size: 20px;
+    font-weight: 800;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: left;
+    color: #d81515;
+    animation: glowGreen 1.2s infinite;
+    padding: 15px;
+    /* background-color: #97b949; */
+    margin-bottom: 10px;
+}
+
+@keyframes glowGreen {
+    0% {
+        opacity: 1;
+        text-shadow: 0 0 6px #00cc00, 0 0 18px #66ff66;
+    }
+    50% {
+        opacity: 0.5;
+        text-shadow: none;
+    }
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 6px #00cc00, 0 0 18px #66ff66;
+    }
+}
