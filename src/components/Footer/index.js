@@ -7,19 +7,19 @@ import { MdEmail, MdCall, MdTextsms, MdChat } from "react-icons/md";
 import "./index.css"; // Import CSS
 
 const footerData = {
-    categories: [
-        { name: "All Glasses", link: "all-glasses" },
-        { name: "All Women’s Eyeglasses | Sunglasses", link: "Women" },
-        { name: "All Men's Eyeglasses | Sunglasses", link: "Men" },
-        { name: "Kids Glasses (Toddler | Child | Pre-Teen)", link: "kids" },
+    customerService: [
+        { name: "Contact Us", link: "all-glasses" },
+        { name: "FAQ / Help Center", link: "Women" },
+        { name: "Shipping & Delivery", link: "Men" },
+        { name: "Returns & Exchanges", link: "kids" },
+        { name: "Track Your Order", link: "kids" },
     ],
-    styles: [
-        { name: "Aviator Glasses", link: "/aviator-glasses" },
-        { name: "Cat-Eye Glasses", link: "/cat-eye-glasses" },
-        { name: "Oval Glasses", link: "/oval-glasses" },
-        { name: "Rectangle Glasses", link: "/rectangle-glasses" },
-        { name: "Round Glasses", link: "/round-glasses" },
-        { name: "Square Glasses", link: "/square-glasses" },
+    exploreProducts: [
+        { name: "Jewellery", link: "/aviator-glasses" },
+        { name: "Clothing", link: "/cat-eye-glasses" },
+        { name: "Purses & Bags", link: "/oval-glasses" },
+        { name: "Footwear", link: "/rectangle-glasses" },
+        { name: "Sunglasses", link: "/round-glasses" },
     ],
     frameColors: [
         "Blue", "Black", "Brown", "Green", "Gray", "Red", "Orange", "Pink",
@@ -29,7 +29,7 @@ const footerData = {
         "Blue", "Black", "Violet", "Brown", "Green", "Gray", "Red", "Orange",
         "Pink", "Gold", "White", "Clear/Transparent", "Yellow"
     ],
-    account: [
+    legalPolicies: [
         { name: "Your Orders", link: "/orders" },
         { name: "Your Saved Frames", link: "/saved-frames" },
         { name: "Your Dashboard", link: "/" },
@@ -73,9 +73,9 @@ const Footer = () => {
                 <div className="footer-grid">
                     {/* Categories */}
                     <div className="footer-column">
-                        <h3>SHOP BY CATEGORIES</h3>
+                        <h3>Customer Service</h3>
                         <ul>
-                            {footerData.categories.map((item, index) => (
+                            {footerData.customerService.map((item, index) => (
                                 <li key={index}>
                                     <IoPlay color="#00c2cb" size={13} />
                                     <Link className="link-tag" to={`/product-display/${item.link}`}>{item.name}</Link>
@@ -86,9 +86,9 @@ const Footer = () => {
 
                     {/* Styles */}
                     <div className="footer-column">
-                        <h3>SHOP BY STYLES</h3>
+                        <h3>Explore Products</h3>
                         <ul>
-                            {footerData.styles.map((item, index) => (
+                            {footerData.exploreProducts.map((item, index) => (
                                 <li key={index}>
                                     <IoPlay color="#00c2cb" size={13} />
                                     <Link className="link-tag" to={`/product-display/${item.name}`}>{item.name}</Link>
@@ -125,9 +125,9 @@ const Footer = () => {
 
                     {/* Account */}
                     <div className="footer-column">
-                        <h3>YOUR ACCOUNT</h3>
+                        <h3>Legal & Policies</h3>
                         <ul>
-                            {footerData.account.map((item, index) => (
+                            {footerData.legalPolicies.map((item, index) => (
                                 <li key={index}>
                                     <IoPlay color="#00c2cb" size={13} />
                                     <Link className="link-tag" to={item.link}>{item.name}</Link>

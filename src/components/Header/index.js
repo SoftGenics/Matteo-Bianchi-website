@@ -9,7 +9,6 @@ import { CgProfile } from "react-icons/cg";
 
 import { FaShoppingCart } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
-// import { IoBagOutline } from "react-icons/io5";
 import { ImFire } from "react-icons/im";
 import dceyewrLogo from '../../Assets/images/dceyewr-logo-no-text.png';
 import men_pic from '../../Assets/images/men_pic.webp'
@@ -17,140 +16,80 @@ import women_pic from '../../Assets/images/women_pic.webp'
 import kid_pic from '../../Assets/images/kid_pic.webp'
 import wishlist from '../../Assets/images/wishlist.svg'
 import { FaRegHeart } from "react-icons/fa";
-
 import './index.css';
 
-const Sunglasses = {
+
+const Clothings = {
   PowerGlasses: {
     category: {
-      Men: [
-        'Daily Wear Lenses - Starting from ₹900',
-        'Monthly Disposable Lenses - Starting from ₹1100',
-      ],
-      Women: [
-        'Premium Color Lenses - Starting from ₹1500',
-        'Moisture-Rich Lenses - Starting from ₹1300',
-      ],
-      Kids: [
-        'Vibrant Blue - Starting from ₹950',
-        'Soft Daily Lenses - Starting from ₹700',
-      ],
+      Men: ['Classic Spectacles - Starting from ₹2000'],
+      Women: ['Premium Spectacles - Starting from ₹3500', 'Fashion Spectacles - Starting from ₹2500'],
+
     },
-
     brands: [
-      'FreshLook',
-      'Air Optix',
-      'Dailies',
-      'Biofinity',
+      { name: 'Jewelery', link: '/product-display/all' },
+      { name: 'Footwears', link: '/footwear' },
+      { name: 'Sunglasses', link: '/product-display/all' },
     ],
-
     picks: [
-      'Best for Sensitive Eyes',
-      'Extended Wear Lenses',
-      'Blue Light Blocking Lenses',
+      { name: 'Jewelery', link: '/product-display/all' },
+      { name: 'Footwears', link: '/footwear' },
+      { name: 'Sunglasses', link: '/product-display/all' },
+      { name: 'Purse', link: '/purse-nd-bags' },
     ],
-
     frameShapes: [
-      'Toric Lenses',
-      'Multifocal Lenses',
-      'Scleral Contact Lenses',
-    ],
-
-    collections: [
-      'Comfort Max Series',
-      'Vision Ultra Pro',
-      'Fashion Color Lenses',
-      'Hydration Plus Essentials',
+      { name: 'Footwear', link: '/footwear' },
+      { name: 'Footwear', link: '/footwear' },
     ],
   },
 };
 
-
-const contactLenses = {
+const Footwear = {
   PowerGlasses: {
     category: {
-      Men: [
-        'Soft Contact Lenses - Starting from ₹800',
-        'Disposable Daily Lenses - Starting from ₹1000',
-      ],
-      Women: [
-        'Hydrogel Lenses - Starting from ₹1200',
-      ],
-      Kids: [
-        'Natural Brown - Starting from ₹900',
-      ],
+      Men: ['Classic Spectacles - Starting from ₹2000'],
+      Women: ['Premium Spectacles - Starting from ₹3500', 'Fashion Spectacles - Starting from ₹2500'],
+
     },
-
     brands: [
-      'Acuvue',
-      'Bausch + Lomb',
-      'Alcon',
-      'CooperVision',
+      { name: 'Jewelery', link: '/product-display/all' },
+      { name: 'Footwears', link: '/footwear' },
+      { name: 'Sunglasses', link: '/product-display/all' },
     ],
-
     picks: [
-      'Best for Dry Eyes',
-      'Long-Lasting Comfort',
-      'UV Protection Lenses',
+      { name: 'Jewelery', link: '/product-display/all' },
+      { name: 'Footwears', link: '/footwear' },
+      { name: 'Sunglasses', link: '/product-display/all' },
+      { name: 'Purse', link: '/purse-nd-bags' },
     ],
-
     frameShapes: [
-      'Soft Lenses',
-      'Rigid Gas Permeable (RGP) Lenses',
-      'Hybrid Contact Lenses',
-    ],
-
-    collections: [
-      'BioComfort Series',
-      'Vision Clarity Pro',
-      'Style Enhancer Lenses',
-      'All-Day Wear Essentials',
+      { name: 'Footwear', link: '/footwear' },
+      { name: 'Footwear', link: '/footwear' },
     ],
   },
 };
 
-const kidsGlasses = {
+const Purse = {
   PowerGlasses: {
     category: {
-      Men: [
-        'Sporty Frames - Starting from ₹1800',
-      ],
-      Women: [
-        'Rose Gold Frames - Starting from ₹3000',
-      ],
-      Kids: [
-        'Cartoon-Themed Glasses - Starting from ₹800',
-        'Lightweight Flexible Frames - Starting from ₹1200',
-      ],
+      Men: ['Classic Spectacles - Starting from ₹2000'],
+      Women: ['Premium Spectacles - Starting from ₹3500', 'Fashion Spectacles - Starting from ₹2500'],
+
     },
-
     brands: [
-      'Prada Eyewear',
-      'Versace Frames',
-      'Coach Vision',
-      'Lenskart Air',
+      { name: 'Jewelery', link: '/product-display/all' },
+      { name: 'Footwears', link: '/footwear' },
+      { name: 'Sunglasses', link: '/product-display/all' },
     ],
-
     picks: [
-      'Limited Edition Styles',
-      'Ultra-Light Frames',
-      'Anti-Glare Eyeglasses',
+      { name: 'Jewelery', link: '/product-display/all' },
+      { name: 'Footwears', link: '/footwear' },
+      { name: 'Sunglasses', link: '/product-display/all' },
+      { name: 'Purse', link: '/purse-nd-bags' },
     ],
-
     frameShapes: [
-      'Geometric Frames',
-      'Retro Oval Frames',
-      'Angular Sharp Frames',
-      'Wraparound Frames',
-      'Wide Rim Frames',
-    ],
-
-    collections: [
-      'Artisan Craft',
-      'Bold and Beautiful',
-      'Retro Revival',
-      'Urban Streetwear',
-      'Elegant Edge',
+      { name: 'Footwear', link: '/footwear' },
+      { name: 'Footwear', link: '/footwear' },
     ],
   },
 };
@@ -162,60 +101,49 @@ const screenSaver = {
       Women: ['Premium Spectacles - Starting from ₹3500', 'Fashion Spectacles - Starting from ₹2500'],
 
     },
-    brands: ['Ray-Ban', 'Tom Ford', 'Oakley', 'Burberry'],
-    picks: ['Trending Styles', 'Top Picks', 'Multifocal Spectacles'],
-    frameShapes: [
-      'Rectangular Frames',
-      'Rounded Frames',
-      'Squared Frames',
-      'Aviator-Style Frames',
-      'Cat-Eye Frames',
+    brands: [
+      { name: 'Jewelery', link: '/product-display/all' },
+      { name: 'Footwears', link: '/footwear' },
+      { name: 'Sunglasses', link: '/product-display/all' },
     ],
-    collections: [
-      'Luxury Edition',
-      'Bohemian',
-      'Elegance',
-      'Modern Metals',
-      'Crystal Charm',
+    picks: [
+      { name: 'Jewelery', link: '/product-display/all' },
+      { name: 'Footwears', link: '/footwear' },
+      { name: 'Sunglasses', link: '/product-display/all' },
+      { name: 'Purse', link: '/purse-nd-bags' },
+    ],
+    frameShapes: [
+      { name: 'Footwear', link: '/footwear' },
+      { name: 'Footwear', link: '/footwear' },
     ],
   },
 };
 
 const categories = {
   PowerGlasses: {
-    // category: [
-    //   { title: 'Classic Eyeglasses', price: 'Starting from ₹2000' },
-    //   { title: 'Premium Eyeglasses', price: 'Starting from ₹3500' },
-    // ],
-    // category: {
-    //   Men: ['Classic Eyeglasses - Starting from ₹2000'],
-    //   Women: ['Premium Eyeglasses - Starting from ₹3500'],
-    //   Kids: ['Screen Eyeglasses - Starting from ₹500'],
-    // },
     category: {
       Men: ['Classic Eyeglasses - Starting from ₹2000', 'Premium Eyeglasses - Starting from ₹3500'],
       Women: ['Premium Eyeglasses - Starting from ₹3500', 'Fashionable Eyeglasses - Starting from ₹2500'],
       Kids: ['Screen Eyeglasses - Starting from ₹500', 'Durable Eyeglasses - Starting from ₹1500'],
     },
 
-    brands: ['John Jacobs', 'New Balance', 'Fossil', 'Le Petit Lunetier'],
-    picks: ['New Arrivals', 'Best Seller', 'Progressive Eyeglasses'],
-    frameShapes: [
-      'Rectangle Frames',
-      'Round Frames',
-      'Square Frames',
-      'Aviator Frames',
-      'Cat-Eye Frames',
+    brands: [
+      { name: 'Jewelery', link: '/jewellery' },
+      { name: 'Footwears', link: '/footwear' },
+      { name: 'Sunglasses', link: '/product-display/all' },
     ],
-    collections: [
-      'Masaba',
-      'Rhapsody',
-      'Sobhita',
-      'Pro Titanium',
-      'Gilded Jewels',
+    picks: [
+      { name: 'Jewelery', link: '/jewellery' },
+      { name: 'Footwears', link: '/footwear' },
+      { name: 'Sunglasses', link: '/product-display/all' },
+      { name: 'Purse', link: '/purse-nd-bags' },
+    ],
+    frameShapes: [
+      { name: 'Footwear', link: '/footwear' },
     ],
   },
 };
+
 const trendingSearches = [
   "Eyeglasses",
   "Sunglasses",
@@ -485,7 +413,7 @@ const Header = () => {
                 ))}
             </div>
 
-            
+
             {/* <div className="navbar-buttons">
               <button className="btn-blu">BLU</button>
             </div> */}
@@ -651,368 +579,208 @@ const Header = () => {
 
             <div className="popup-content">
               <h2 className='popup-containt-heading'>{popupContent}</h2>
+
+              <div className="category-column">
+                {/* <h3>Category</h3> */}
+                {Object.entries(categories.PowerGlasses.category).map(([heading], index) => (
+                  <div key={index} className="category-group">
+                    <img
+                      src={
+                        heading === 'Men'
+                          ? men_pic
+                          : heading === 'Women'
+                            ? women_pic
+                            : heading === 'Kids'
+                              ? kid_pic
+                              : dceyewrLogo
+                      }
+                      alt={`${heading}`}
+                      className="category-image"
+                    />
+                    <h4 className="category-heading">{heading}</h4>
+
+                  </div>
+                ))}
+              </div>
+
+              {/* <h1 className='popup-containt-heading'>Premium</h1> */}
+
               <ul>
                 {popupContent === 'Eyewear' && (
                   <div className="power-glasses-container">
                     {/* Select Category Section */}
-                    <div className="category-column">
-                      <h3>Category</h3>
-                      {Object.entries(categories.PowerGlasses.category).map(([heading, items], index) => (
-                        <div key={index} className="category-group">
-                          <img
-                            src={
-                              heading === 'Men'
-                                ? men_pic
-                                : heading === 'Women'
-                                  ? women_pic
-                                  : heading === 'Kids'
-                                    ? kid_pic
-                                    : dceyewrLogo
-                            }
-                            alt={`${heading}`}
-                            className="category-image"
-                          />
-                          <h4 className="category-heading">{heading}</h4>
-                          <div className='cetogory-group-item'>
-                            {items.map((item, idx) => (
-                              <div className="category-item1" key={idx}>
-                                <span>{item}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+
 
                     {/* Brands Section */}
                     <div className="brands-column">
-                      <h3>Brands</h3>
+                      {/* <h3>Brands</h3> */}
                       {categories.PowerGlasses.brands.map((brand, index) => (
                         <div className="brand-item" key={index}>
-                          {brand}
+                          <Link target="_blank" to={brand.link} style={{ color: "#000" }}>{brand.name} </Link>
                         </div>
                       ))}
                     </div>
 
                     {/* Our Top Picks Section */}
                     <div className="top-picks-column">
-                      <h3>Our Top Picks</h3>
+                      {/* <h3>Our Top Picks</h3> */}
                       {categories.PowerGlasses.picks.map((pick, index) => (
                         <div className="pick-item" key={index}>
-                          {pick}
+                          <Link target="_blank" to={pick.link} style={{ color: "#000" }}>{pick.name}</Link>
                         </div>
                       ))}
                     </div>
 
                     {/* Frame Shapes Section */}
                     <div className="frame-shapes-column">
-                      <h3>Frame Shape</h3>
+                      {/* <h3>Kids Shopings</h3> */}
                       {categories.PowerGlasses.frameShapes.map((shape, index) => (
                         <div className="frame-shape-item" key={index}>
-                          {shape}
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Collection Section */}
-                    <div className="collection-column">
-                      <h3>Collection</h3>
-                      {categories.PowerGlasses.collections.map((collection, index) => (
-                        <div className="collection-item" key={index}>
-                          {collection}
+                          <Link target="_blank" to={shape.link} style={{ color: "#000" }}>{shape.name}</Link>
                         </div>
                       ))}
                     </div>
                   </div>
                 )}
 
-                {popupContent === 'Screen Saver' && (
+                {popupContent === 'Jewellery' && (
                   <div className="power-glasses-container">
                     {/* Select Category Section */}
-                    <div className="category-column">
-                      <h3>Category</h3>
-                      {Object.entries(screenSaver.PowerGlasses.category).map(([heading, items], index) => (
-                        <div key={index} className="category-group">
-                          <img
-                            src={
-                              heading === 'Men'
-                                ? men_pic
-                                : heading === 'Women'
-                                  ? women_pic
-                                  : heading === 'Kids'
-                                    ? kid_pic
-                                    : dceyewrLogo
-                            }
-                            alt={`${heading}`}
-                            className="category-image"
-                          />
-                          <h4 className="category-heading">{heading}</h4>
-                          <div className='cetogory-group-item'>
-                            {items.map((item, idx) => (
-                              <div className="category-item1" key={idx}>
-                                <span>{item}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+
 
                     {/* Brands Section */}
                     <div className="brands-column">
-                      <h3>Brands</h3>
+                      {/* <h3>Brands</h3> */}
                       {screenSaver.PowerGlasses.brands.map((brand, index) => (
                         <div className="brand-item" key={index}>
-                          {brand}
+                          <Link target="_blank" to={brand.link} style={{ color: "#000" }}>{brand.name}</Link>
                         </div>
                       ))}
                     </div>
 
                     {/* Our Top Picks Section */}
                     <div className="top-picks-column">
-                      <h3>Our Top Picks</h3>
+                      {/* <h3>Our Top Picks</h3> */}
                       {screenSaver.PowerGlasses.picks.map((pick, index) => (
                         <div className="pick-item" key={index}>
-                          {pick}
+                          <Link target="_blank" to={pick.link} style={{ color: "#000" }}>{pick.name}</Link>
                         </div>
                       ))}
                     </div>
 
                     {/* Frame Shapes Section */}
                     <div className="frame-shapes-column">
-                      <h3>Frame Shape</h3>
+                      {/* <h3>Kids Shopings</h3> */}
                       {screenSaver.PowerGlasses.frameShapes.map((shape, index) => (
                         <div className="frame-shape-item" key={index}>
-                          {shape}
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Collection Section */}
-                    <div className="collection-column">
-                      <h3>Collection</h3>
-                      {screenSaver.PowerGlasses.collections.map((collection, index) => (
-                        <div className="collection-item" key={index}>
-                          {collection}
+                          <Link target="_blank" to={shape.link} style={{ color: "#000" }}>{shape.name}</Link>
                         </div>
                       ))}
                     </div>
                   </div>
                 )}
-                {popupContent === 'Kids Glasses' && (
+
+                {popupContent === 'Purse-Nd-Bags' && (
                   <div className="power-glasses-container">
                     {/* Select Category Section */}
-                    <div className="category-column">
-                      <h3> Category</h3>
-                      {Object.entries(kidsGlasses.PowerGlasses.category).map(([heading, items], index) => (
-                        <div key={index} className="category-group">
-                          <img
-                            src={
-                              heading === 'Men'
-                                ? men_pic
-                                : heading === 'Women'
-                                  ? women_pic
-                                  : heading === 'Kids'
-                                    ? kid_pic
-                                    : dceyewrLogo
-                            }
-                            alt={`${heading}`}
-                            className="category-image"
-                          />
-                          <h4 className="category-heading">{heading}</h4>
-                          <div className='cetogory-group-item'>
-                            {items.map((item, idx) => (
-                              <div className="category-item1" key={idx}>
-                                <span>{item}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+
 
                     {/* Brands Section */}
                     <div className="brands-column">
-                      <h3>Brands</h3>
-                      {kidsGlasses.PowerGlasses.brands.map((brand, index) => (
+                      {/* <h3>Brands</h3> */}
+                      {Purse.PowerGlasses.brands.map((brand, index) => (
                         <div className="brand-item" key={index}>
-                          {brand}
+                          <Link target="_blank" to={brand.link} style={{ color: "#000" }}>{brand.name}</Link>
                         </div>
                       ))}
                     </div>
 
                     {/* Our Top Picks Section */}
                     <div className="top-picks-column">
-                      <h3>Our Top Picks</h3>
-                      {categories.PowerGlasses.picks.map((pick, index) => (
+                      {/* <h3>Our Top Picks</h3> */}
+                      {Purse.PowerGlasses.picks.map((pick, index) => (
                         <div className="pick-item" key={index}>
-                          {pick}
+                          <Link target="_blank" to={pick.link} style={{ color: "#000" }}>{pick.name}</Link>
                         </div>
                       ))}
                     </div>
 
                     {/* Frame Shapes Section */}
                     <div className="frame-shapes-column">
-                      <h3>Frame Shape</h3>
-                      {kidsGlasses.PowerGlasses.frameShapes.map((shape, index) => (
+                      {/* <h3>Kids Shopings</h3> */}
+                      {Purse.PowerGlasses.frameShapes.map((shape, index) => (
                         <div className="frame-shape-item" key={index}>
-                          {shape}
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Collection Section */}
-                    <div className="collection-column">
-                      <h3>Collection</h3>
-                      {kidsGlasses.PowerGlasses.collections.map((collection, index) => (
-                        <div className="collection-item" key={index}>
-                          {collection}
+                          <Link target="_blank" to={shape.link} style={{ color: "#000" }}>{shape.name}</Link>
                         </div>
                       ))}
                     </div>
                   </div>
                 )}
-                {popupContent === 'Contact Lenses' && (
-                  <div className="power-glasses-container">
-                    {/* Select Category Section */}
-                    <div className="category-column">
-                      <h3>Category</h3>
-                      {Object.entries(contactLenses.PowerGlasses.category).map(([heading, items], index) => (
-                        <div key={index} className="category-group">
-                          <img
-                            src={
-                              heading === 'Men'
-                                ? men_pic
-                                : heading === 'Women'
-                                  ? women_pic
-                                  : heading === 'Kids'
-                                    ? kid_pic
-                                    : dceyewrLogo
-                            }
-                            alt={`${heading}`}
-                            className="category-image"
-                          />
-                          <h4 className="category-heading">{heading}</h4>
-                          <div className='cetogory-group-item'>
-                            {items.map((item, idx) => (
-                              <div className="category-item1" key={idx}>
-                                <span>{item}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
 
+                {popupContent === 'Footwear' && (
+                  <div className="power-glasses-container">
+                   
                     {/* Brands Section */}
                     <div className="brands-column">
-                      <h3>Brands</h3>
-                      {contactLenses.PowerGlasses.brands.map((brand, index) => (
+                      {/* <h3>Brands</h3> */}
+                      {Footwear.PowerGlasses.brands.map((brand, index) => (
                         <div className="brand-item" key={index}>
-                          {brand}
+                          <Link target="_blank" to={brand.link} style={{ color: "#000" }}>{brand.name}</Link>
                         </div>
                       ))}
                     </div>
 
                     {/* Our Top Picks Section */}
                     <div className="top-picks-column">
-                      <h3>Our Top Picks</h3>
-                      {contactLenses.PowerGlasses.picks.map((pick, index) => (
+                      {/* <h3>Our Top Picks</h3> */}
+                      {Footwear.PowerGlasses.picks.map((pick, index) => (
                         <div className="pick-item" key={index}>
-                          {pick}
+                          <Link target="_blank" to={pick.link} style={{ color: "#000" }}>{pick.name}</Link>
                         </div>
                       ))}
                     </div>
 
                     {/* Frame Shapes Section */}
                     <div className="frame-shapes-column">
-                      <h3>Frame Shape</h3>
-                      {contactLenses.PowerGlasses.frameShapes.map((shape, index) => (
+                      {/* <h3>Kids Shopings</h3> */}
+                      {Footwear.PowerGlasses.frameShapes.map((shape, index) => (
                         <div className="frame-shape-item" key={index}>
-                          {shape}
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Collection Section */}
-                    <div className="collection-column">
-                      <h3>Collection</h3>
-                      {contactLenses.PowerGlasses.collections.map((collection, index) => (
-                        <div className="collection-item" key={index}>
-                          {collection}
+                          <Link target="_blank" to={shape.link} style={{ color: "#000" }}>{shape.name}</Link>
                         </div>
                       ))}
                     </div>
                   </div>
                 )}
-                {popupContent === 'Sunglasses' && (
-                  <div className="power-glasses-container">
-                    {/* Select Category Section */}
-                    <div className="category-column">
-                      <h3>Category</h3>
-                      {Object.entries(Sunglasses.PowerGlasses.category).map(([heading, items], index) => (
-                        <div key={index} className="category-group">
-                          <img
-                            src={
-                              heading === 'Men'
-                                ? men_pic
-                                : heading === 'Women'
-                                  ? women_pic
-                                  : heading === 'Kids'
-                                    ? kid_pic
-                                    : dceyewrLogo
-                            }
-                            alt={`${heading}`}
-                            className="category-image"
-                          />
-                          <h4 className="category-heading">{heading}</h4>
-                          <div className='cetogory-group-item'>
-                            {items.map((item, idx) => (
-                              <div className="category-item1" key={idx}>
-                                <span>{item}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
 
+                {popupContent === 'Clothings' && (
+                    <div className="power-glasses-container">
+                   
                     {/* Brands Section */}
                     <div className="brands-column">
-                      <h3>Brands</h3>
-                      {Sunglasses.PowerGlasses.brands.map((brand, index) => (
+                      {/* <h3>Brands</h3> */}
+                      {Clothings.PowerGlasses.brands.map((brand, index) => (
                         <div className="brand-item" key={index}>
-                          {brand}
+                          <Link target="_blank" to={brand.link} style={{ color: "#000" }}>{brand.name}</Link>
                         </div>
                       ))}
                     </div>
 
                     {/* Our Top Picks Section */}
                     <div className="top-picks-column">
-                      <h3>Our Top Picks</h3>
-                      {Sunglasses.PowerGlasses.picks.map((pick, index) => (
+                      {/* <h3>Our Top Picks</h3> */}
+                      {Clothings.PowerGlasses.picks.map((pick, index) => (
                         <div className="pick-item" key={index}>
-                          {pick}
+                          <Link target="_blank" to={pick.link} style={{ color: "#000" }}>{pick.name}</Link>
                         </div>
                       ))}
                     </div>
 
                     {/* Frame Shapes Section */}
                     <div className="frame-shapes-column">
-                      <h3>Frame Shape</h3>
-                      {Sunglasses.PowerGlasses.frameShapes.map((shape, index) => (
+                      {/* <h3>Kids Shopings</h3> */}
+                      {Clothings.PowerGlasses.frameShapes.map((shape, index) => (
                         <div className="frame-shape-item" key={index}>
-                          {shape}
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Collection Section */}
-                    <div className="collection-column">
-                      <h3>Collection</h3>
-                      {Sunglasses.PowerGlasses.collections.map((collection, index) => (
-                        <div className="collection-item" key={index}>
-                          {collection}
+                          <Link target="_blank" to={shape.link} style={{ color: "#000" }}>{shape.name}</Link>
                         </div>
                       ))}
                     </div>
