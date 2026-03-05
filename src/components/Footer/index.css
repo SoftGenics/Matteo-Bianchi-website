@@ -199,11 +199,13 @@
     display: flex;
     justify-content: center;
     /* margin-top: 10px; */
+    margin-left: 10px;
 }
 
 .payment-methods img {
     height: 24px;
     max-width: 100%;
+    margin-right: 12px;
 }
 
 .link-tag{
@@ -317,3 +319,7 @@
         height: 20px;
     }
 }
+
+.payment-methods img{
+    margin-right: 7px;
+  }

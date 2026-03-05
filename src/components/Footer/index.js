@@ -8,33 +8,36 @@ import "./index.css"; // Import CSS
 
 const footerData = {
     customerService: [
-        { name: "Contact Us", link: "all-glasses" },
-        { name: "FAQ / Help Center", link: "Women" },
-        { name: "Shipping & Delivery", link: "Men" },
-        { name: "Returns & Exchanges", link: "kids" },
-        { name: "Track Your Order", link: "kids" },
+        { name: "Contact Us", link: "/ContactUs" },
+        { name: "FAQ / Help Center", link: "#" },
+        { name: "Shipping & Delivery", link: "/ShippingPolicy" },
+        { name: "Returns & Exchanges", link: "#" },
+        { name: "Track Your Order", link: "/track-order" },
     ],
     exploreProducts: [
-        { name: "Jewellery", link: "/aviator-glasses" },
-        { name: "Clothing", link: "/cat-eye-glasses" },
-        { name: "Purses & Bags", link: "/oval-glasses" },
-        { name: "Footwear", link: "/rectangle-glasses" },
-        { name: "Sunglasses", link: "/round-glasses" },
+        { name: "Jewellery", link: "/jewellery" },
+        { name: "Clothing", link: "/clothings" },
+        { name: "Purses & Bags", link: "/purse-nd-bags" },
+        { name: "Footwear", link: "/footwear" },
+        { name: "Sunglasses", link: "/product-display/all" },
     ],
+    // frameColors: [
+    //     "Blue", "Black", "Brown", "Green", "Gray", "Red", "Orange", "Pink",
+    //     "Gold", "White", "Clear/Transparent", "Purple"
+    // ],
     frameColors: [
-        "Blue", "Black", "Brown", "Green", "Gray", "Red", "Orange", "Pink",
-        "Gold", "White", "Clear/Transparent", "Purple"
+        "Blue", "Black", "Brown", "Green", "Gray",
     ],
+    // lensColors: [
+    //     "Blue", "Black", "Violet", "Brown", "Green", "Gray", "Red", "Orange",
+    //     "Pink", "Gold", "White", "Clear/Transparent", "Yellow"
+    // ],
     lensColors: [
-        "Blue", "Black", "Violet", "Brown", "Green", "Gray", "Red", "Orange",
-        "Pink", "Gold", "White", "Clear/Transparent", "Yellow"
+        "Blue", "Black", "Violet", "Brown", "Green",
     ],
     legalPolicies: [
-        { name: "Your Orders", link: "/orders" },
-        { name: "Your Saved Frames", link: "/saved-frames" },
-        { name: "Your Dashboard", link: "/" },
-        { name: "Contact Us", link: "/ContactUs" },
         { name: "About Us", link: "/AboutUs" },
+        { name: "Your Orders", link: "/orders" },
         { name: "Privacy Policy", link: "/PrivacyPolicy" },
         { name: "Refund Policy", link: "/RefundPolicy" },
         { name: "Shipping Policy", link: "/ShippingPolicy" },
@@ -78,7 +81,7 @@ const Footer = () => {
                             {footerData.customerService.map((item, index) => (
                                 <li key={index}>
                                     <IoPlay color="#00c2cb" size={13} />
-                                    <Link className="link-tag" to={`/product-display/${item.link}`}>{item.name}</Link>
+                                    <Link className="link-tag" to={item.link}>{item.name}</Link>
                                 </li>
                             ))}
                         </ul>
@@ -91,7 +94,7 @@ const Footer = () => {
                             {footerData.exploreProducts.map((item, index) => (
                                 <li key={index}>
                                     <IoPlay color="#00c2cb" size={13} />
-                                    <Link className="link-tag" to={`/product-display/${item.name}`}>{item.name}</Link>
+                                    <Link className="link-tag" to={item.link}>{item.name}</Link>
                                 </li>
                             ))}
                         </ul>
@@ -103,7 +106,7 @@ const Footer = () => {
                         <ul>
                             {footerData.frameColors.map((color, index) => (
                                 <li key={index}>
-                                    <IoPlay color="#00c2cb" size={13} /> 
+                                    <IoPlay color="#00c2cb" size={13} />
                                     <Link className="link-tag" to={`/product-display/${color}`}>{color}</Link>
                                 </li>
                             ))}
@@ -116,7 +119,7 @@ const Footer = () => {
                         <ul>
                             {footerData.lensColors.map((color, index) => (
                                 <li key={index}>
-                                    <IoPlay color="#00c2cb" size={13} /> 
+                                    <IoPlay color="#00c2cb" size={13} />
                                     <Link className="link-tag" to={`/product-display/${color}`}>{color}</Link>
                                 </li>
                             ))}
@@ -145,30 +148,36 @@ const Footer = () => {
                         <span><MdTextsms size={18} /> Text: +91 93803 59418</span>
                         <span><MdChat size={18} /> Chat: Search or Chat</span>
                         <h1 style={{ color: "#2f78c4" }}>
-                                <FloatingWhatsApp
-                                    phoneNumber="+91 76677 37337"
-                                    accountName="Softgenics India Pvt. Ltd."
-                                    allowClickAway
-                                    notification
-                                    notificationDelay={60000} // 1 minute
-                                /></h1>
+                            <FloatingWhatsApp
+                                phoneNumber="+91 76677 37337"
+                                accountName="Softgenics India Pvt. Ltd."
+                                allowClickAway
+                                notification
+                                notificationDelay={60000} // 1 minute
+                            /></h1>
                     </div>
-                    
+
                     <div className="footer-bottom-down">
                         <p>© 2025 Payne Glasses LLC. All Rights Reserved.</p>
-                        
+
                         <div className="policy-links">
-                            <Link to="/privacy-policy">Privacy Policy</Link> | 
+                            <Link to="/privacy-policy">Privacy Policy</Link> |
                             <Link to="/terms-of-use">Terms of Use</Link>
                         </div>
 
                         {/* Payment Methods */}
-                        <div className="payment-methods">
+                        {/* <div className="payment-methods">
                             <img src="https://cdn.razorpay.com/app/googlepay.svg" alt="Google Pay" />
                             <img src="https://checkout-static-next.razorpay.com/build/assets/images/phonepe.e101f376.svg" alt="PhonePe" />
                             <img src="https://cdn.razorpay.com/app/cred_circle.png" alt="CRED" />
                             <img src="https://cdn.razorpay.com/app/amazonpay.svg" alt="Amazon Pay" />
                             <img src="https://cdn.razorpay.com/app/bhim.svg" alt="BHIM" />
+                        </div> */}
+                        <div className="payment-methods">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" />
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="MasterCard" />
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/UPI-Logo-vector.svg" alt="UPI" />
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" />
                         </div>
                     </div>
                 </div>
