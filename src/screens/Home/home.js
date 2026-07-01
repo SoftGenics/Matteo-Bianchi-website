@@ -27,9 +27,9 @@ import mangal1 from '../../Assets/images/mangals1.jpeg'
 import mangal2 from '../../Assets/images/mangals2.jpeg'
 import mangal3 from '../../Assets/images/mangals3.jpeg'
 
-import forMenSection from '../../Assets/images/for-men-section.webp'
-import forWomenSection from '../../Assets/images/for-women-section.webp'
-import forChildSection from '../../Assets/images/for-child-section.webp'
+// import forMenSection from '../../Assets/images/for-men-section.webp'
+// import forWomenSection from '../../Assets/images/for-women-section.webp'
+// import forChildSection from '../../Assets/images/for-child-section.webp'
 import thewedding from '../../Assets/images/thewedding.png'
 import thewedding2 from '../../Assets/images/thewedding2.png'
 import feet from '../../Assets/images/feet.jpeg'
@@ -311,36 +311,39 @@ const Home = () => {
                 }}
                 pagination={{ clickable: true }}
                 speed={1300}
-                style={{ padding: '0 5%' }}
+                style={{ padding: "0 5%" }}
               >
-                {slidersData.map((item, index) =>
-                  item.slider_name === 'banner' ? (
+                {slidersData.map((item, index) => {
+                  if (item.slider_name !== "banner") return null;
+
+                  const link = item.slider_link?.toLowerCase();
+                  const isEyewear = link?.includes("sunglasses");
+
+                  return (
                     <SwiperSlide key={index}>
                       <Link
-                        to={`/product-display/${item.slider_link}`}
+                        to={isEyewear ? `/product-display/${link}` : `/${link}`}
                         target="_blank"
-                        rel="noopener noreferrer"
                       >
                         <img
                           src={`${SERVER_API_URL}/uploads/${item.slider_url}`}
                           alt={item.slider_name}
                           style={{
-                            width: '100%',
-                            borderRadius: '16px',
-                            objectFit: 'cover',
-                            height: '300px',
-                            boxShadow: '0 8px 20px rgba(0,0,0,0.15)'
+                            width: "100%",
+                            borderRadius: "16px",
+                            objectFit: "cover",
+                            height: "300px",
+                            boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
                           }}
                         />
                       </Link>
                     </SwiperSlide>
-                  ) : null
-                )}
+                  );
+                })}
               </Swiper>
             ) : (
               <p>Loading...</p>
             )}
-
           </div>
 
           {/* <div className="sunglasses-grid">
@@ -814,43 +817,43 @@ const Home = () => {
             <div className='eyeglasses-grid eyeglasses-grid1'>
 
               {/* Computer Glasses */}
-              <Link to={`/product-display/Computer Glasses`}
+              <Link to={`/jewellery`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className='eyeglasses-card eyeglasses-card1'
                 style={{ backgroundImage: `url(${mangal1})` }}
               >
                 <div className='eyeglasses-info'>
-                  <h2 className='eyeglasses-card-title'>Computer Glasses</h2>
-                  <p className='eyeglasses-card-description'>Protect Your Eyes - Blue Light Filtering</p>
+                  <h2 className='eyeglasses-card-title'>Women's Gold Chain Collection</h2>
+                  <p className='eyeglasses-card-description'>Elegant Gold Chains Designed for Every Occasion</p>
                 </div>
                 <div className='eyeglasses-arrow'>&#8250;</div>
               </Link>
 
               {/* Sunglasses */}
-              <Link to={`/product-display/Sunglasses`}
+              <Link to={`/jewellery`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className='eyeglasses-card eyeglasses-card1'
                 style={{ backgroundImage: `url(${mangal2})` }}
               >
                 <div className='eyeglasses-info'>
-                  <h2 className='eyeglasses-card-title'>Sunglasses</h2>
-                  <p className='eyeglasses-card-description'>Stay Stylish - 100% UV Protection</p>
+                  <h2 className='eyeglasses-card-title'>Ladies Gold Chain</h2>
+                  <p className='eyeglasses-card-description'>Beautiful & Elegant Chains to Enhance Your Style</p>
                 </div>
                 <div className='eyeglasses-arrow'>&#8250;</div>
               </Link>
 
               {/* Prescription Glasses */}
-              <Link to={`/product-display/Computer Glasses`}
+              <Link to={`/jewellery`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className='eyeglasses-card eyeglasses-card1'
                 style={{ backgroundImage: `url(${mangal3})` }}
               >
                 <div className='eyeglasses-info'>
-                  <h2 className='eyeglasses-card-title'>Prescription</h2>
-                  <p className='eyeglasses-card-description'>Perfect Clarity - Tailored to Your Needs</p>
+                  <h2 className='eyeglasses-card-title'>Premium Women's Gold Chains</h2>
+                  <p className='eyeglasses-card-description'>Graceful Designs Crafted for Modern Women</p>
                 </div>
                 <div className='eyeglasses-arrow'>&#8250;</div>
               </Link>
@@ -937,7 +940,7 @@ const Home = () => {
           {/* Eyeglasses-container */}
           <div className='Eyeglasses-container'>
             <div className='Eyeglasses-container-main'>
-            <h1 className='Eyeglasses-text'>Fresh, Funky & Fashionable</h1>
+              <h1 className='Eyeglasses-text'>Fresh, Funky & Fashionable</h1>
               <div className='Eyeglasses-home'>
 
                 <div className='pawerGlass-container'>
