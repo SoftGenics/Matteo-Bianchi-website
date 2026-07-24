@@ -11,79 +11,51 @@ const OrdersPage = () => {
     const [mobile_num, setMobile_num] = useState("");
     const [orders, setOrders] = useState([]);
     const [search, setSearch] = useState("");
-    const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
+
         if (token) {
             const decodedToken = jwtDecode(token);
-            const mobile_num = decodedToken.mobile_num;
-            setMobile_num(mobile_num);
+            const mobile = decodedToken.mobile_num;
 
-            fetchProducts(); // products can be fetched right away
+            setMobile_num(mobile);
+            fetchProducts(mobile); // ✅ direct value pass karo
         }
     }, []);
 
-    useEffect(() => {
-        if (mobile_num && mobile_num.trim() !== "") {
-            fetchOrders();
-        }
-    }, [mobile_num]); // will run when mobile_num changes
 
-    // Fetch orders from API
-    const fetchOrders = async () => {
+    const fetchProducts = async (mobile) => {
         try {
-            const res = await axios.post(
-                `${SERVER_API_URL}/api/cashfree/orders/number`,
-                { mobile_number: mobile_num },
-                { headers: { "Content-Type": "application/json" } }
+            const response = await axios.post(`${SERVER_API_URL}/api/cashfree/all/UserOder`,
+                {
+                    mobile_number: mobile
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
             );
-            console.log("res.data.data", res.data.data)
-            setOrders(res.data.data || []);
-        } catch (err) {
-            console.error("Error fetching orders:", err);
-        }
-    };
 
-    // Fetch products from the API
-    const fetchProducts = async () => {
-        try {
-            const response = await fetch(`${SERVER_API_URL}/product`);
-            if (!response.ok) {
-                throw new Error('Failed to fetch products');
-            }
-            const data = await response.json();
-            setProducts(data.result);
+            console.log("Fetched products:", response.data);
+
+            setOrders(response.data);
+
         } catch (error) {
-            console.error('Error fetching products:', error);
+            console.error(error);
         }
     };
 
-    // Get product image + title
-    const getProductDetails = (productId) => {
-        const product = products.find(
-            (product) => String(product.product_id) === String(productId)
-        );
-        if (product) {
-            return {
-                id: product.product_id,
-                image: product.product_thumnail_img ? `${SERVER_API_URL}/${product.product_thumnail_img}` : null,
-                title: product.product_title || "Product Name"
-            };
-        }
-        return { image: null, title: "Product Name" };
-    };
 
     // Filter orders based on search (id, title, price)
     const filteredOrders = orders.filter((order) => {
         const searchLower = search.toLowerCase();
-        const productDetails = getProductDetails(order.product_id);
 
         return (
-            productDetails.id?.toString().includes(searchLower) ||
-            productDetails.title.toLowerCase().includes(searchLower) ||
-            (order.selected_Lens_Or_ProductPrice &&
-                order.selected_Lens_Or_ProductPrice.toString().includes(searchLower))
+            String(order.product_id).includes(searchLower) ||
+            (order.product_title || "").toLowerCase().includes(searchLower) ||
+            String(order.selected_Lens_Or_ProductPrice || "").includes(searchLower)
         );
     });
 
@@ -118,26 +90,28 @@ const OrdersPage = () => {
                         </ul>
 
                         {filteredOrders.map((order, index) => {
-                            const { image, title } = getProductDetails(order.product_id);
 
                             return (
                                 <Link className="navigate-traking" to={`/tracking-status/${order.id}`}>
                                     <div key={index} className="order-card">
-                                        {image ? (
-                                            <img src={image} alt={title} className="order-card__img" />
+                                        {order.product_image ? (
+                                            <img
+                                                src={`${SERVER_API_URL}/${order.product_image}`}
+                                                alt={order.product_title}
+                                                className="order-card__img"
+                                            />
                                         ) : (
-                                            'No Image'
+                                            "No Image"
                                         )}
-
                                         <div className="order-card__details">
-                                            <h4 className="order-card__title">{title}</h4>
+                                            <h4 className="order-card__title">{order.product_title}</h4>
                                             <p className="order-card__quantity"><span className="qty">Qty: </span>{order.product_quantity ? order.product_quantity : "1"}</p>
                                             <p className="order-card__price">
                                                 ₹{order.selected_Lens_Or_ProductPrice}
                                             </p>
 
                                             <div>
-                                                {order.delivery_status === "Processing" ? (
+                                                {order.delivery_status === "pending" ? (
                                                     <>
                                                         <span className="order-card__status order-card__status--red">
                                                             ● Processing
@@ -162,9 +136,17 @@ const OrdersPage = () => {
 
                                                     </>
                                                 ) : (
-                                                    <span className="order-card__status order-card__status--orange">
-                                                        ● {order.delivery_status}
-                                                    </span>
+                                                    <>
+                                                        <span className="order-card__status order-card__status--orange">
+                                                            ● {order.delivery_status === "rto" ? "Undelivered" : order.delivery_status}
+                                                        </span>
+
+                                                        <p className="order-card__message">
+                                                            Item is on {order.delivery_status}.
+
+                                                        </p>
+                                                    </>
+
                                                 )}
                                                 <span className="order-date"  >
                                                     {new Date(order.createdAt).toLocaleString()}

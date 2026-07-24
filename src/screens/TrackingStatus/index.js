@@ -1,221 +1,546 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
-import { SERVER_API_URL } from '../../server/server'
-import { ColorRing } from 'react-loader-spinner';
+import { useParams } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import { ColorRing } from "react-loader-spinner";
+import { SERVER_API_URL } from "../../server/server";
 import "./index.css";
 
-
 const TrackingStatus = () => {
-  const [trackingData, setTrackingData] = useState(null);
-  const [order, setOrder] = useState([]);
-  const [products, setProducts] = useState([]);
+
   const { id } = useParams();
-  console.log("product_id", id)
 
-  const transformTrackingData = (apiTracking) => {
-    return {
-      order_id: apiTracking.id || "N/A",
-      tracking_number: apiTracking.tracking_number,
-      courier: apiTracking.slug,
-      status: apiTracking.tag,
-      timeline: apiTracking.checkpoints.map(cp => {
-        const dt = new Date(cp.checkpoint_time);
-        return {
-          stage: cp.subtag_message || cp.tag,
-          date: dt.toISOString().split("T")[0], // yyyy-mm-dd
-          time: dt.toTimeString().slice(0, 5), // HH:mm
-          messages: [
-            cp.message + (cp.location ? ` (${cp.location})` : "")
-          ]
-        };
-      })
+  const [product, setProduct] = useState(null);
+  const [mobile_num, setMobile_num] = useState("");
+
+  const [trackingData, setTrackingData] = useState(null);
+  const [trackingSteps, setTrackingSteps] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const mobile = decodedToken.mobile_num;
+
+      setMobile_num(mobile);
+      fetchProducts(mobile); // ✅ direct value pass karo
+    }
+  }, []);
+
+
+
+  // ------------------------------
+  // Tracking Steps
+  // ------------------------------
+  console.log("mob", product)
+
+  // 👇 getStatus
+  const getTrackingSteps = (tracking, order) => {
+
+    const activities = tracking?.shipment_track_activities || [];
+    const status = Number(tracking?.shipment_status);
+
+    const hasActivity = (activityName) =>
+      activities.some(
+        item =>
+          item.activity?.trim().toLowerCase() ===
+          activityName.trim().toLowerCase()
+      );
+
+    const getDate = (activityName) => {
+      const item = activities.find(
+        item =>
+          item.activity?.trim().toLowerCase() ===
+          activityName.trim().toLowerCase()
+      );
+
+      return item?.date || "";
     };
+
+    return [
+
+      // Order Confirmed
+      {
+        title: "Order Confirmed",
+        completed: true,
+        blink: status === 0,
+        date: order?.createdAt,
+      },
+
+      // Pickup Requested
+      {
+        title: "Pickup Requested",
+        completed:
+          hasActivity("Pickup Awaited") ||
+          status >= 19,
+
+        blink: status === 19,
+
+        date: getDate("Pickup Awaited"),
+      },
+
+      // Pickup Scheduled
+      {
+        title: "Pickup Scheduled",
+        completed:
+          hasActivity("Pickup scheduled") ||
+          status >= 20,
+
+        blink: status === 20,
+
+        date:
+          getDate("Pickup scheduled"),
+      },
+
+      // Shipped
+      {
+        title: "Shipped",
+
+        completed:
+          hasActivity("Picked up") ||
+          hasActivity("Shipment Booked") ||
+          status >= 42 ||
+          status === 18 ||
+          status === 17 ||
+          status === 21 ||
+          status === 7,
+
+        blink:
+          status === 42,
+
+        date:
+          getDate("Picked up") ||
+          getDate("Shipment Booked"),
+      },
+
+      // In Transit
+      {
+        title: "In Transit",
+
+        completed:
+          hasActivity("In Transit") ||
+          status === 18 ||
+          status === 17 ||
+          status === 21 ||
+          status === 7,
+
+        blink:
+          status === 18,
+
+        date:
+          getDate("In Transit"),
+      },
+
+      // Out For Delivery
+      {
+        title: "Out For Delivery",
+
+        completed:
+          hasActivity("Out for Delivery") ||
+          status === 17 ||
+          status === 21 ||
+          status === 7,
+
+        blink:
+          status === 17,
+
+        date:
+          getDate("Out for Delivery"),
+      },
+
+      // Undelivered / RTO
+      {
+        title: "Undelivered",
+
+        completed: status === 21,
+
+        failed: status === 21,
+
+        blink: status === 21,
+
+        date: getDate("Undelivered"),
+      },
+
+      // Delivered
+      {
+        title: "Delivered",
+
+        completed:
+          status === 7,
+
+        blink:
+          status === 7,
+
+        date:
+          getDate("Delivered"),
+      }
+
+    ];
+
   };
 
+  const getStatus = (status) => {
 
+    switch (Number(status)) {
 
-  // Fetch products from the API
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch(`${SERVER_API_URL}/product`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch products');
-      }
-      const data = await response.json();
-      setProducts(data.result);
-    } catch (error) {
-      console.error('Error fetching products:', error);
+      case 7:
+        return "Delivered";
+
+      case 17:
+        return "Out For Delivery";
+
+      case 18:
+        return "In Transit";
+
+      case 21:
+        return "Undelivered";
+
+      case 42:
+        return "Picked Up";
+
+      case 20:
+        return "Not Picked";
+
+      case 19:
+        return "Pickup Awaited";
+
+      case 6:
+        return "Shipment Booked";
+
+      case 0:
+        return "Pending";
+
+      default:
+        return "Processing";
     }
   };
 
+  // ------------------------------
+  // Fetch Products
+  // ------------------------------
 
-  // useEffect(() => {
-  //   const fetchTracking = async () => {
-  //     try {
-  //       const res = await axios.post(`${SERVER_API_URL}/api/tracking/track`, {
-  //         courier: "dtdc",
-  //         trackingNumber: "7D155069823".trim()
-  //       });
-
-  //       if (res.data?.data?.tracking) {
-  //         console.log("tracking", res.data.data.tracking)
-  //         const formattedData = transformTrackingData(res.data.data.tracking);
-  //         setTrackingData(formattedData);
-  //       } else {
-  //         console.warn("⚠️ Tracking data not found:", res.data);
-  //       }
-  //     } catch (err) {
-  //       console.error("❌ Error fetching tracking:", err.response?.data || err.message);
-  //     }
-  //   };
-
-  //   fetchTracking();
-  //   fetchData()
-  //   fetchProducts()
-  // }, [id]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${SERVER_API_URL}/api/cashfree/orders/${id}`);
-        console.log("response order", response.data)
-        setOrder(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData()
-    fetchProducts()
-  }, [id]);
-
-  const fetchTracking = async () => {
+  const fetchProducts = async (mobile) => {
+    console.log("fetchProducts", mobile)
     try {
-        const res = await axios.post(`${SERVER_API_URL}/api/tracking/track`, {
-        courier: order.data.slug,
-        trackingNumber: order.data.tracking_number.trim(),
-      });
+      const response = await axios.post(`${SERVER_API_URL}/api/cashfree/all/UserOder`,
+        {
+          mobile_number: mobile
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      if (res.data?.data?.tracking) {
-        const formattedData = transformTrackingData(res.data.data.tracking);
-        setTrackingData(formattedData);
+      const foundProduct = response.data.find(
+        item => String(item.id) === String(id)
+      );
+
+      if (!foundProduct) return;
+
+      setProduct(foundProduct);
+
+      if (foundProduct.tracking_number?.trim()) {
+        fetchTracking(
+          foundProduct.tracking_number,
+          foundProduct
+        );
       } else {
-        console.warn("⚠️ Tracking data not found:", res.data);
+        // Pending state
+        setTrackingData({
+          tracking_number: "",
+          courier: foundProduct.courier_name || "",
+          status: 0,
+          activities: [],
+          track_url: "",
+        });
+
+        setTrackingSteps([
+          {
+            title: "Order Confirmed",
+            completed: true,
+            blink: true,
+            date: foundProduct.createdAt,
+          },
+          {
+            title: "Pickup Requested",
+            completed: false,
+            blink: false,
+            date: "",
+          },
+          {
+            title: "Pickup Scheduled",
+            completed: false,
+            blink: false,
+            date: "",
+          },
+          {
+            title: "Shipped",
+            completed: false,
+            blink: false,
+            date: "",
+          },
+          {
+            title: "Delivered",
+            completed: false,
+            blink: false,
+            date: "",
+          },
+        ]);
       }
-    } catch (err) {
-      console.error("❌ Error fetching tracking:", err.response?.data || err.message);
+
+
+    } catch (error) {
+      console.error(error);
     }
   };
 
+  // ------------------------------
+  // Fetch Tracking
+  // ------------------------------
 
-  // ✅ Safe check: slug aur tracking_number dono honi chahiye aur empty string na ho
-  useEffect(() => {
-    if (!order?.data) return;  // 👈 Safe check
+  const fetchTracking = async (trackingNumber, order) => {
 
-    if (
-      order.data.slug?.trim() &&
-      order.data.tracking_number?.trim()
-    ) {
-      fetchTracking();
+    try {
+
+      const res = await axios.post(
+        `${SERVER_API_URL}/shiprocket/track-shipment`, { tracking_number: trackingNumber.trim(), }
+      );
+
+      console.log("Tracking :", res.data);
+
+      if (res.data?.success && res.data?.data?.tracking_data) {
+
+        const tracking = res.data.data.tracking_data;
+
+        setTrackingData({
+          tracking_number: trackingNumber,
+          courier: order?.courier_name || "",
+          activities: tracking.shipment_track_activities || [],
+          track_url: tracking.track_url,
+          status: tracking.shipment_status,
+        });
+
+        setTrackingSteps(
+          getTrackingSteps(tracking, order)
+        );
+
+      }
+
+    } catch (err) {
+      console.log(err);
     }
-  }, [order]);
 
-  if (!trackingData) return <p className="loading-cointainer-details">
-    <p style={{ marginBottom: "10px", textAlign: "center" }}>👉 “Tracking details will be provided as soon as your product is shipped.”</p>
-    <p style={{ marginBottom: "10px" }}>👉 "Your order has been confirmed successfully."</p>
-    <p style={{ marginBottom: "10px" }}>Loading tracking details...</p>
-    <ColorRing
-      visible={true}
-      height="80"
-      width="80"
-      ariaLabel="blocks-loading"
-      wrapperStyle={{}}
-      wrapperClass="blocks-wrapper"
-      colors={['#FF6B6B', '#FFD93D', '#6BCB77', '#4D96FF', '#845EC2']}
-    />
-  </p>
+  };
 
+  // ------------------------------
+  // Order Loaded
+  // ------------------------------
+
+  useEffect(() => {
+    if (mobile_num) {
+      fetchProducts(mobile_num);
+    }
+  }, [mobile_num]);
+
+  // ------------------------------
+  // Loading
+  // ------------------------------
+
+  if (!product || !trackingData) {
+
+    return (
+
+      <div className="loading-cointainer-details">
+
+        <p>Your order has been confirmed successfully.</p>
+
+        <p>
+          Tracking details will appear once the courier picks up your parcel.
+        </p>
+
+        <div className="loader-center">
+          <ColorRing
+            visible={true}
+            height="80"
+            width="80"
+            colors={[
+              "#FF6B6B",
+              "#FFD93D",
+              "#6BCB77",
+              "#4D96FF",
+              "#845EC2",
+            ]}
+          />
+        </div>
+
+      </div>
+
+    );
+
+  }
   return (
-    <div className="ordet-main-container">
-      {/* product order details */}
-      <div className="order-details-container">
-        {/* // Order details container */}
-        <div className="order-details-container">
-          <h2 className="order-details-title">Order Details</h2>
-          {order && products.length > 0 ? (
-            (() => {
-              // order me jo product_id hai uske basis pe product filter karna
-              const product = products.find(p => p.id === order.product_id);
+    <div className="tracking-page">
 
-              return product ? (
-                <div className="order-product-card">
-                  <img
-                    src={`${SERVER_API_URL}/${product.product_thumnail_img}`}
-                    alt={product.title}
-                    className="order-product-image"
-                  />
-                  <div className="order-product-info">
-                    <h3 className="product-title">{product.product_title}</h3>
-                    <p className="product-attr"><span style={{ marginLeft: "0", padding: "0", width: "auto" }}>{product?.highlights}</span></p>
-                    <p className="product-attr"><span style={{ marginLeft: "0", marginBottom: "30px", marginTop: "7px", width: "auto" }}>{order.data?.mobile_number}</span></p>
-                    <p className="product-qty">Qty: {order.data?.product_quantity}</p>
-                    <p className="product-price">Price: ₹{order.data?.selected_Lens_Or_ProductPrice}</p>
-                    <p className="product-attr">Frame Shape: <span>{product?.frame_shape}</span></p>
-                    <p className="product-attr">Frame Type: <span>{product?.frem_type}</span></p>
-                    <p className="product-attr">Frame Material: <span>fiber</span></p>
-                  </div>
+      {/* ================= Product Card ================= */}
+
+      <div className="order-card">
+
+        <img
+          src={`${SERVER_API_URL}/${product?.product_image}`}
+          alt={product?.product_image}
+          className="order-image"
+        />
+
+        <div className="order-info">
+
+          <h2>{product?.product_name}</h2>
+
+          <p className="price">
+            <strong>Amount :</strong>{" "}
+            ₹ {product?.selected_Lens_Or_ProductPrice}
+          </p>
+
+          <p>
+            <strong>ORDER ID :</strong>{" "}
+            {product?.order_id || "-"}
+          </p>
+
+          <p>
+            <strong>Deliverry Status:</strong>{" "}
+            {getStatus(trackingData?.status, product?.delivery_status)},  {product?.product_quantity} Item,
+          </p>
+
+          <p>
+            <strong>Courier Name :</strong> {product?.courier_name}
+          </p>
+
+          <p>
+            <strong>Customer :</strong>{" "}
+            {product.mobile_number}
+          </p>
+
+          <p>
+            <strong>Tracking Number :</strong>{" "}
+            {product?.tracking_number}
+          </p>
+
+          {/* <p>
+            <strong>Quantity :</strong>{" "}
+            {product?.product_quantity}
+          </p> */}
 
 
-                </div>
-              ) : (
-                <p>Product not found</p>
-              );
-            })()
-          ) : (
-            <p>Loading order details...</p>
-          )}
         </div>
 
       </div>
 
-      {/* shipment traking */}
-      <div className="tracking-container">
-        <h2 className="tracking-title">Tracking Number: {trackingData.tracking_number}</h2>
-        <p className="tracking-courier">Courier: {trackingData.courier}</p>
+      {/* ================= Shipment Details ================= */}
 
-        <div className="tracking-timeline">
-          {trackingData.timeline.map((step, i) => {
-            const isLast = i === trackingData.timeline.length - 1;
-            return (
-              <div key={i} className="timeline-item">
-                <div className={`timeline-dot ${step.stage.replace(/\s+/g, "").toLowerCase()}`}></div>
-                {!isLast && <div className="timeline-line"></div>}
-                <div className="timeline-content">
-                  <h4 className="timeline-status">
-                    {step.stage}
-                    <span className="timeline-date">
-                      {new Date(`${step.date}T${step.time}`).toLocaleDateString("en-GB", {
-                        weekday: "short",
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                      {new Date(`${step.date}T${step.time}`).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                    </span>
-                  </h4>
-                  {step.messages.map((msg, idx) => (
-                    <p key={idx} className="timeline-message">{msg}</p>
-                  ))}
-                </div>
+      <div className="shipment-card">
+
+        <h2>Shipment Tracking</h2>
+
+        <div className="shipment-details">
+
+          <div>
+
+            <span>Current Status</span>
+
+            <h4>{getStatus(trackingData?.status)}</h4>
+
+          </div>
+
+          <div>
+
+            <span>Courier</span>
+
+            <h4>{product.courier_name || "-"}</h4>
+
+          </div>
+
+          <div>
+
+            <span>Status Code</span>
+
+            <h4>{trackingData.status}</h4>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* ================= Flipkart Progress ================= */}
+
+      <div className="tracking-progress">
+
+        {trackingSteps.map((step, index) => (
+
+          <React.Fragment key={index}>
+
+            <div className="tracking-step">
+
+              <div
+                className={
+                  step.failed
+                    ? "circle failed"
+                    : step.blink
+                      ? "circle blink"
+                      : step.completed
+                        ? "circle active"
+                        : "circle"
+                }
+              >
+                {step.completed || step.failed ? "✓" : ""}
               </div>
-            );
-          })}
-        </div>
+
+              <p>{step.title}</p>
+
+              <small className="tracking-date">
+
+                {step.date && !isNaN(new Date(step.date))
+
+                  ? new Date(step.date).toLocaleString("en-IN", {
+
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+
+                  })
+
+                  : "--"}
+
+              </small>
+
+            </div>
+
+            {index !== trackingSteps.length - 1 && (
+
+              <div
+                className={
+                  (trackingSteps[index].completed || trackingSteps[index].failed) &&
+                    (trackingSteps[index + 1].completed ||
+                      trackingSteps[index + 1].failed)
+                    ? "line active"
+                    : "line"
+                }
+              />
+
+            )}
+
+          </React.Fragment>
+
+        ))}
+
       </div>
+
     </div>
   );
 };
 
 export default TrackingStatus;
-
